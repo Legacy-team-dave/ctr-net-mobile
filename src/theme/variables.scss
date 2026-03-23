@@ -1,62 +1,98 @@
 // Thème CTR.NET-FARDC Mobile
-// Palette militaire verte
+// Palette Kaki militaire — identique au web
+
+@font-face {
+  font-family: 'Barlow';
+  src: url('../assets/fonts/barlow/Barlow-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('../assets/fonts/barlow/Barlow-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('../assets/fonts/barlow/Barlow-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Barlow';
+  src: url('../assets/fonts/barlow/Barlow-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
-  --ion-color-primary: #1b5e20;
-  --ion-color-primary-rgb: 27, 94, 32;
+  // Couleurs kaki identiques au web
+  --kaki-primary: #5C7A4D;
+  --kaki-dark: #3F5A2E;
+  --green-primary: #2e7d32;
+  --green-dark: #1b5e20;
+
+  --ion-color-primary: #5C7A4D;
+  --ion-color-primary-rgb: 92, 122, 77;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #17531c;
-  --ion-color-primary-tint: #326e36;
+  --ion-color-primary-shade: #3F5A2E;
+  --ion-color-primary-tint: #6d8a5e;
 
-  --ion-color-secondary: #2e7d32;
-  --ion-color-secondary-rgb: 46, 125, 50;
+  --ion-color-secondary: #3F5A2E;
+  --ion-color-secondary-rgb: 63, 90, 46;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #286e2c;
-  --ion-color-secondary-tint: #438a47;
+  --ion-color-secondary-shade: #354e27;
+  --ion-color-secondary-tint: #526b43;
 
-  --ion-color-tertiary: #7b1fa2;
-  --ion-color-tertiary-rgb: 123, 31, 162;
+  --ion-color-tertiary: #6f42c1;
+  --ion-color-tertiary-rgb: 111, 66, 193;
   --ion-color-tertiary-contrast: #ffffff;
   --ion-color-tertiary-contrast-rgb: 255, 255, 255;
-  --ion-color-tertiary-shade: #6c1b8f;
-  --ion-color-tertiary-tint: #8835ab;
+  --ion-color-tertiary-shade: #623aaa;
+  --ion-color-tertiary-tint: #7d55c7;
 
-  --ion-color-success: #2e7d32;
-  --ion-color-success-rgb: 46, 125, 50;
+  --ion-color-success: #28a745;
+  --ion-color-success-rgb: 40, 167, 69;
   --ion-color-success-contrast: #ffffff;
   --ion-color-success-contrast-rgb: 255, 255, 255;
-  --ion-color-success-shade: #286e2c;
-  --ion-color-success-tint: #438a47;
+  --ion-color-success-shade: #239a3d;
+  --ion-color-success-tint: #3eb058;
 
-  --ion-color-warning: #f9a825;
-  --ion-color-warning-rgb: 249, 168, 37;
+  --ion-color-warning: #ffc107;
+  --ion-color-warning-rgb: 255, 193, 7;
   --ion-color-warning-contrast: #000000;
   --ion-color-warning-contrast-rgb: 0, 0, 0;
-  --ion-color-warning-shade: #db9421;
-  --ion-color-warning-tint: #fab13b;
+  --ion-color-warning-shade: #e0aa06;
+  --ion-color-warning-tint: #ffc720;
 
-  --ion-color-danger: #c62828;
-  --ion-color-danger-rgb: 198, 40, 40;
+  --ion-color-danger: #dc3545;
+  --ion-color-danger-rgb: 220, 53, 69;
   --ion-color-danger-contrast: #ffffff;
   --ion-color-danger-contrast-rgb: 255, 255, 255;
-  --ion-color-danger-shade: #ae2323;
-  --ion-color-danger-tint: #cc3e3e;
+  --ion-color-danger-shade: #c22f3d;
+  --ion-color-danger-tint: #e04958;
 
-  --ion-color-medium: #92949c;
-  --ion-color-medium-rgb: 146, 148, 156;
-  --ion-color-medium-contrast: #000000;
-  --ion-color-medium-contrast-rgb: 0, 0, 0;
-  --ion-color-medium-shade: #808289;
-  --ion-color-medium-tint: #9d9fa6;
+  --ion-color-medium: #6c757d;
+  --ion-color-medium-rgb: 108, 117, 125;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #5f676e;
+  --ion-color-medium-tint: #7b838a;
 
-  --ion-color-light: #f4f5f8;
-  --ion-color-light-rgb: 244, 245, 248;
+  --ion-color-light: #f8f9fa;
+  --ion-color-light-rgb: 248, 249, 250;
   --ion-color-light-contrast: #000000;
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 
-  --ion-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --ion-font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --ion-background-color: #f8f9fa;
 }

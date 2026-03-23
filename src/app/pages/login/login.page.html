@@ -1,70 +1,87 @@
-<ion-content class="ion-padding login-page">
+<ion-content class="login-page" [scrollY]="true">
   <div class="login-container">
-    <!-- Header -->
-    <div class="login-header">
-      <div class="logo-icon">
-        <ion-icon name="shield-checkmark"></ion-icon>
-      </div>
-      <h2>Connexion</h2>
-      <p class="subtitle">Profil CONTROLEUR uniquement</p>
-      <ion-button fill="clear" size="small" (click)="goToConfig()">
-        <ion-icon name="settings" slot="start"></ion-icon>
-        Modifier l'IP serveur
-      </ion-button>
+    <!-- Logo section identique au web -->
+    <div class="login-logo">
+      <a class="brand-link">
+        <img src="assets/img/logo-fardc.png" alt="FARDC Logo" class="brand-image">
+        <span class="brand-text">IG-FARDC</span>
+      </a>
     </div>
 
-    <!-- Formulaire -->
-    <form (ngSubmit)="onSubmit()" class="login-form">
-      <div class="form-group">
-        <label>
-          <ion-icon name="person"></ion-icon> Identifiant
-        </label>
-        <ion-input
-          type="text"
-          [(ngModel)]="login"
-          name="login"
-          placeholder="Votre login"
-          autocomplete="username"
-          autocorrect="off"
-          autocapitalize="off"
-          fill="outline"
-          required
-        ></ion-input>
+    <!-- Carte formulaire -->
+    <div class="card-modern">
+      <div class="form-header">
+        <div class="title">Connexion</div>
+        <div class="subtitle">
+          <ion-icon name="lock-closed"></ion-icon>
+          <span>Profil CONTROLEUR</span>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label>
-          <ion-icon name="lock-closed"></ion-icon> Mot de passe
-        </label>
-        <div class="password-group">
+      <form (ngSubmit)="onSubmit()" class="login-form">
+        <!-- Champ login -->
+        <div class="input-group-modern">
+          <ion-icon name="person" class="input-icon"></ion-icon>
+          <ion-input
+            type="text"
+            [(ngModel)]="login"
+            name="login"
+            placeholder="Identifiant, email ou nom"
+            autocomplete="username"
+            autocorrect="off"
+            autocapitalize="off"
+            required
+          ></ion-input>
+        </div>
+
+        <!-- Champ mot de passe -->
+        <div class="input-group-modern">
+          <ion-icon name="lock-closed" class="input-icon"></ion-icon>
           <ion-input
             [type]="showPassword ? 'text' : 'password'"
             [(ngModel)]="password"
             name="password"
-            placeholder="Votre mot de passe"
+            placeholder="Mot de passe"
             autocomplete="current-password"
-            fill="outline"
             required
           ></ion-input>
-          <ion-button fill="clear" size="small" (click)="togglePassword()" class="btn-eye" type="button">
+          <span class="password-toggle" (click)="togglePassword()">
             <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
-          </ion-button>
+          </span>
         </div>
-      </div>
 
-      @if (errorMessage) {
-        <div class="error-message">{{ errorMessage }}</div>
-      }
-
-      <ion-button expand="block" type="submit" [disabled]="loading" class="btn-login">
-        @if (loading) {
-          <ion-spinner name="crescent" slot="start"></ion-spinner>
-          Connexion...
-        } @else {
-          <ion-icon name="log-in" slot="start"></ion-icon>
-          Se connecter
+        @if (errorMessage) {
+          <div class="error-message">
+            <ion-icon name="alert-circle"></ion-icon>
+            {{ errorMessage }}
+          </div>
         }
-      </ion-button>
-    </form>
+
+        <!-- Bouton connexion jaune comme le web -->
+        <button type="submit" class="btn-login" [disabled]="loading">
+          @if (loading) {
+            <ion-spinner name="crescent"></ion-spinner>
+            Connexion...
+          } @else {
+            <ion-icon name="log-in"></ion-icon>
+            Se connecter
+          }
+        </button>
+      </form>
+
+      <!-- Séparateur -->
+      <div class="separator"><span>ou</span></div>
+
+      <!-- Bouton config serveur -->
+      <button class="btn-config" (click)="goToConfig()">
+        <ion-icon name="settings"></ion-icon>
+        Configurer le serveur
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <div class="login-footer">
+      <ion-icon name="shield-checkmark"></ion-icon> CTR.NET-FARDC Mobile v1.0.0
+    </div>
   </div>
 </ion-content>

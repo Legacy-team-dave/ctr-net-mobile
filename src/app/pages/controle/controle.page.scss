@@ -1,5 +1,5 @@
 ion-toolbar {
-  --background: #1b5e20;
+  --background: linear-gradient(135deg, #5C7A4D 0%, #3F5A2E 100%);
   --color: #fff;
 }
 
@@ -85,13 +85,13 @@ ion-toolbar {
   .lbl {
     display: block;
     font-size: 0.75rem;
-    color: #999;
+    color: #6c757d;
     margin-bottom: 4px;
   }
 
   .val {
     font-weight: 600;
-    color: #1b5e20;
+    color: #3F5A2E;
   }
 }
 

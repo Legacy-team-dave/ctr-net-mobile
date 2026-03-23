@@ -1,5 +1,5 @@
 ion-toolbar {
-  --background: #1b5e20;
+  --background: linear-gradient(135deg, #5C7A4D 0%, #3F5A2E 100%);
   --color: #fff;
 }
 
@@ -10,7 +10,7 @@ ion-toolbar {
   border-bottom: 1px solid #eee;
 
   .lbl {
-    color: #999;
+    color: #6c757d;
     font-size: 0.85rem;
   }
 
@@ -21,6 +21,6 @@ ion-toolbar {
 }
 
 .btn-save {
-  --background: #1b5e20;
+  --background: #3F5A2E;
   margin-top: 1rem;
 }

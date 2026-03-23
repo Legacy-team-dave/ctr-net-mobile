@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import {
-  IonContent, IonButton, IonInput, IonIcon, IonSpinner
+  IonContent, IonInput, IonIcon, IonSpinner
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { shieldCheckmark, person, lockClosed, logIn, settings, eye, eyeOff } from 'ionicons/icons';
+import { shieldCheckmark, person, lockClosed, logIn, settings, eye, eyeOff, alertCircle } from 'ionicons/icons';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   imports: [
-    FormsModule, IonContent, IonButton, IonInput, IonIcon, IonSpinner
+    FormsModule, IonContent, IonInput, IonIcon, IonSpinner
   ],
 })
 export class LoginPage {
@@ -27,7 +27,7 @@ export class LoginPage {
     private auth: AuthService,
     private router: Router
   ) {
-    addIcons({ shieldCheckmark, person, lockClosed, logIn, settings, eye, eyeOff });
+    addIcons({ shieldCheckmark, person, lockClosed, logIn, settings, eye, eyeOff, alertCircle });
   }
 
   goToConfig() {
