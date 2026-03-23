@@ -1,225 +1,284 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar>
     @if (step === 'controle') {
       <ion-button fill="clear" slot="start" (click)="backToSearch()">
-        <ion-icon name="arrow-back" slot="icon-only" color="light"></ion-icon>
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
       </ion-button>
+      <ion-title>Contrôle</ion-title>
+    } @else {
+      <ion-title>CTR.NET FARDC</ion-title>
     }
-    <ion-title>
-      {{ step === 'search' ? 'Rechercher un militaire' : 'Contrôle' }}
-    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   <!-- ═══ ÉTAPE 1 : RECHERCHE ═══ -->
   @if (step === 'search') {
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>
-          <ion-icon name="search"></ion-icon> Recherche
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-input
-          type="text"
-          [(ngModel)]="searchQuery"
-          placeholder="Matricule ou nom complet"
-          (ionInput)="onSearchInput()"
-          fill="outline"
-          clearInput
-        ></ion-input>
-        <ion-note color="medium" class="ion-margin-top">
-          <ion-icon name="information-circle"></ion-icon>
-          Saisissez au moins 2 caractères
-        </ion-note>
-
-        @if (searching) {
-          <div class="ion-text-center ion-margin-top">
-            <ion-spinner name="crescent"></ion-spinner>
+    <div class="search-wrapper">
+      <div class="card-modern">
+        <div class="card-header-modern">
+          <h3><ion-icon name="search"></ion-icon> Rechercher un militaire</h3>
+        </div>
+        <div class="card-body-modern">
+          <input
+            type="text"
+            class="form-control-modern form-control-lg"
+            placeholder="Matricule ou nom complet"
+            [(ngModel)]="searchQuery"
+            (input)="onSearchInput()"
+            autocomplete="off"
+          />
+          <div class="search-hint">
+            <ion-icon name="information-circle"></ion-icon>
+            Saisissez au moins 2 caractères
           </div>
-        }
 
-        @if (noResults && !searching) {
-          <div class="no-results">Aucun résultat trouvé</div>
-        }
+          @if (searching) {
+            <div class="search-loading">
+              <ion-spinner name="crescent"></ion-spinner>
+            </div>
+          }
 
-        @if (searchResults.length > 0) {
-          <ion-list class="search-results-list">
-            @for (mil of searchResults; track mil.matricule) {
-              <ion-item button (click)="selectMilitaire(mil)" detail>
-                <ion-label>
-                  <h2>{{ mil.matricule }} — {{ mil.noms }}</h2>
-                  <p>{{ mil.grade }} | {{ mil.unite }} | {{ mil.garnison }}</p>
-                </ion-label>
-                <ion-badge slot="end" [color]="getBadgeColor(mil)">
-                  {{ getBadgeLabel(mil) }}
-                </ion-badge>
-              </ion-item>
-            }
-          </ion-list>
-        }
-      </ion-card-content>
-    </ion-card>
+          @if (noResults && !searching) {
+            <div class="no-results">Aucun résultat trouvé</div>
+          }
+
+          @if (searchResults.length > 0 && !searching) {
+            <div class="results-list">
+              @for (mil of searchResults; track mil.matricule) {
+                <div class="result-item" (click)="selectMilitaire(mil)">
+                  <div class="result-row-top">
+                    <strong>{{ mil.noms }}</strong>
+                    <span class="badge-statut-mini {{ getBadgeClass(mil) }}">
+                      <ion-icon [name]="getBadgeIcon(mil)"></ion-icon>
+                      {{ getBadgeLabel(mil) }}
+                    </span>
+                  </div>
+                  <div class="result-row-bottom">
+                    <span><ion-icon name="card"></ion-icon> {{ mil.matricule }}</span>
+                    <span><ion-icon name="star"></ion-icon> {{ mil.grade || 'N/A' }}</span>
+                    <span><ion-icon name="location"></ion-icon> {{ mil.garnison || 'N/A' }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
   }
 
   <!-- ═══ ÉTAPE 2 : CONTRÔLE ═══ -->
   @if (step === 'controle' && currentMilitaire) {
-    <!-- Fiche militaire -->
-    <ion-card class="militaire-card">
-      <ion-card-header>
-        <ion-card-title>
-          <ion-icon name="person"></ion-icon> Militaire concerné
-          <ion-badge [color]="getBadgeColor(currentMilitaire)" class="ion-margin-start">
-            {{ getBadgeLabel(currentMilitaire) }}
-          </ion-badge>
-        </ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div class="info-grid">
-          <div class="info-item">
-            <span class="lbl">Grade</span>
-            <span class="val">{{ currentMilitaire.grade || 'N/A' }}</span>
-          </div>
-          <div class="info-item">
-            <span class="lbl">Noms</span>
-            <span class="val">{{ currentMilitaire.noms }}</span>
-          </div>
-          <div class="info-item">
-            <span class="lbl">Matricule</span>
-            <span class="val">{{ currentMilitaire.matricule }}</span>
-          </div>
-          <div class="info-item">
-            <span class="lbl">Unité</span>
-            <span class="val">{{ currentMilitaire.unite || 'N/A' }}</span>
-          </div>
-          <div class="info-item">
-            <span class="lbl">Garnison</span>
-            <span class="val">{{ currentMilitaire.garnison || 'N/A' }}</span>
-          </div>
-          <div class="info-item">
-            <span class="lbl">Province</span>
-            <span class="val">{{ currentMilitaire.province || 'N/A' }}</span>
-          </div>
+    <div class="controle-wrapper">
+      <!-- Fiche militaire -->
+      <div class="card-modern">
+        <div class="card-header-modern">
+          <h3>
+            <ion-icon name="shield-checkmark"></ion-icon>
+            Militaire concerné
+            <span class="badge-statut {{ getBadgeClass(currentMilitaire) }}">
+              <ion-icon [name]="getBadgeIcon(currentMilitaire)"></ion-icon>
+              {{ getBadgeLabel(currentMilitaire) }}
+            </span>
+          </h3>
         </div>
-
-        @if (currentMilitaire.deja_controle) {
-          <div class="deja-controle-warning">
-            <ion-icon name="alert-circle"></ion-icon>
-            Déjà contrôlé
+        <div class="card-body-modern">
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="lbl">Grade</span>
+              <span class="val">{{ currentMilitaire.grade || 'N/A' }}</span>
+            </div>
+            <div class="info-item">
+              <span class="lbl">Noms</span>
+              <span class="val">{{ currentMilitaire.noms }}</span>
+            </div>
+            <div class="info-item">
+              <span class="lbl">Matricule</span>
+              <span class="val">{{ currentMilitaire.matricule }}</span>
+            </div>
+            <div class="info-item">
+              <span class="lbl">Unité</span>
+              <span class="val">{{ currentMilitaire.unite || 'N/A' }}</span>
+            </div>
+            <div class="info-item">
+              <span class="lbl">Garnison</span>
+              <span class="val">{{ currentMilitaire.garnison || 'N/A' }}</span>
+            </div>
+            <div class="info-item">
+              <span class="lbl">Province</span>
+              <span class="val">{{ currentMilitaire.province || 'N/A' }}</span>
+            </div>
           </div>
-        }
-      </ion-card-content>
-    </ion-card>
 
-    <!-- Sélection statut -->
-    @if (showStatutSection) {
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>Statut</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <div class="statut-buttons">
-            @if (!isDcdAvBio) {
-              <ion-button
-                [fill]="statutVivant ? 'solid' : 'outline'"
-                color="success"
-                (click)="toggleStatut('vivant')"
-              >
-                Vivant
-              </ion-button>
-            }
-            <ion-button
-              [fill]="statutDecede ? 'solid' : 'outline'"
-              color="danger"
-              (click)="toggleStatut('decede')"
-              [disabled]="isDcdAvBio"
-            >
-              Décédé
-            </ion-button>
-          </div>
-          <ion-note color="medium">
-            <ion-icon name="information-circle"></ion-icon>
-            {{ statutInfo }}
-          </ion-note>
-        </ion-card-content>
-      </ion-card>
-    }
-
-    <!-- Contrôle VIVANT : bouton Présent -->
-    @if (statutVivant && !statutDecede) {
-      <ion-card>
-        <ion-card-content class="ion-text-center">
-          <ion-button size="large" color="success" expand="block" (click)="validerPresent()">
-            <ion-icon name="checkmark-circle" slot="start"></ion-icon>
-            PRÉSENT
-          </ion-button>
-        </ion-card-content>
-      </ion-card>
-    }
-
-    <!-- Contrôle DÉCÉDÉ : bénéficiaire -->
-    @if (statutDecede && !statutVivant) {
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>Bénéficiaire(s) du défunt</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-          <!-- Bénéficiaire existant -->
-          @if (currentMilitaire.beneficiaire) {
-            <div class="benef-existant">
-              <span class="lbl">Bénéficiaire existant</span>
-              <span class="val">{{ currentMilitaire.beneficiaire }}</span>
+          @if (currentMilitaire.deja_controle) {
+            <div class="deja-controle-warning">
+              <ion-icon name="alert-circle"></ion-icon>
+              Déjà contrôlé
             </div>
           }
+        </div>
+      </div>
 
-          <!-- Nouveau bénéficiaire -->
-          <ion-item>
-            <ion-input
-              label="Nouveau bénéficiaire"
-              labelPlacement="stacked"
-              type="text"
-              [(ngModel)]="newBeneficiaire"
-              placeholder="Nom complet"
-            ></ion-input>
-          </ion-item>
-
-          <!-- Lien de parenté -->
-          <div class="lien-section">
-            <ion-text color="medium"><p>Lien de parenté</p></ion-text>
-            <ion-radio-group [(ngModel)]="lienParente">
-              @for (lien of liensParente; track lien) {
-                <ion-item>
-                  <ion-radio [value]="lien" labelPlacement="end">{{ lien }}</ion-radio>
-                </ion-item>
+      <!-- Sélection statut -->
+      <div class="card-modern">
+        <div class="card-body-modern">
+          <div class="statut-section">
+            <span class="statut-label">
+              <ion-icon name="information-circle"></ion-icon> Statut :
+            </span>
+            <div class="statut-buttons">
+              @if (!isDcdAvBio) {
+                <button
+                  class="btn-statut"
+                  [class.btn-statut-vivant]="statutVivant"
+                  (click)="toggleStatut('vivant')"
+                >
+                  Vivant
+                </button>
               }
-            </ion-radio-group>
+              <button
+                class="btn-statut"
+                [class.btn-statut-decede]="statutDecede"
+                (click)="toggleStatut('decede')"
+                [disabled]="isDcdAvBio"
+              >
+                Décédé
+              </button>
+            </div>
           </div>
-
-          <!-- Observations -->
-          <ion-item>
-            <ion-textarea
-              label="Observations"
-              labelPlacement="stacked"
-              [(ngModel)]="observations"
-              placeholder="Observations éventuelles"
-              rows="3"
-            ></ion-textarea>
-          </ion-item>
-
-          <!-- Boutons de mention -->
-          <div class="mention-buttons ion-margin-top">
-            <ion-button color="success" expand="block" (click)="validerMention('Favorable')">
-              <ion-icon name="checkmark-circle" slot="start"></ion-icon>
-              FAVORABLE
-            </ion-button>
-            <ion-button color="danger" expand="block" (click)="validerMention('Défavorable')">
-              <ion-icon name="close-circle" slot="start"></ion-icon>
-              DÉFAVORABLE
-            </ion-button>
+          <div class="statut-info">
+            <ion-icon name="information-circle"></ion-icon>
+            {{ statutInfo }}
           </div>
-        </ion-card-content>
-      </ion-card>
-    }
+        </div>
+      </div>
+
+      <!-- Contrôle VIVANT : bouton Présent -->
+      @if (statutVivant && !statutDecede) {
+        <div class="card-modern">
+          <div class="card-body-modern present-section">
+            <button class="btn-present" (click)="validerPresent()">
+              <ion-icon name="checkmark-circle"></ion-icon>
+              Présent
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- Contrôle DÉCÉDÉ : bénéficiaire -->
+      @if (statutDecede && !statutVivant) {
+        <div class="card-modern">
+          <div class="card-header-modern">
+            <h3>
+              <ion-icon name="people"></ion-icon>
+              Bénéficiaire(s) du défunt
+            </h3>
+          </div>
+          <div class="card-body-modern">
+            <!-- Bénéficiaire existant -->
+            @if (currentMilitaire.beneficiaire) {
+              <div class="benef-card">
+                <label class="benef-label">
+                  <ion-icon name="person"></ion-icon> Bénéficiaire existant
+                </label>
+                <div class="benef-value">{{ currentMilitaire.beneficiaire }}</div>
+              </div>
+            }
+
+            <!-- Nouveau bénéficiaire -->
+            <div class="benef-card">
+              <label class="benef-label">
+                <ion-icon name="person-add"></ion-icon> Nouveau bénéficiaire
+              </label>
+              <input
+                type="text"
+                class="form-control-modern"
+                placeholder="Nom complet du nouveau bénéficiaire"
+                [(ngModel)]="newBeneficiaire"
+              />
+              <small class="benef-hint">
+                <ion-icon name="information-circle"></ion-icon>
+                Remplissez pour ajouter un nouveau.
+              </small>
+            </div>
+
+            <!-- Liens de parenté -->
+            <div class="liens-section">
+              <label class="liens-title">Lien de parenté</label>
+              <div class="liens-grid">
+                <div class="lien-groupe">
+                  <span class="lien-cat">Epouse/Epoux</span>
+                  <div class="lien-options">
+                    <button class="lien-chip" [class.selected]="lienParente === 'Epouse'" (click)="selectLien('Epouse')">
+                      Epouse <span class="hint">(→ Veuve)</span>
+                    </button>
+                    <button class="lien-chip" [class.selected]="lienParente === 'Epoux'" (click)="selectLien('Epoux')">
+                      Epoux <span class="hint">(→ Veuf)</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="lien-groupe">
+                  <span class="lien-cat">Fils/Fille</span>
+                  <div class="lien-options">
+                    <button class="lien-chip" [class.selected]="lienParente === 'Fils'" (click)="selectLien('Fils')">
+                      Fils <span class="hint">(→ Orphelin)</span>
+                    </button>
+                    <button class="lien-chip" [class.selected]="lienParente === 'Fille'" (click)="selectLien('Fille')">
+                      Fille <span class="hint">(→ Orphelin)</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="lien-groupe">
+                  <span class="lien-cat">Père/Mère</span>
+                  <div class="lien-options">
+                    <button class="lien-chip" [class.selected]="lienParente === 'Père'" (click)="selectLien('Père')">
+                      Père <span class="hint">(→ Tuteur)</span>
+                    </button>
+                    <button class="lien-chip" [class.selected]="lienParente === 'Mère'" (click)="selectLien('Mère')">
+                      Mère <span class="hint">(→ Tuteur)</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="lien-groupe">
+                  <span class="lien-cat">Frère/Sœur</span>
+                  <div class="lien-options">
+                    <button class="lien-chip" [class.selected]="lienParente === 'Frère'" (click)="selectLien('Frère')">
+                      Frère <span class="hint">(→ Tuteur)</span>
+                    </button>
+                    <button class="lien-chip" [class.selected]="lienParente === 'Sœur'" (click)="selectLien('Sœur')">
+                      Sœur <span class="hint">(→ Tuteur)</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Observations -->
+            <div class="observations-section">
+              <label class="obs-label">
+                <ion-icon name="pencil"></ion-icon> Observations (optionnel)
+              </label>
+              <textarea
+                class="form-control-modern"
+                placeholder="Informations complémentaires..."
+                [(ngModel)]="observations"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <!-- Boutons Favorable / Défavorable -->
+            <div class="mention-buttons">
+              <button class="btn-mention btn-favorable" (click)="validerMention('Favorable')">
+                <ion-icon name="thumbs-up"></ion-icon> Favorable
+              </button>
+              <button class="btn-mention btn-defavorable" (click)="validerMention('Défavorable')">
+                <ion-icon name="thumbs-down"></ion-icon> Défavorable
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
   }
 </ion-content>

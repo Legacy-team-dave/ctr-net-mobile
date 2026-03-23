@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
-  IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonInput,
-  IonIcon, IonSpinner, IonCard, IonCardHeader, IonCardContent,
-  IonCardTitle, IonList, IonItem, IonLabel, IonBadge, IonNote,
-  IonRadioGroup, IonRadio, IonTextarea, IonText
+  IonHeader, IonToolbar, IonTitle, IonContent, IonButton,
+  IonIcon, IonSpinner
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
   search, checkmarkCircle, closeCircle, arrowBack, person,
-  alertCircle, informationCircle
+  alertCircle, informationCircle, skull, time, personAdd,
+  star, location, card, shieldCheckmark, thumbsUp, thumbsDown,
+  pencil, people
 } from 'ionicons/icons';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular/standalone';
 import { ApiService } from '../../services/api.service';
@@ -23,24 +23,17 @@ import { Geolocation } from '@capacitor/geolocation';
   styleUrls: ['./controle.page.scss'],
   imports: [
     FormsModule,
-    IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonInput,
-    IonIcon, IonSpinner, IonCard, IonCardHeader, IonCardContent,
-    IonCardTitle, IonList, IonItem, IonLabel, IonBadge, IonNote,
-    IonRadioGroup, IonRadio, IonTextarea, IonText,
+    IonHeader, IonToolbar, IonTitle, IonContent, IonButton,
+    IonIcon, IonSpinner,
   ],
 })
 export class ControlePage {
-  // État
   step: 'search' | 'controle' = 'search';
   searchQuery = '';
   searchResults: Militaire[] = [];
   searching = false;
   noResults = false;
-
-  // Militaire sélectionné
   currentMilitaire: Militaire | null = null;
-
-  // Contrôle
   statutVivant = false;
   statutDecede = false;
   newBeneficiaire = '';
@@ -49,17 +42,18 @@ export class ControlePage {
 
   private searchTimeout: ReturnType<typeof setTimeout> | null = null;
 
-  readonly liensParente = [
-    'Conjoint(e)', 'Fils/Fille', 'Père/Mère', 'Frère/Sœur', 'Autre'
-  ];
-
   constructor(
     private api: ApiService,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private toastCtrl: ToastController
   ) {
-    addIcons({ search, checkmarkCircle, closeCircle, arrowBack, person, alertCircle, informationCircle });
+    addIcons({
+      search, checkmarkCircle, closeCircle, arrowBack, person,
+      alertCircle, informationCircle, skull, time, personAdd,
+      star, location, card, shieldCheckmark, thumbsUp, thumbsDown,
+      pencil, people
+    });
   }
 
   // ── Recherche ──
@@ -94,9 +88,7 @@ export class ControlePage {
     this.currentMilitaire = mil;
     this.step = 'controle';
     this.resetControle();
-
-    const cat = mil.categorie || '';
-    if (cat === 'DCD_AV_BIO') {
+    if (mil.categorie === 'DCD_AV_BIO') {
       this.statutDecede = true;
     }
   }
@@ -122,10 +114,6 @@ export class ControlePage {
     return this.currentMilitaire?.categorie === 'DCD_AV_BIO';
   }
 
-  get showStatutSection(): boolean {
-    return !!this.currentMilitaire;
-  }
-
   get statutInfo(): string {
     if (this.isDcdAvBio) return 'Catégorie DCD_AV_BIO : toujours considéré comme décédé';
     if (this.currentMilitaire?.categorie === 'DCD_AP_BIO') {
@@ -146,14 +134,24 @@ export class ControlePage {
 
   // ── Badge ──
 
-  getBadgeColor(mil: Militaire): string {
-    if (mil.statut === '1' || mil.statut === 'Actif') return 'success';
+  getBadgeClass(mil: Militaire): string {
+    if (mil.statut === '1' || mil.statut === 'Actif') return 'badge-actif';
     const cat = mil.categorie || '';
-    if (cat === 'DCD_AV_BIO') return 'danger';
-    if (cat === 'DCD_AP_BIO') return 'warning';
-    if (cat === 'RETRAITES') return 'tertiary';
-    if (cat === 'INTEGRES') return 'secondary';
-    return 'medium';
+    if (cat === 'DCD_AV_BIO') return 'badge-decede-av-bio';
+    if (cat === 'DCD_AP_BIO') return 'badge-dcd-ap-bio';
+    if (cat === 'RETRAITES') return 'badge-retraite';
+    if (cat === 'INTEGRES') return 'badge-integre';
+    return 'badge-actif';
+  }
+
+  getBadgeIcon(mil: Militaire): string {
+    if (mil.statut === '1' || mil.statut === 'Actif') return 'checkmark-circle';
+    const cat = mil.categorie || '';
+    if (cat === 'DCD_AV_BIO') return 'skull';
+    if (cat === 'DCD_AP_BIO') return 'skull';
+    if (cat === 'RETRAITES') return 'time';
+    if (cat === 'INTEGRES') return 'person-add';
+    return 'checkmark-circle';
   }
 
   getBadgeLabel(mil: Militaire): string {
@@ -163,7 +161,13 @@ export class ControlePage {
     if (cat === 'DCD_AP_BIO') return 'DCD AP BIO';
     if (cat === 'RETRAITES') return 'RETRAITÉ';
     if (cat === 'INTEGRES') return 'INTÉGRÉ';
-    return 'INACTIF';
+    return 'ACTIF';
+  }
+
+  // ── Lien de parenté ──
+
+  selectLien(lien: string) {
+    this.lienParente = this.lienParente === lien ? '' : lien;
   }
 
   // ── Validation ──
@@ -222,7 +226,6 @@ export class ControlePage {
     const loading = await this.loadingCtrl.create({ message: 'Enregistrement du contrôle...' });
     await loading.present();
 
-    // Géolocalisation
     try {
       const pos = await Geolocation.getCurrentPosition({ enableHighAccuracy: true, timeout: 5000 });
       data['latitude'] = pos.coords.latitude;
@@ -244,8 +247,6 @@ export class ControlePage {
       this.showToast(message, 'danger');
     }
   }
-
-  // ── Utilitaires ──
 
   private async showToast(message: string, color: string) {
     const toast = await this.toastCtrl.create({

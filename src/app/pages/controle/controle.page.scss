@@ -1,54 +1,232 @@
+// ── Toolbar ──
 ion-toolbar {
   --background: linear-gradient(135deg, #5C7A4D 0%, #3F5A2E 100%);
   --color: #fff;
 }
 
-.search-results-list {
-  margin-top: 1rem;
+// ── Recherche : wrapper centré ──
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
 
-  ion-item {
-    --padding-start: 0;
+// ── Contrôle : wrapper ──
+.controle-wrapper {
+  padding: 16px;
+}
 
-    h2 {
-      font-weight: 600;
-      font-size: 0.95rem;
-    }
+// ── Card Modern (copie web) ──
+.card-modern {
+  width: 100%;
+  max-width: 600px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background: #fff;
+  margin-bottom: 16px;
+}
 
-    p {
-      font-size: 0.8rem;
-      color: #777;
+.card-header-modern {
+  background: linear-gradient(135deg, #5C7A4D 0%, #3F5A2E 100%);
+  padding: 14px 18px;
+  color: #fff;
+
+  h3 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.05rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    ion-icon {
+      font-size: 1.15rem;
     }
   }
 }
 
+.card-body-modern {
+  padding: 18px;
+}
+
+// ── Form control (copie web) ──
+.form-control-modern {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Barlow', sans-serif;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+
+  &:focus {
+    border-color: #5C7A4D;
+    box-shadow: 0 0 0 0.2rem rgba(92, 122, 77, 0.25);
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #adb5bd;
+  }
+}
+
+.form-control-lg {
+  padding: 14px 18px;
+  font-size: 1.05rem;
+}
+
+// ── Recherche : hint ──
+.search-hint {
+  margin-top: 8px;
+  color: #6c757d;
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  ion-icon {
+    font-size: 0.9rem;
+  }
+}
+
+.search-loading {
+  text-align: center;
+  padding: 20px;
+}
+
 .no-results {
   text-align: center;
-  padding: 1.5rem;
+  padding: 20px;
   color: #999;
   font-size: 0.9rem;
 }
 
-.militaire-card {
-  .info-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
+// ── Résultats de recherche ──
+.results-list {
+  margin-top: 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 400px;
+  overflow-y: auto;
+}
 
-    .info-item {
-      .lbl {
-        display: block;
-        font-size: 0.75rem;
-        color: #999;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
+.result-item {
+  padding: 10px 14px;
+  border-bottom: 1px solid #dee2e6;
+  cursor: pointer;
+  transition: background 0.15s;
 
-      .val {
-        display: block;
-        font-weight: 600;
-        color: #333;
-        font-size: 0.9rem;
-      }
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:active {
+    background: #e8f5e9;
+  }
+}
+
+.result-row-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+
+  strong {
+    font-size: 0.9rem;
+    color: #212529;
+  }
+}
+
+.result-row-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.78rem;
+  color: #6c757d;
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+
+    ion-icon {
+      font-size: 0.85rem;
+    }
+  }
+}
+
+// ── Badges statut (copie web exacte) ──
+.badge-statut-mini,
+.badge-statut {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+
+  ion-icon {
+    font-size: 0.7rem;
+  }
+}
+
+.badge-statut {
+  padding: 3px 10px;
+  font-size: 0.72rem;
+
+  ion-icon {
+    font-size: 0.78rem;
+  }
+}
+
+.badge-actif {
+  background: #28a745;
+}
+
+.badge-decede-av-bio {
+  background: #6c757d;
+}
+
+.badge-dcd-ap-bio {
+  background: linear-gradient(135deg, #6f42c1, #6610f2);
+}
+
+.badge-retraite {
+  background: linear-gradient(135deg, #0d6efd, #0a58ca);
+}
+
+.badge-integre {
+  background: linear-gradient(135deg, #dc3545, #b02a37);
+}
+
+// ── Fiche militaire ──
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+
+  .info-item {
+    .lbl {
+      display: block;
+      font-size: 0.72rem;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .val {
+      display: block;
+      font-weight: 600;
+      color: #333;
+      font-size: 0.9rem;
     }
   }
 }
@@ -66,46 +244,286 @@ ion-toolbar {
   font-weight: 600;
 }
 
-.statut-buttons {
+// ── Statut ──
+.statut-section {
   display: flex;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
 
-  ion-button {
-    flex: 1;
+.statut-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #333;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  ion-icon {
+    font-size: 1rem;
+    color: #5C7A4D;
   }
 }
 
-.benef-existant {
-  background: #e8f5e9;
-  padding: 0.75rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+.statut-buttons {
+  display: flex;
+  gap: 8px;
+}
 
-  .lbl {
+.btn-statut {
+  padding: 8px 20px;
+  border: 2px solid #ced4da;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.btn-statut-vivant {
+  background: #28a745;
+  border-color: #28a745;
+  color: #fff;
+}
+
+.btn-statut-decede {
+  background: #dc3545;
+  border-color: #dc3545;
+  color: #fff;
+}
+
+.statut-info {
+  margin-top: 10px;
+  font-size: 0.8rem;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  ion-icon {
+    font-size: 0.9rem;
+  }
+}
+
+// ── Bouton Présent (copie web btn-present) ──
+.present-section {
+  display: flex;
+  justify-content: center;
+}
+
+.btn-present {
+  width: 100%;
+  max-width: 400px;
+  padding: 14px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  background: #28a745;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.35);
+  transition: all 0.3s;
+  font-family: 'Barlow', sans-serif;
+
+  &:active {
+    transform: scale(0.97);
+    background: #218838;
+  }
+
+  ion-icon {
+    font-size: 1.3rem;
+  }
+}
+
+// ── Bénéficiaire ──
+.benef-card {
+  margin-bottom: 14px;
+}
+
+.benef-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #333;
+  margin-bottom: 6px;
+
+  ion-icon {
+    font-size: 1rem;
+    color: #5C7A4D;
+  }
+}
+
+.benef-value {
+  background: #e8f5e9;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #3F5A2E;
+  font-size: 0.9rem;
+}
+
+.benef-hint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #6c757d;
+  font-size: 0.78rem;
+  margin-top: 6px;
+
+  ion-icon {
+    font-size: 0.85rem;
+  }
+}
+
+// ── Liens de parenté (chips) ──
+.liens-section {
+  margin: 16px 0;
+}
+
+.liens-title {
+  display: block;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.liens-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lien-groupe {
+  .lien-cat {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: #6c757d;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
     margin-bottom: 4px;
   }
 
-  .val {
-    font-weight: 600;
-    color: #3F5A2E;
+  .lien-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
   }
 }
 
-.lien-section {
-  margin: 1rem 0;
+.lien-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  border: 1.5px solid #ced4da;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fff;
+  color: #333;
+  font-family: 'Barlow', sans-serif;
 
-  p {
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+  .hint {
+    font-size: 0.68rem;
+    color: #999;
+    margin-left: 4px;
+  }
+
+  &.selected {
+    background: #3F5A2E;
+    color: #fff;
+    border-color: #3F5A2E;
+
+    .hint {
+      color: rgba(255, 255, 255, 0.7);
+    }
+  }
+
+  &:active {
+    transform: scale(0.96);
   }
 }
 
+// ── Observations ──
+.observations-section {
+  margin: 16px 0 0;
+}
+
+.obs-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #333;
+  margin-bottom: 6px;
+
+  ion-icon {
+    font-size: 1rem;
+    color: #5C7A4D;
+  }
+}
+
+textarea.form-control-modern {
+  resize: vertical;
+  min-height: 70px;
+}
+
+// ── Boutons Favorable / Défavorable (copie web) ──
 .mention-buttons {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  gap: 10px;
+  margin-top: 18px;
+  justify-content: center;
+}
+
+.btn-mention {
+  border-radius: 30px;
+  padding: 12px 28px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s;
+  font-family: 'Barlow', sans-serif;
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  ion-icon {
+    font-size: 1.1rem;
+  }
+}
+
+.btn-favorable {
+  background: #ffc107;
+  color: #212529;
+}
+
+.btn-defavorable {
+  background: #dc3545;
+  color: #fff;
 }
