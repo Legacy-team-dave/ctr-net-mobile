@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">CTR.NET Mobile</string>
-    <string name="title_activity_main">CTR.NET Mobile</string>
+    <string name="app_name">CTR.NET FARDC</string>
+    <string name="title_activity_main">CTR.NET FARDC</string>
     <string name="package_name">net.ctr.fardc.mobile</string>
     <string name="custom_url_scheme">net.ctr.fardc.mobile</string>
 </resources>
