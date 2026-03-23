@@ -1,0 +1,111 @@
+ion-toolbar {
+  --background: #1b5e20;
+  --color: #fff;
+}
+
+.search-results-list {
+  margin-top: 1rem;
+
+  ion-item {
+    --padding-start: 0;
+
+    h2 {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    p {
+      font-size: 0.8rem;
+      color: #777;
+    }
+  }
+}
+
+.no-results {
+  text-align: center;
+  padding: 1.5rem;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.militaire-card {
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+
+    .info-item {
+      .lbl {
+        display: block;
+        font-size: 0.75rem;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .val {
+        display: block;
+        font-weight: 600;
+        color: #333;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+.deja-controle-warning {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff3e0;
+  color: #e65100;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.statut-buttons {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+
+  ion-button {
+    flex: 1;
+  }
+}
+
+.benef-existant {
+  background: #e8f5e9;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+
+  .lbl {
+    display: block;
+    font-size: 0.75rem;
+    color: #999;
+    margin-bottom: 4px;
+  }
+
+  .val {
+    font-weight: 600;
+    color: #1b5e20;
+  }
+}
+
+.lien-section {
+  margin: 1rem 0;
+
+  p {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.mention-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

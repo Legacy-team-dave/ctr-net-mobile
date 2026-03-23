@@ -1,0 +1,60 @@
+<ion-content class="ion-padding config-page">
+  <div class="config-container">
+    <!-- Logo -->
+    <div class="config-logo">
+      <div class="logo-icon">
+        <ion-icon name="shield-checkmark"></ion-icon>
+      </div>
+      <h1>CTR.NET</h1>
+      <p class="subtitle">FARDC - Application Mobile</p>
+      <p class="version">Profil CONTROLEUR</p>
+    </div>
+
+    <!-- Formulaire -->
+    <div class="config-form">
+      <label class="form-label">Adresse IP du serveur</label>
+      <div class="ip-input-group">
+        <span class="input-prefix">http://</span>
+        <ion-input
+          type="text"
+          [(ngModel)]="serverIP"
+          placeholder="192.168.1.100"
+          inputmode="url"
+          autocorrect="off"
+          fill="outline"
+        ></ion-input>
+      </div>
+      <p class="help-text">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        Adresse IPv4 du PC serveur sur le réseau Wi-Fi
+      </p>
+
+      <ion-button expand="block" fill="outline" (click)="testConnection()" [disabled]="testing || !serverIP.trim()">
+        @if (testing) {
+          <ion-spinner name="crescent" slot="start"></ion-spinner>
+          Test en cours...
+        } @else {
+          <ion-icon name="wifi" slot="start"></ion-icon>
+          Tester la connexion
+        }
+      </ion-button>
+
+      @if (connectionOk !== null) {
+        <div class="connection-status" [class.success]="connectionOk" [class.error]="!connectionOk">
+          <ion-icon [name]="connectionOk ? 'checkmark-circle' : 'close-circle'"></ion-icon>
+          {{ connectionMessage }}
+        </div>
+      }
+
+      <ion-button
+        expand="block"
+        (click)="saveAndContinue()"
+        [disabled]="!connectionOk"
+        class="btn-continue"
+      >
+        <ion-icon name="arrow-forward" slot="start"></ion-icon>
+        Continuer
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

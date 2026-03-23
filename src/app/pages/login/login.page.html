@@ -1,0 +1,70 @@
+<ion-content class="ion-padding login-page">
+  <div class="login-container">
+    <!-- Header -->
+    <div class="login-header">
+      <div class="logo-icon">
+        <ion-icon name="shield-checkmark"></ion-icon>
+      </div>
+      <h2>Connexion</h2>
+      <p class="subtitle">Profil CONTROLEUR uniquement</p>
+      <ion-button fill="clear" size="small" (click)="goToConfig()">
+        <ion-icon name="settings" slot="start"></ion-icon>
+        Modifier l'IP serveur
+      </ion-button>
+    </div>
+
+    <!-- Formulaire -->
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label>
+          <ion-icon name="person"></ion-icon> Identifiant
+        </label>
+        <ion-input
+          type="text"
+          [(ngModel)]="login"
+          name="login"
+          placeholder="Votre login"
+          autocomplete="username"
+          autocorrect="off"
+          autocapitalize="off"
+          fill="outline"
+          required
+        ></ion-input>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <ion-icon name="lock-closed"></ion-icon> Mot de passe
+        </label>
+        <div class="password-group">
+          <ion-input
+            [type]="showPassword ? 'text' : 'password'"
+            [(ngModel)]="password"
+            name="password"
+            placeholder="Votre mot de passe"
+            autocomplete="current-password"
+            fill="outline"
+            required
+          ></ion-input>
+          <ion-button fill="clear" size="small" (click)="togglePassword()" class="btn-eye" type="button">
+            <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+
+      @if (errorMessage) {
+        <div class="error-message">{{ errorMessage }}</div>
+      }
+
+      <ion-button expand="block" type="submit" [disabled]="loading" class="btn-login">
+        @if (loading) {
+          <ion-spinner name="crescent" slot="start"></ion-spinner>
+          Connexion...
+        } @else {
+          <ion-icon name="log-in" slot="start"></ion-icon>
+          Se connecter
+        }
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

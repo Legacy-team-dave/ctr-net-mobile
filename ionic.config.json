@@ -1,0 +1,7 @@
+{
+  "name": "ctr-net-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Mon Profil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Infos -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        <ion-icon name="person-circle"></ion-icon> Informations
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="info-row">
+        <span class="lbl">Login</span>
+        <span class="val">{{ loginName }}</span>
+      </div>
+      <div class="info-row">
+        <span class="lbl">Serveur</span>
+        <span class="val">{{ serverIP }}</span>
+      </div>
+
+      <ion-item>
+        <ion-input
+          label="Nom complet"
+          labelPlacement="stacked"
+          type="text"
+          [(ngModel)]="nomComplet"
+          placeholder="Votre nom complet"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          label="Email"
+          labelPlacement="stacked"
+          type="email"
+          [(ngModel)]="email"
+          placeholder="Votre email"
+        ></ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Mot de passe -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Changer le mot de passe</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-note color="medium">Laissez vide si vous ne souhaitez pas changer le mot de passe.</ion-note>
+
+      <ion-item>
+        <ion-input
+          label="Ancien mot de passe"
+          labelPlacement="stacked"
+          type="password"
+          [(ngModel)]="oldPassword"
+          placeholder="Ancien mot de passe"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-input
+          label="Nouveau mot de passe"
+          labelPlacement="stacked"
+          type="password"
+          [(ngModel)]="newPassword"
+          placeholder="Nouveau mot de passe"
+        ></ion-input>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" (click)="onSave()" class="btn-save">
+    <ion-icon name="save" slot="start"></ion-icon>
+    Enregistrer
+  </ion-button>
+</ion-content>
