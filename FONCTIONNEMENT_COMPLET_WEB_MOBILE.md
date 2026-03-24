@@ -14,10 +14,10 @@ CTR.NET-FARDC est un système de contrôle des effectifs militaires composé de 
 │   APPLICATION WEB        │         │   APPLICATION MOBILE     │
 │   (PHP / MySQL)          │         │   (Ionic / Angular)      │
 │                          │         │                          │
-│   Profils :              │  HTTP   │   Profil unique :        │
+│   Profils web :          │  HTTP   │   Profil unique :        │
 │   - ADMIN_IG             │◄───────►│   - CONTROLEUR           │
 │   - OPERATEUR            │  REST   │                          │
-│   - CONTROLEUR           │   API   │   Plateforme :           │
+│   (CONTROLEUR bloqué)    │   API   │   Plateforme :           │
 │                          │         │   - Android (APK)        │
 │   Serveur : Laragon      │         │   - Wi-Fi intranet       │
 │   (Apache + MySQL)       │         │                          │
@@ -148,7 +148,7 @@ L'application web gère trois profils avec des accès distincts :
 | Langage | TypeScript | 5.9.0 |
 | Build | Angular CLI | 20.0.0 |
 | CI/CD | GitHub Actions | Node 22, Java 21 |
-| Cible Android | SDK API | 36 (minSdk 22) |
+| Cible Android | SDK API | 36 (minSdk 24) |
 
 ### 3.2. Profil unique : CONTROLEUR
 
@@ -172,8 +172,8 @@ est effectuée côté serveur dans `api/auth.php` qui refuse les profils non aut
 
 - **Design** : Même fond d'image (fardc2.jpg) avec overlay sombre à 60%, même carte blanche avec border-radius 16px et backdrop-filter blur.
 - **Logo** : IG-FARDC en haut (même présentation que le login).
-- **Détection automatique** : L'adresse IP du serveur est détectée automatiquement sur le réseau Wi-Fi local (scan du sous-réseau). Un indicateur de détection s'affiche pendant la recherche.
-- **Champ IP** : `.input-group-modern` avec icône Wi-Fi intégrée, **en lecture seule** (l'IP n'est pas saisie manuellement).
+- **Saisie manuelle** : L'adresse IP du serveur est saisie manuellement par l'utilisateur sur le réseau Wi-Fi local.
+- **Champ IP** : `.input-group-modern` avec icône Wi-Fi intégrée, champ éditable (ex. `10.71.62.9`).
 - **Bouton "Tester la connexion"** : Jaune (#ffc107), même taille que le bouton de connexion (padding 12px, width 100%).
 - **Test** : Envoie une requête GET à `http://{IP}/ctr.net-fardc/api/auth.php?action=check` avec timeout de 8 secondes. Si le serveur répond (même avec 401), la connexion est considérée comme réussie.
 - **Bouton "Continuer"** : Kaki foncé (#3F5A2E), même taille, activé uniquement après un test réussi.

@@ -26,8 +26,9 @@ src/app/
 ├── models/
 │   └── interfaces.ts          ← Interfaces: Militaire, User, LoginResponse, ApiResponse, ControleData
 ├── services/
-│   ├── api.service.ts         ← Client HTTP REST (token Bearer, timeout 15s, gestion erreurs)
-│   └── auth.service.ts        ← Session utilisateur (Observable user$, checkSession, login, logout)
+│   ├── api.service.ts         ← Client HTTP REST (token Bearer, timeout 15s, IP serveur + tests réseau)
+│   ├── auth.service.ts        ← Session utilisateur (Observable user$, checkSession, login, logout)
+│   └── cache.service.ts       ← Nettoyage automatique des caches (Preferences, orphans, 24h)
 └── pages/
     ├── splash/                ← Écran démarrage (5s, logo IG-FARDC, animation)
     ├── config/                ← Configuration IP serveur + test connexion
@@ -129,6 +130,30 @@ Depuis la v1.1.0, la page de configuration IP utilise le même design que la pag
 | `@capacitor/preferences` | Stockage local de l'IP serveur et du token |
 | `@capacitor/splash-screen` | Écran de démarrage natif (2s, couleur kaki) |
 | `@capacitor/status-bar` | Barre d'état Android (couleur kaki, texte clair) |
+| `WifiIp` (plugin natif local) | Détection de l'adresse IP WiFi locale (Android natif) |
+
+## Configuration serveur (mode actuel)
+
+L'application mobile fonctionne actuellement en **saisie manuelle de l'IP serveur** sur la page `config` :
+
+1. L'utilisateur saisit l'IP du serveur (ex. `10.71.62.9`)
+2. L'app teste la connectivité via `auth.php?action=check`
+3. En cas de succès, l'IP est sauvegardée (`server_ip`) et réutilisée aux prochaines ouvertures
+
+Les mécanismes de détection automatique restent présents côté service API pour diagnostic, mais **le flux utilisateur officiel est manuel**.
+
+### Plugin natif WifiIp
+
+Plugin Capacitor local (`WifiIpPlugin.java`) enregistré dans `MainActivity.java` :
+- Utilise `ConnectivityManager` (API 23+) en priorité
+- Fallback sur `WifiManager.getConnectionInfo()` pour les anciennes versions
+- Permissions requises : `ACCESS_WIFI_STATE`, `ACCESS_NETWORK_STATE`
+
+### Prérequis réseau
+
+- Le PC serveur (Laragon) et le mobile doivent être sur le **même réseau WiFi**
+- Apache doit écouter sur `0.0.0.0:80` (configuration par défaut de Laragon)
+- Le pare-feu Windows doit autoriser Apache en entrée (port 80)
 
 ## Thème visuel
 
@@ -144,9 +169,29 @@ Depuis la v1.1.0, la page de configuration IP utilise le même design que la pag
 Build APK automatisé via GitHub Actions (`.github/workflows/build-apk.yml`) :
 
 1. Déclenché par push sur `main` ou `workflow_dispatch`
-2. Ubuntu-latest + Node 22 + Java 21 + Android SDK API 36
+2. Ubuntu-latest + Node 22 + Java 21 + Android SDK API 36 (minSdk 24)
 3. `npm ci` → `ng build --configuration production` → `cap sync android` → `gradlew assembleDebug`
 4. APK uploadé en artifact (`ctr.net-fardc-mobile.apk`)
+5. Release GitHub créée automatiquement avec l'APK en téléchargement direct
+
+## Gestion du cache (v1.3.0)
+
+Le `CacheService` gère le nettoyage automatique des données locales :
+
+| Mécanisme | Déclencheur | Action |
+| --- | --- | --- |
+| Purge orphelines | Démarrage app (toutes les 24h) | Supprime les clés Preferences non gérées |
+| Session cleanup | Logout | Supprime le token Bearer |
+| Reset complet | Manuel (`clearAll()`) | Supprime toutes les clés Preferences |
+| Diagnostic | Manuel (`getStorageStats()`) | Retourne le nombre de clés et d'orphelines |
+
+### Clés Preferences gérées
+
+| Clé | Usage | Durée de vie |
+| --- | --- | --- |
+| `server_ip` | Adresse IP du serveur | Persistant |
+| `auth_token` | Token Bearer de session | Jusqu'au logout |
+| `last_cache_cleanup` | Timestamp dernière purge | Interne (24h) |
 
 ## Synchronisation avec le web
 

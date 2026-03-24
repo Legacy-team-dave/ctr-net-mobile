@@ -28,7 +28,8 @@ ctr-net-mobile/
 │   │   │   └── tabs/               ← Navigation par onglets (Contrôle, Profil, Quitter)
 │   │   ├── services/
 │   │   │   ├── api.service.ts      ← Client HTTP (API REST + gestion token)
-│   │   │   └── auth.service.ts     ← Gestion de l'authentification et session
+│   │   │   ├── auth.service.ts     ← Gestion de l'authentification et session
+│   │   │   └── cache.service.ts    ← Nettoyage automatique des caches
 │   │   ├── app.component.ts
 │   │   └── app.routes.ts           ← Routes principales
 │   ├── assets/
@@ -128,7 +129,7 @@ Puis dans Android Studio : **Build → Build Bundle(s)/APK(s) → Build APK(s)**
 ## Flux de l'application
 
 1. **Splash screen** → Logo IG-FARDC avec animation (5 secondes)
-2. **Premier lancement** → Détection automatique de l'IP serveur (champ en lecture seule)
+2. **Premier lancement** → Saisie manuelle de l'IP serveur + test de connexion
 3. **Test de connexion** → Vérifie que l'API est joignable
 4. **Connexion** → Login/mot de passe (profil CONTROLEUR uniquement)
 5. **Onglet Contrôle** → Recherche par matricule/nom → Sélection militaire

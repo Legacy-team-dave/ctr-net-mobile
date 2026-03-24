@@ -54,7 +54,7 @@ De l'installation à la saisie d'un contrôle en 9 étapes.
 
 1. **Installation** : APK distribué depuis GitHub Actions ou transfert direct.
 2. **Splash screen** : Logo IG-FARDC affiché pendant 5 secondes.
-3. **Configuration** : Détection automatique de l'adresse IP du serveur avec test de connexion.
+3. **Configuration** : Saisie manuelle de l'adresse IP du serveur avec test de connexion.
 4. **Connexion** : Login/mot de passe (rôle CONTROLEUR vérifié côté serveur).
 5. **Recherche** : Saisie du matricule ou nom (minimum 2 caractères, recherche AJAX).
 6. **Sélection** : Le militaire trouvé s'affiche avec sa fiche complète et son badge catégorie.
@@ -112,7 +112,7 @@ L'APK est généré automatiquement à chaque modification du code.
 - Pipeline : npm ci → ng build → cap sync → gradlew assembleDebug.
 - L'APK est téléchargeable dans les artifacts du workflow GitHub.
 - Alternatives : build en ligne de commande ou via Android Studio.
-- Cible : Android API 36, minSdk 22 (Android 5.1+).
+- Cible : Android API 36, minSdk 24 (Android 7.0+).
 
 ### Slide 9 — Thème visuel
 
@@ -240,7 +240,7 @@ L'application est opérationnelle et prête pour un déploiement terrain.
    Oui, les deux applications partagent le même thème kaki, la même police Barlow, et les mêmes composants visuels (cards, badges, boutons).
 
 10. **L'application est-elle disponible sur iOS ?**
-    Actuellement non. L'application cible Android uniquement (API 36, minSdk 22).
+   Actuellement non. L'application cible Android uniquement (API 36, minSdk 24).
 
 ---
 

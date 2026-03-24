@@ -1,5 +1,24 @@
 # Historique des versions - CTR.NET Mobile
 
+## État actuel (Mars 2026)
+
+- Mode de configuration serveur actif : **saisie manuelle de l'IP** + test de connexion
+- Cible Android effective : **SDK 36, minSdk 24**
+- Version applicative (`package.json`) : **1.3.0**
+
+## v1.3.0 — Mars 2026
+
+### Nettoyage automatique des caches + Release GitHub
+
+- Nouveau service `CacheService` : nettoyage automatique des données périmées au démarrage
+- Purge des clés Preferences orphelines (non gérées par l'app) toutes les 24h
+- Nettoyage des données de session au logout (token Bearer)
+- Méthodes utilitaires : `clearAll()` (reset complet), `getStorageStats()` (diagnostic)
+- Intégration dans `AppComponent.ngOnInit()` — s'exécute à chaque lancement
+- Intégration dans `AuthService.logout()` — purge session au lieu de clearToken seul
+- Workflow GitHub Actions mis à jour : release GitHub automatique avec APK attachée
+- Version package.json alignée à 1.3.0
+
 ## v1.2.0 — Mars 2026
 
 ### Détection automatique de l'IP serveur
@@ -52,7 +71,7 @@
 - Thème kaki militaire (#5C7A4D / #3F5A2E)
 - Police Barlow
 - Build APK automatisé via GitHub Actions
-- Cible Android SDK API 36, minSdk 22
+- Cible Android SDK API 36, minSdk 24
 
 ### API REST consommées
 

@@ -35,7 +35,7 @@ Technologies réelles :
 - Ionic 8.0.0 + Angular 20.0.0 + Capacitor 8.2.0
 - TypeScript 5.9.0, composants Angular standalone (pas de NgModules)
 - RxJS 7.8.0 pour la programmation réactive
-- Android SDK API 36, minSdk 22 (Android 5.1+)
+- Android SDK API 36, minSdk 24 (Android 7.0+)
 - Build automatisé via GitHub Actions (Node 22, Java 21, Ubuntu-latest)
 - Thème kaki militaire (#5C7A4D / #3F5A2E), police Barlow
 - Plugins : @capacitor/geolocation, @capacitor/network, @capacitor/preferences, @capacitor/splash-screen, @capacitor/status-bar
@@ -49,7 +49,7 @@ Consignes de production :
    - 3 à 5 points à dire à l'oral
 3. Ajoute une section "Démonstration en direct" avec un scénario pas à pas :
    - Premier lancement (splash 5s → configuration IP)
-   - Saisie de l'IP serveur, clic "Tester la connexion"
+   - Saisie manuelle de l'IP serveur, clic "Tester la connexion"
    - Message de succès vert → clic "Continuer"
    - Connexion avec identifiants CONTROLEUR
    - Recherche d'un militaire Actif → sélection → "Présent"
