@@ -1,0 +1,79 @@
+=========================================================
+  CTR.NET FARDC Mobile — Guide de démarrage rapide
+=========================================================
+
+PRÉREQUIS
+---------
+- Node.js 22+
+- npm 10+
+- Java JDK 21 (Temurin)
+- Android SDK API 36, build-tools 35.0.0
+- Android Studio (recommandé pour debug)
+- Serveur web CTR.NET FARDC opérationnel
+
+INSTALLATION
+------------
+1. Cloner le dépôt :
+   git clone https://github.com/Legacy-team-dave/ctr-net-mobile.git
+   cd ctr-net-mobile
+
+2. Installer les dépendances :
+   npm install
+
+3. Lancer en navigateur (dev) :
+   npm start
+   
+   → Ouvrir http://localhost:8100
+
+CONFIGURATION
+-------------
+Au premier lancement de l'application (navigateur ou APK) :
+1. L'écran splash s'affiche pendant 5 secondes
+2. La page de configuration apparaît
+3. Entrer l'adresse IP du serveur (ex: 192.168.1.100)
+4. Cliquer sur "Tester la connexion"
+5. Si OK → l'IP est sauvegardée et la page login s'affiche
+
+CONNEXION
+---------
+- Seuls les utilisateurs avec le rôle CONTROLEUR peuvent se connecter
+- Saisir identifiant et mot de passe
+- Le token est stocké localement pour les requêtes suivantes
+
+UTILISATION — CONTRÔLE
+----------------------
+1. Onglet "Contrôle" (actif par défaut)
+2. Rechercher un militaire (matricule ou nom, minimum 2 caractères)
+3. Sélectionner le militaire dans les résultats
+4. Remplir les champs selon la catégorie :
+   - Militaire vivant  → Bouton "Présent"
+   - Militaire décédé  → Lien de parenté + Mention
+5. Valider → GPS capturé automatiquement → envoi au serveur
+
+UTILISATION — PROFIL
+--------------------
+- Onglet "Profil" : affiche les informations du contrôleur connecté
+- Lecture seule (modification depuis le web)
+
+COMPILATION APK
+---------------
+Méthode recommandée : GitHub Actions (automatique à chaque push)
+
+Méthode manuelle :
+   npm run build
+   npx cap sync android
+   cd android
+   ./gradlew assembleDebug
+
+L'APK généré se trouve dans :
+   android/app/build/outputs/apk/debug/app-debug.apk
+
+DÉPANNAGE
+---------
+- "Connexion impossible" : vérifier que l'IP est correcte et que
+  le serveur web tourne (Laragon démarré, Apache actif)
+- "Accès refusé" : seul le rôle CONTROLEUR est autorisé
+- GPS non disponible : le contrôle est envoyé sans coordonnées
+  (la géolocalisation n'est pas bloquante)
+- Écran blanc : vérifier la console (F12 en navigateur),
+  relancer avec npm start
