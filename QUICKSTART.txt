@@ -40,8 +40,8 @@ CONFIGURATION
 Au premier lancement de l'application (navigateur ou APK) :
 1. L'écran splash s'affiche pendant 5 secondes
 2. La page de configuration apparaît
-3. Entrer l'adresse IP du serveur (ex: 192.168.1.100)
-4. Cliquer sur "Tester la connexion"
+3. L'adresse IP du serveur est détectée automatiquement sur le réseau
+4. Cliquer sur "Tester la connexion" pour vérifier
 5. Si OK → l'IP est sauvegardée et la page login s'affiche
 
 CONNEXION

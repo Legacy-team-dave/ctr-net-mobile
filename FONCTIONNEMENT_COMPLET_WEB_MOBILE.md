@@ -71,10 +71,9 @@ L'application web gère trois profils avec des accès distincts :
 
 #### CONTROLEUR
 
-- Accès restreint à la saisie de contrôle uniquement.
-- Redirection après login vers `modules/controles/ajouter.php`.
-- Interface simplifiée orientée action terrain.
-- Pas d'accès au dashboard ni aux modules d'administration.
+- Profil réservé exclusivement à l'application mobile CTR.NET Mobile.
+- Connexion web bloquée (v1.4.0).
+- Accès uniquement via l'app mobile : saisie de contrôles, profil, historique.
 
 ### 2.3. Authentification web
 
@@ -83,7 +82,7 @@ L'application web gère trois profils avec des accès distincts :
 3. Le système vérifie les identifiants dans la base MySQL (mot de passe hashé bcrypt).
 4. Si valide, une session PHP est créée avec les informations utilisateur.
 5. Option "Se souvenir de moi" : un cookie de session persistant est défini.
-6. Redirection selon le profil (ADMIN_IG → dashboard, CONTROLEUR → ajouter contrôle, OPERATEUR → préférences → équipes → dashboard).
+6. Redirection selon le profil (ADMIN_IG → dashboard, CONTROLEUR → **bloqué côté web**, OPERATEUR → préférences → équipes → dashboard).
 7. En cas d'échec, un log d'échec de connexion est enregistré.
 
 ### 2.4. Flux de contrôle (web)
@@ -119,7 +118,7 @@ L'application web gère trois profils avec des accès distincts :
 
 ### 2.6. Sécurité web
 
-- **Session PHP** : Vérification d'authentification sur chaque page (`check_auth()`).
+- **Session PHP** : Vérification d'authentification sur chaque page (`require_login()`).
 - **Contrôle de profil** : Fonctions `check_profil()` et `verifier_acces()` limitent l'accès par rôle.
 - **Chiffrement AES-256-CBC** (v1.1.0+) : 8 fichiers sensibles sont chiffrés (database.php, auth.php, functions.php, etc.).
 - **Mots de passe** : Hashage bcrypt, réinitialisation par token temporaire.

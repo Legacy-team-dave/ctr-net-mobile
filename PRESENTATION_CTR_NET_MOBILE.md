@@ -54,7 +54,7 @@ De l'installation à la saisie d'un contrôle en 9 étapes.
 
 1. **Installation** : APK distribué depuis GitHub Actions ou transfert direct.
 2. **Splash screen** : Logo IG-FARDC affiché pendant 5 secondes.
-3. **Configuration** : Saisie de l'adresse IP du serveur avec test de connexion.
+3. **Configuration** : Détection automatique de l'adresse IP du serveur avec test de connexion.
 4. **Connexion** : Login/mot de passe (rôle CONTROLEUR vérifié côté serveur).
 5. **Recherche** : Saisie du matricule ou nom (minimum 2 caractères, recherche AJAX).
 6. **Sélection** : Le militaire trouvé s'affiche avec sa fiche complète et son badge catégorie.
@@ -167,7 +167,7 @@ L'application est opérationnelle et prête pour un déploiement terrain.
 
 #### Étape 2 — Configuration serveur
 
-- Saisir l'adresse IP du serveur (ex: 192.168.1.100).
+- L'adresse IP du serveur est détectée automatiquement sur le réseau.
 - Cliquer sur le bouton jaune "Tester la connexion".
 - Montrer le message de succès vert.
 - Cliquer sur "Continuer" pour accéder au login.
