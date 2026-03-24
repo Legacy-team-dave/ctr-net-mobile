@@ -32,6 +32,11 @@ ion-toolbar {
   background: linear-gradient(135deg, #5C7A4D 0%, #3F5A2E 100%);
   padding: 14px 18px;
   color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
 
   h3 {
     margin: 0;
@@ -41,10 +46,38 @@ ion-toolbar {
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
+    flex: 1;
 
     ion-icon {
       font-size: 1.15rem;
     }
+  }
+}
+
+// ── Bouton Nouvelle recherche (copie web .btn-new-search) ──
+.btn-new-search {
+  border-radius: 30px;
+  padding: 6px 16px;
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  transition: all 0.3s;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.85rem;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  &:active {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  ion-icon {
+    font-size: 0.9rem;
   }
 }
 
@@ -209,26 +242,51 @@ ion-toolbar {
   background: linear-gradient(135deg, #dc3545, #b02a37);
 }
 
-// ── Fiche militaire ──
+// ── Fiche militaire (copie web .militaire-info) ──
+.militaire-info {
+  background: linear-gradient(135deg, #5C7A4D 0%, #3F5A2E 100%);
+  color: #fff;
+  padding: 1.2rem 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 15px rgba(92, 122, 77, 0.3);
+}
+
+.militaire-info-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+
+  .fw-bold {
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  ion-icon {
+    font-size: 1.1rem;
+  }
+}
+
 .info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 
   .info-item {
-    .lbl {
-      display: block;
-      font-size: 0.72rem;
-      color: #999;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.88rem;
+
+    .info-label {
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
     }
 
-    .val {
-      display: block;
-      font-weight: 600;
-      color: #333;
-      font-size: 0.9rem;
+    .info-value {
+      font-weight: 500;
     }
   }
 }
@@ -237,7 +295,7 @@ ion-toolbar {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #fff3e0;
+  background: rgba(255, 243, 224, 0.9);
   color: #e65100;
   padding: 0.5rem 0.75rem;
   border-radius: 8px;
@@ -246,7 +304,14 @@ ion-toolbar {
   font-weight: 600;
 }
 
-// ── Statut ──
+// ── Statut temp (copie web .statut-temp) ──
+.statut-temp {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-left: 4px solid #5C7A4D;
+}
 .statut-section {
   display: flex;
   align-items: center;
@@ -334,6 +399,27 @@ ion-toolbar {
   cursor: pointer;
 }
 
+// Badge Vivant/Décédé sur les labels statut (copie web)
+.badge-vivant {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #28a745;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.badge-decede {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #dc3545;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
 .statut-info {
   margin-top: 10px;
   font-size: 0.8rem;
@@ -347,39 +433,19 @@ ion-toolbar {
   }
 }
 
-// ── Bouton Présent (copie web btn-present) ──
+// ── Bouton Présent (copie web) ──
 .present-section {
   display: flex;
   justify-content: center;
 }
 
 .btn-present {
-  width: 100%;
-  max-width: 400px;
-  padding: 8px 18px;
-  border: none;
-  border-radius: 30px;
-  font-size: 0.9rem;
-  font-weight: 600;
   background: #28a745;
   color: #fff;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin: 3px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s;
-  font-family: 'Barlow', sans-serif;
 
   &:active {
     background: #218838;
     box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
-  }
-
-  ion-icon {
-    font-size: 1.1rem;
   }
 }
 
@@ -425,7 +491,7 @@ ion-toolbar {
   }
 }
 
-// ── Liens de parenté (chips) ──
+// ── Liens de parenté (copie web) ──
 .liens-section {
   margin: 16px 0;
 }
@@ -439,21 +505,16 @@ ion-toolbar {
 }
 
 .liens-grid {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
 
 .lien-groupe {
-  .lien-cat {
-    display: block;
-    font-size: 0.72rem;
-    color: #6c757d;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    margin-bottom: 4px;
-  }
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 10px;
+  background: #f8f9fa;
 
   .lien-options {
     display: flex;
@@ -462,8 +523,14 @@ ion-toolbar {
   }
 }
 
-.lien-chip {
-  display: none; // Deprecated — using form-check checkboxes now
+.lien-groupe-label {
+  display: block;
+  font-weight: 600;
+  color: #5C7A4D;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 4px;
+  font-size: 0.85rem;
 }
 
 // Hint style for liens
@@ -471,6 +538,28 @@ ion-toolbar {
   font-size: 0.72rem;
   color: #999;
   margin-left: 2px;
+}
+
+// ── Bénéficiaires (deux colonnes comme web) ──
+.benef-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.benef-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+}
+
+.benef-empty {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-top: 4px;
 }
 
 // ── Observations ──
@@ -498,12 +587,14 @@ textarea.form-control-modern {
   min-height: 70px;
 }
 
-// ── Boutons Favorable / Défavorable (copie web) ──
-.mention-buttons {
+// ── Actions container (copie web) ──
+.actions-container {
   display: flex;
-  gap: 10px;
-  margin-top: 18px;
-  justify-content: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 2px dashed #dee2e6;
 }
 
 .btn-mention {
@@ -561,16 +652,11 @@ textarea.form-control-modern {
   }
 
   .info-grid {
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
+    gap: 1.5rem;
   }
 
   .lien-options {
     gap: 12px;
-  }
-
-  .mention-buttons {
-    gap: 16px;
   }
 
   .btn-mention {
@@ -582,6 +668,11 @@ textarea.form-control-modern {
     padding: 10px 28px;
     font-size: 1rem;
   }
+
+  .btn-new-search {
+    padding: 8px 18px;
+    font-size: 0.9rem;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -592,14 +683,29 @@ textarea.form-control-modern {
   .controle-wrapper {
     max-width: 900px;
   }
+}
 
-  .info-grid {
-    grid-template-columns: 1fr 1fr 1fr;
+// ── Mobile portrait ──
+@media (max-width: 576px) {
+  .liens-grid {
+    grid-template-columns: 1fr;
   }
 
-  .liens-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
+  .benef-row {
+    grid-template-columns: 1fr;
+  }
+
+  .info-grid {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .actions-container {
+    flex-direction: column;
+
+    .btn-mention {
+      width: 100%;
+      justify-content: center;
+    }
   }
 }
