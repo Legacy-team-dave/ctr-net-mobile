@@ -215,63 +215,25 @@
                 </div>
               </div>
 
-              <!-- Liens de parenté -->
+              <!-- Lien de parenté -->
               <div class="liens-section">
-                <label class="liens-title">Lien de parenté</label>
-                <div class="liens-grid">
-                  <div class="lien-groupe">
-                    <label class="lien-groupe-label">Epouse/Epoux</label>
-                    <div class="lien-options">
-                      <label class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Epouse'" (change)="selectLien('Epouse', $event)" />
-                        <span class="form-check-label">Epouse <small class="hint">(→ Veuve)</small></span>
-                      </label>
-                      <label class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Epoux'" (change)="selectLien('Epoux', $event)" />
-                        <span class="form-check-label">Epoux <small class="hint">(→ Veuf)</small></span>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="lien-groupe">
-                    <label class="lien-groupe-label">Fils/Fille</label>
-                    <div class="lien-options">
-                      <label class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Fils'" (change)="selectLien('Fils', $event)" />
-                        <span class="form-check-label">Fils <small class="hint">(→ Orphelin)</small></span>
-                      </label>
-                      <label class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Fille'" (change)="selectLien('Fille', $event)" />
-                        <span class="form-check-label">Fille <small class="hint">(→ Orphelin)</small></span>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="lien-groupe">
-                    <label class="lien-groupe-label">Père/Mère</label>
-                    <div class="lien-options">
-                      <label class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Père'" (change)="selectLien('Père', $event)" />
-                        <span class="form-check-label">Père <small class="hint">(→ Tuteur)</small></span>
-                      </label>
-                      <label class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Mère'" (change)="selectLien('Mère', $event)" />
-                        <span class="form-check-label">Mère <small class="hint">(→ Tuteur)</small></span>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="lien-groupe">
-                    <label class="lien-groupe-label">Frère/Sœur</label>
-                    <div class="lien-options">
-                      <label class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Frère'" (change)="selectLien('Frère', $event)" />
-                        <span class="form-check-label">Frère <small class="hint">(→ Tuteur)</small></span>
-                      </label>
-                      <label class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Sœur'" (change)="selectLien('Sœur', $event)" />
-                        <span class="form-check-label">Sœur <small class="hint">(→ Tuteur)</small></span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
+                <label class="liens-title">
+                  <ion-icon name="people"></ion-icon> Lien de parenté
+                </label>
+                <select
+                  class="form-control-modern"
+                  [(ngModel)]="lienParente"
+                >
+                  <option value="">-- Sélectionnez un lien --</option>
+                  <option value="Epouse">Epouse (→ Veuve)</option>
+                  <option value="Epoux">Epoux (→ Veuf)</option>
+                  <option value="Fils">Fils (→ Orphelin)</option>
+                  <option value="Fille">Fille (→ Orphelin)</option>
+                  <option value="Père">Père (→ Tuteur)</option>
+                  <option value="Mère">Mère (→ Tuteur)</option>
+                  <option value="Frère">Frère (→ Tuteur)</option>
+                  <option value="Sœur">Sœur (→ Tuteur)</option>
+                </select>
               </div>
 
               <!-- Observations -->

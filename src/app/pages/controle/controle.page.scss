@@ -494,53 +494,32 @@ ion-toolbar {
   }
 }
 
-// ── Liens de parenté (copie web) ──
+// ── Liens de parenté (select déroulant) ──
 .liens-section {
   margin: 16px 0;
 }
 
 .liens-title {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-weight: 700;
   font-size: 0.9rem;
   color: #333;
-  margin-bottom: 10px;
-}
+  margin-bottom: 8px;
 
-.liens-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.lien-groupe {
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 10px;
-  background: #f8f9fa;
-
-  .lien-options {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+  ion-icon {
+    font-size: 1rem;
+    color: #5C7A4D;
   }
 }
 
-.lien-groupe-label {
-  display: block;
-  font-weight: 600;
-  color: #5C7A4D;
-  margin-bottom: 6px;
-  border-bottom: 1px solid #dee2e6;
-  padding-bottom: 4px;
-  font-size: 0.85rem;
-}
-
-// Hint style for liens
-.form-check-label .hint {
-  font-size: 0.72rem;
-  color: #999;
-  margin-left: 2px;
+.liens-section select.form-control-modern {
+  appearance: auto;
+  -webkit-appearance: auto;
+  font-size: 0.95rem;
+  color: #333;
+  cursor: pointer;
 }
 
 // ── Bénéficiaires (deux colonnes comme web) ──
@@ -690,10 +669,6 @@ textarea.form-control-modern {
 
 // ── Mobile portrait ──
 @media (max-width: 576px) {
-  .liens-grid {
-    grid-template-columns: 1fr;
-  }
-
   .benef-row {
     grid-template-columns: 1fr;
   }

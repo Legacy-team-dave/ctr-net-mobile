@@ -173,12 +173,7 @@ export class ControlePage {
 
   // ── Lien de parenté ──
 
-  selectLien(lien: string, event: Event) {
-    // Empêcher le comportement natif du checkbox pour éviter les conflits avec [checked]
-    event.preventDefault();
-    // Exclusion mutuelle comme dans le web (un seul lien sélectionné)
-    this.lienParente = this.lienParente === lien ? '' : lien;
-  }
+  // lienParente est directement bindé via [(ngModel)] sur le <select>
 
   // ── Validation ──
 
