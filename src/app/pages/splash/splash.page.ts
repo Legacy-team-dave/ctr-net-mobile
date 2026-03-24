@@ -89,6 +89,14 @@ import { IonContent, IonIcon, IonSpinner } from '@ionic/angular/standalone';
       0%, 100% { transform: scale(1); opacity: 1; }
       50% { transform: scale(1.05); opacity: 0.9; }
     }
+    @media (min-width: 768px) {
+      .splash-logo {
+        width: 160px;
+        height: 160px;
+      }
+      h1 { font-size: 2.8rem; }
+      p { font-size: 1.2rem; }
+    }
   `],
   imports: [IonContent],
 })
@@ -103,6 +111,6 @@ export class SplashPage implements OnInit {
     setTimeout(() => {
       this.fadeOut = true;
       setTimeout(() => this.router.navigateByUrl('/login', { replaceUrl: true }), 500);
-    }, 3000);
+    }, 5000);
   }
 }

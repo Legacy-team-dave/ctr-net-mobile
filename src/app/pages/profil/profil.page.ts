@@ -48,7 +48,12 @@ export class ProfilPage {
 
         if (u.avatar) {
           const baseUrl = await this.api.getServerBaseUrl();
-          this.avatarUrl = `${baseUrl}/assets/uploads/avatars/${u.avatar}`;
+          // avatar peut être le chemin complet (assets/uploads/avatars/...) ou juste le nom du fichier
+          if (u.avatar.startsWith('assets/') || u.avatar.startsWith('uploads/')) {
+            this.avatarUrl = `${baseUrl}/${u.avatar}`;
+          } else {
+            this.avatarUrl = `${baseUrl}/assets/uploads/avatars/${u.avatar}`;
+          }
         }
       }
     } catch {

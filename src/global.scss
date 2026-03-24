@@ -69,3 +69,15 @@ input, textarea, select {
   background-color: #fff;
   color: #333;
 }
+
+// ── Tablette paysage — ajustements globaux ──
+@media (min-width: 768px) {
+  ion-content {
+    --padding-start: 24px;
+    --padding-end: 24px;
+  }
+
+  ion-toolbar ion-title {
+    font-size: 1.2rem;
+  }
+}

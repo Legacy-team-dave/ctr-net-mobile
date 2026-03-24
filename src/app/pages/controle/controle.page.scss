@@ -268,21 +268,53 @@ ion-toolbar {
   }
 }
 
-.statut-buttons {
+.statut-checkboxes {
   display: flex;
-  gap: 8px;
+  gap: 16px;
+  align-items: center;
 }
 
-.btn-statut {
-  padding: 8px 20px;
-  border: 2px solid #ced4da;
-  border-radius: 25px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  background: #fff;
-  color: #333;
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   cursor: pointer;
+  user-select: none;
+  margin: 0;
+}
+
+.form-check-inline {
+  display: inline-flex;
+}
+
+.form-check-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ced4da;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
   transition: all 0.2s;
+  flex-shrink: 0;
+
+  &:checked {
+    background: #5C7A4D;
+    border-color: #5C7A4D;
+
+    &::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+  }
 
   &:disabled {
     opacity: 0.5;
@@ -290,16 +322,16 @@ ion-toolbar {
   }
 }
 
-.btn-statut-vivant {
-  background: #28a745;
-  border-color: #28a745;
-  color: #fff;
+.statut-checkbox:checked {
+  background: #5C7A4D;
+  border-color: #5C7A4D;
 }
 
-.btn-statut-decede {
-  background: #dc3545;
-  border-color: #dc3545;
-  color: #fff;
+.form-check-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #333;
+  cursor: pointer;
 }
 
 .statut-info {
@@ -431,38 +463,14 @@ ion-toolbar {
 }
 
 .lien-chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 7px 14px;
-  border: 1.5px solid #ced4da;
-  border-radius: 20px;
-  font-size: 0.82rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: #fff;
-  color: #333;
-  font-family: 'Barlow', sans-serif;
+  display: none; // Deprecated — using form-check checkboxes now
+}
 
-  .hint {
-    font-size: 0.68rem;
-    color: #999;
-    margin-left: 4px;
-  }
-
-  &.selected {
-    background: #3F5A2E;
-    color: #fff;
-    border-color: #3F5A2E;
-
-    .hint {
-      color: rgba(255, 255, 255, 0.7);
-    }
-  }
-
-  &:active {
-    transform: scale(0.96);
-  }
+// Hint style for liens
+.form-check-label .hint {
+  font-size: 0.72rem;
+  color: #999;
+  margin-left: 2px;
 }
 
 // ── Observations ──
@@ -530,4 +538,68 @@ textarea.form-control-modern {
 .btn-defavorable {
   background: #dc3545;
   color: #fff;
+}
+
+// ── Tablette paysage ──
+@media (min-width: 768px) {
+  .search-wrapper {
+    padding: 24px;
+  }
+
+  .search-wrapper .card-modern {
+    max-width: 700px;
+  }
+
+  .controle-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  .card-modern {
+    max-width: 100%;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .lien-options {
+    gap: 12px;
+  }
+
+  .mention-buttons {
+    gap: 16px;
+  }
+
+  .btn-mention {
+    padding: 10px 28px;
+    font-size: 1rem;
+  }
+
+  .btn-present {
+    padding: 10px 28px;
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .search-wrapper .card-modern {
+    max-width: 800px;
+  }
+
+  .controle-wrapper {
+    max-width: 900px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .liens-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
 }

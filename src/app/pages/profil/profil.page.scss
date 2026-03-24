@@ -106,3 +106,27 @@ ion-toolbar {
     word-break: break-word;
   }
 }
+
+// ── Tablette paysage ──
+@media (min-width: 768px) {
+  .profil-wrapper {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  .avatar-preview img {
+    width: 130px;
+    height: 130px;
+  }
+
+  .user-name {
+    font-size: 1.4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .profil-wrapper {
+    max-width: 800px;
+  }
+}

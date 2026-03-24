@@ -122,13 +122,14 @@ export class ControlePage {
     return 'Sélectionnez un statut';
   }
 
-  toggleStatut(type: 'vivant' | 'decede') {
+  onStatutChange(type: 'vivant' | 'decede', event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
     if (type === 'vivant') {
-      this.statutVivant = !this.statutVivant;
-      if (this.statutVivant) this.statutDecede = false;
+      this.statutVivant = checked;
+      if (checked) this.statutDecede = false;
     } else {
-      this.statutDecede = !this.statutDecede;
-      if (this.statutDecede) this.statutVivant = false;
+      this.statutDecede = checked;
+      if (checked) this.statutVivant = false;
     }
   }
 
@@ -167,7 +168,7 @@ export class ControlePage {
   // ── Lien de parenté ──
 
   selectLien(lien: string) {
-    this.lienParente = this.lienParente === lien ? '' : lien;
+    this.lienParente = lien;
   }
 
   // ── Validation ──

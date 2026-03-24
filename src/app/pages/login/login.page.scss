@@ -20,12 +20,17 @@
 }
 
 .login-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100%;
   padding: 2rem 1rem;
+  z-index: 1;
 }
 
 // Logo section
@@ -222,4 +227,31 @@
   display: flex;
   align-items: center;
   gap: 6px;
+}
+
+// ── Tablette paysage ──
+@media (min-width: 768px) {
+  .card-modern {
+    max-width: 440px;
+    padding: 2rem;
+  }
+
+  .form-header .title {
+    font-size: 1.7rem;
+  }
+
+  .login-logo .brand-image {
+    max-height: 55px;
+  }
+
+  .login-logo .brand-text {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-modern {
+    max-width: 480px;
+    padding: 2.5rem;
+  }
 }

@@ -127,24 +127,28 @@
             <span class="statut-label">
               <ion-icon name="information-circle"></ion-icon> Statut :
             </span>
-            <div class="statut-buttons">
+            <div class="statut-checkboxes">
               @if (!isDcdAvBio) {
-                <button
-                  class="btn-statut"
-                  [class.btn-statut-vivant]="statutVivant"
-                  (click)="toggleStatut('vivant')"
-                >
-                  Vivant
-                </button>
+                <label class="form-check form-check-inline">
+                  <input
+                    type="checkbox"
+                    class="form-check-input statut-checkbox"
+                    [checked]="statutVivant"
+                    (change)="onStatutChange('vivant', $event)"
+                  />
+                  <span class="form-check-label">Vivant</span>
+                </label>
               }
-              <button
-                class="btn-statut"
-                [class.btn-statut-decede]="statutDecede"
-                (click)="toggleStatut('decede')"
-                [disabled]="isDcdAvBio"
-              >
-                Décédé
-              </button>
+              <label class="form-check form-check-inline">
+                <input
+                  type="checkbox"
+                  class="form-check-input statut-checkbox"
+                  [checked]="statutDecede"
+                  (change)="onStatutChange('decede', $event)"
+                  [disabled]="isDcdAvBio"
+                />
+                <span class="form-check-label">Décédé</span>
+              </label>
             </div>
           </div>
           <div class="statut-info">
@@ -210,45 +214,53 @@
                 <div class="lien-groupe">
                   <span class="lien-cat">Epouse/Epoux</span>
                   <div class="lien-options">
-                    <button class="lien-chip" [class.selected]="lienParente === 'Epouse'" (click)="selectLien('Epouse')">
-                      Epouse <span class="hint">(→ Veuve)</span>
-                    </button>
-                    <button class="lien-chip" [class.selected]="lienParente === 'Epoux'" (click)="selectLien('Epoux')">
-                      Epoux <span class="hint">(→ Veuf)</span>
-                    </button>
+                    <label class="form-check form-check-inline">
+                      <input type="checkbox" class="form-check-input" [checked]="lienParente === 'Epouse'" (change)="selectLien('Epouse')" />
+                      <span class="form-check-label">Epouse <small class="hint">(→ Veuve)</small></span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                      <input type="checkbox" class="form-check-input" [checked]="lienParente === 'Epoux'" (change)="selectLien('Epoux')" />
+                      <span class="form-check-label">Epoux <small class="hint">(→ Veuf)</small></span>
+                    </label>
                   </div>
                 </div>
                 <div class="lien-groupe">
                   <span class="lien-cat">Fils/Fille</span>
                   <div class="lien-options">
-                    <button class="lien-chip" [class.selected]="lienParente === 'Fils'" (click)="selectLien('Fils')">
-                      Fils <span class="hint">(→ Orphelin)</span>
-                    </button>
-                    <button class="lien-chip" [class.selected]="lienParente === 'Fille'" (click)="selectLien('Fille')">
-                      Fille <span class="hint">(→ Orphelin)</span>
-                    </button>
+                    <label class="form-check form-check-inline">
+                      <input type="checkbox" class="form-check-input" [checked]="lienParente === 'Fils'" (change)="selectLien('Fils')" />
+                      <span class="form-check-label">Fils <small class="hint">(→ Orphelin)</small></span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                      <input type="checkbox" class="form-check-input" [checked]="lienParente === 'Fille'" (change)="selectLien('Fille')" />
+                      <span class="form-check-label">Fille <small class="hint">(→ Orphelin)</small></span>
+                    </label>
                   </div>
                 </div>
                 <div class="lien-groupe">
                   <span class="lien-cat">Père/Mère</span>
                   <div class="lien-options">
-                    <button class="lien-chip" [class.selected]="lienParente === 'Père'" (click)="selectLien('Père')">
-                      Père <span class="hint">(→ Tuteur)</span>
-                    </button>
-                    <button class="lien-chip" [class.selected]="lienParente === 'Mère'" (click)="selectLien('Mère')">
-                      Mère <span class="hint">(→ Tuteur)</span>
-                    </button>
+                    <label class="form-check form-check-inline">
+                      <input type="checkbox" class="form-check-input" [checked]="lienParente === 'Père'" (change)="selectLien('Père')" />
+                      <span class="form-check-label">Père <small class="hint">(→ Tuteur)</small></span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                      <input type="checkbox" class="form-check-input" [checked]="lienParente === 'Mère'" (change)="selectLien('Mère')" />
+                      <span class="form-check-label">Mère <small class="hint">(→ Tuteur)</small></span>
+                    </label>
                   </div>
                 </div>
                 <div class="lien-groupe">
                   <span class="lien-cat">Frère/Sœur</span>
                   <div class="lien-options">
-                    <button class="lien-chip" [class.selected]="lienParente === 'Frère'" (click)="selectLien('Frère')">
-                      Frère <span class="hint">(→ Tuteur)</span>
-                    </button>
-                    <button class="lien-chip" [class.selected]="lienParente === 'Sœur'" (click)="selectLien('Sœur')">
-                      Sœur <span class="hint">(→ Tuteur)</span>
-                    </button>
+                    <label class="form-check form-check-inline">
+                      <input type="checkbox" class="form-check-input" [checked]="lienParente === 'Frère'" (change)="selectLien('Frère')" />
+                      <span class="form-check-label">Frère <small class="hint">(→ Tuteur)</small></span>
+                    </label>
+                    <label class="form-check form-check-inline">
+                      <input type="checkbox" class="form-check-input" [checked]="lienParente === 'Sœur'" (change)="selectLien('Sœur')" />
+                      <span class="form-check-label">Sœur <small class="hint">(→ Tuteur)</small></span>
+                    </label>
                   </div>
                 </div>
               </div>
