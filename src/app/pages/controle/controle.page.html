@@ -215,25 +215,65 @@
                 </div>
               </div>
 
-              <!-- Lien de parenté -->
+              <!-- Lien de parenté (checkboxes comme web) -->
               <div class="liens-section">
                 <label class="liens-title">
                   <ion-icon name="people"></ion-icon> Lien de parenté
                 </label>
-                <select
-                  class="form-control-modern"
-                  [(ngModel)]="lienParente"
-                >
-                  <option value="">-- Sélectionnez un lien --</option>
-                  <option value="Epouse">Epouse (→ Veuve)</option>
-                  <option value="Epoux">Epoux (→ Veuf)</option>
-                  <option value="Fils">Fils (→ Orphelin)</option>
-                  <option value="Fille">Fille (→ Orphelin)</option>
-                  <option value="Père">Père (→ Tuteur)</option>
-                  <option value="Mère">Mère (→ Tuteur)</option>
-                  <option value="Frère">Frère (→ Tuteur)</option>
-                  <option value="Sœur">Sœur (→ Tuteur)</option>
-                </select>
+                <div class="liens-grid">
+                  <div class="lien-groupe">
+                    <label class="lien-groupe-label">Epouse/Epoux</label>
+                    <div class="lien-options">
+                      <div class="form-check form-check-inline" (click)="selectLien('Epouse')">
+                        <span class="lien-radio" [class.checked]="lienParente === 'Epouse'"></span>
+                        <span class="form-check-label">Epouse <small class="hint">(→ Veuve)</small></span>
+                      </div>
+                      <div class="form-check form-check-inline" (click)="selectLien('Epoux')">
+                        <span class="lien-radio" [class.checked]="lienParente === 'Epoux'"></span>
+                        <span class="form-check-label">Epoux <small class="hint">(→ Veuf)</small></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="lien-groupe">
+                    <label class="lien-groupe-label">Fils/Fille</label>
+                    <div class="lien-options">
+                      <div class="form-check form-check-inline" (click)="selectLien('Fils')">
+                        <span class="lien-radio" [class.checked]="lienParente === 'Fils'"></span>
+                        <span class="form-check-label">Fils <small class="hint">(→ Orphelin)</small></span>
+                      </div>
+                      <div class="form-check form-check-inline" (click)="selectLien('Fille')">
+                        <span class="lien-radio" [class.checked]="lienParente === 'Fille'"></span>
+                        <span class="form-check-label">Fille <small class="hint">(→ Orphelin)</small></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="lien-groupe">
+                    <label class="lien-groupe-label">Père/Mère</label>
+                    <div class="lien-options">
+                      <div class="form-check form-check-inline" (click)="selectLien('Père')">
+                        <span class="lien-radio" [class.checked]="lienParente === 'Père'"></span>
+                        <span class="form-check-label">Père <small class="hint">(→ Tuteur)</small></span>
+                      </div>
+                      <div class="form-check form-check-inline" (click)="selectLien('Mère')">
+                        <span class="lien-radio" [class.checked]="lienParente === 'Mère'"></span>
+                        <span class="form-check-label">Mère <small class="hint">(→ Tuteur)</small></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="lien-groupe">
+                    <label class="lien-groupe-label">Frère/Sœur</label>
+                    <div class="lien-options">
+                      <div class="form-check form-check-inline" (click)="selectLien('Frère')">
+                        <span class="lien-radio" [class.checked]="lienParente === 'Frère'"></span>
+                        <span class="form-check-label">Frère <small class="hint">(→ Tuteur)</small></span>
+                      </div>
+                      <div class="form-check form-check-inline" (click)="selectLien('Sœur')">
+                        <span class="lien-radio" [class.checked]="lienParente === 'Sœur'"></span>
+                        <span class="form-check-label">Sœur <small class="hint">(→ Tuteur)</small></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <!-- Observations -->

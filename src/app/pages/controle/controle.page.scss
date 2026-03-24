@@ -498,7 +498,7 @@ ion-toolbar {
   }
 }
 
-// ── Liens de parenté (select déroulant) ──
+// ── Liens de parenté (checkboxes comme web) ──
 .liens-section {
   margin: 16px 0;
 }
@@ -518,12 +518,67 @@ ion-toolbar {
   }
 }
 
-.liens-section select.form-control-modern {
-  appearance: auto;
-  -webkit-appearance: auto;
-  font-size: 0.95rem;
-  color: #333;
-  cursor: pointer;
+.liens-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.lien-groupe {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 10px;
+  background: #f8f9fa;
+
+  .lien-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+}
+
+.lien-groupe-label {
+  display: block;
+  font-weight: 600;
+  color: #5C7A4D;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 4px;
+  font-size: 0.85rem;
+}
+
+// Faux checkbox visuel (pas de <input>, pas de problème natif)
+.lien-radio {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ced4da;
+  border-radius: 4px;
+  background: #fff;
+  position: relative;
+  transition: all 0.2s;
+  flex-shrink: 0;
+
+  &.checked {
+    background: #5C7A4D;
+    border-color: #5C7A4D;
+
+    &::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+    }
+  }
+}
+
+.form-check-label .hint {
+  font-size: 0.72rem;
+  color: #999;
+  margin-left: 2px;
 }
 
 // ── Bénéficiaires (deux colonnes comme web) ──
@@ -673,6 +728,10 @@ textarea.form-control-modern {
 
 // ── Mobile portrait ──
 @media (max-width: 576px) {
+  .liens-grid {
+    grid-template-columns: 1fr;
+  }
+
   .benef-row {
     grid-template-columns: 1fr;
   }

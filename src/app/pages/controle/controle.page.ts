@@ -173,7 +173,9 @@ export class ControlePage {
 
   // ── Lien de parenté ──
 
-  // lienParente est directement bindé via [(ngModel)] sur le <select>
+  selectLien(lien: string) {
+    this.lienParente = this.lienParente === lien ? '' : lien;
+  }
 
   // ── Validation ──
 
