@@ -40,11 +40,18 @@ export class ConfigPage {
   }
 
   async testConnection() {
-    if (!this.serverIP.trim()) return;
+    const ip = this.serverIP.trim();
+    if (!ip) return;
+
+    if (!this.isValidIPv4(ip)) {
+      this.connectionOk = false;
+      this.connectionMessage = 'Adresse IPv4 invalide. Exemple: 10.71.62.9';
+      return;
+    }
 
     this.testing = true;
     this.connectionOk = null;
-    await this.api.setServerIP(this.serverIP.trim());
+    await this.api.setServerIP(ip);
 
     try {
       await firstValueFrom(this.api.testConnection());
@@ -59,7 +66,25 @@ export class ConfigPage {
   }
 
   async saveAndContinue() {
-    await this.api.setServerIP(this.serverIP.trim());
+    const ip = this.serverIP.trim();
+    if (!ip || !this.isValidIPv4(ip)) {
+      this.connectionOk = false;
+      this.connectionMessage = 'Veuillez renseigner une adresse IPv4 valide avant de continuer.';
+      return;
+    }
+
+    await this.api.setServerIP(ip);
     this.router.navigateByUrl('/login', { replaceUrl: true });
+  }
+
+  private isValidIPv4(value: string): boolean {
+    const parts = value.split('.');
+    if (parts.length !== 4) return false;
+
+    return parts.every(part => {
+      if (!/^\d+$/.test(part)) return false;
+      const num = Number(part);
+      return num >= 0 && num <= 255;
+    });
   }
 }

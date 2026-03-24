@@ -167,7 +167,7 @@ L'application est opérationnelle et prête pour un déploiement terrain.
 
 #### Étape 2 — Configuration serveur
 
-- L'adresse IP du serveur est détectée automatiquement sur le réseau.
+- Saisir manuellement l'adresse IPv4 du serveur web (PC) sur le même réseau Wi-Fi.
 - Cliquer sur le bouton jaune "Tester la connexion".
 - Montrer le message de succès vert.
 - Cliquer sur "Continuer" pour accéder au login.

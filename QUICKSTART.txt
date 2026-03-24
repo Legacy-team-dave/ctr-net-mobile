@@ -32,7 +32,7 @@ INSTALLATION
 
    Méthode 2 - Ligne de commande :
    npm start
-   
+
    → Ouvrir http://localhost:8100
 
 CONFIGURATION
@@ -40,9 +40,12 @@ CONFIGURATION
 Au premier lancement de l'application (navigateur ou APK) :
 1. L'écran splash s'affiche pendant 5 secondes
 2. La page de configuration apparaît
-3. L'adresse IP du serveur est détectée automatiquement sur le réseau
-4. Cliquer sur "Tester la connexion" pour vérifier
-5. Si OK → l'IP est sauvegardée et la page login s'affiche
+3. Saisir manuellement l'adresse IPv4 du PC serveur (ex: 10.71.62.9)
+4. Vérifier que le téléphone et le PC sont sur le même réseau Wi-Fi
+5. Cliquer sur "Tester la connexion" pour vérifier
+6. Si OK → l'IP est sauvegardée et la page login s'affiche
+
+L'adresse IP enregistrée peut être modifiée à tout moment depuis la page Configuration.
 
 CONNEXION
 ---------

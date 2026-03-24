@@ -53,6 +53,13 @@ ctr-net-mobile/
 
 ## Communication avec le serveur web
 
+### 2. Communication avec l'application web
+
+- L'application mobile communique avec l'application web `ctr.net-fardc` via IPv4 sur le réseau Wi-Fi.
+- Le téléphone et le PC serveur doivent être connectés au même réseau.
+- Avant connexion, l'utilisateur renseigne manuellement l'adresse IP du serveur web.
+- Cette IP est stockée localement (`server_ip`) et peut être modifiée à tout moment depuis la page Configuration.
+
 L'app mobile utilise les endpoints API dans `ctr.net-fardc/api/` :
 
 | Endpoint | Méthode | Description |
