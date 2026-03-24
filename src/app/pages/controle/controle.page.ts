@@ -126,7 +126,13 @@ export class ControlePage {
     const checked = (event.target as HTMLInputElement).checked;
     if (type === 'vivant') {
       this.statutVivant = checked;
-      if (checked) this.statutDecede = false;
+      if (checked) {
+        this.statutDecede = false;
+        // Vivant n'a pas besoin de lien/bénéficiaire : on réinitialise
+        this.lienParente = '';
+        this.newBeneficiaire = '';
+        this.observations = '';
+      }
     } else {
       this.statutDecede = checked;
       if (checked) this.statutVivant = false;
@@ -167,8 +173,11 @@ export class ControlePage {
 
   // ── Lien de parenté ──
 
-  selectLien(lien: string) {
-    this.lienParente = lien;
+  selectLien(lien: string, event: Event) {
+    // Empêcher le comportement natif du checkbox pour éviter les conflits avec [checked]
+    event.preventDefault();
+    // Exclusion mutuelle comme dans le web (un seul lien sélectionné)
+    this.lienParente = this.lienParente === lien ? '' : lien;
   }
 
   // ── Validation ──

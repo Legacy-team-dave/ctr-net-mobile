@@ -223,11 +223,11 @@
                     <label class="lien-groupe-label">Epouse/Epoux</label>
                     <div class="lien-options">
                       <label class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Epouse'" (change)="selectLien('Epouse')" />
+                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Epouse'" (change)="selectLien('Epouse', $event)" />
                         <span class="form-check-label">Epouse <small class="hint">(→ Veuve)</small></span>
                       </label>
                       <label class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Epoux'" (change)="selectLien('Epoux')" />
+                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Epoux'" (change)="selectLien('Epoux', $event)" />
                         <span class="form-check-label">Epoux <small class="hint">(→ Veuf)</small></span>
                       </label>
                     </div>
@@ -236,11 +236,11 @@
                     <label class="lien-groupe-label">Fils/Fille</label>
                     <div class="lien-options">
                       <label class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Fils'" (change)="selectLien('Fils')" />
+                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Fils'" (change)="selectLien('Fils', $event)" />
                         <span class="form-check-label">Fils <small class="hint">(→ Orphelin)</small></span>
                       </label>
                       <label class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Fille'" (change)="selectLien('Fille')" />
+                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Fille'" (change)="selectLien('Fille', $event)" />
                         <span class="form-check-label">Fille <small class="hint">(→ Orphelin)</small></span>
                       </label>
                     </div>
@@ -249,11 +249,11 @@
                     <label class="lien-groupe-label">Père/Mère</label>
                     <div class="lien-options">
                       <label class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Père'" (change)="selectLien('Père')" />
+                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Père'" (change)="selectLien('Père', $event)" />
                         <span class="form-check-label">Père <small class="hint">(→ Tuteur)</small></span>
                       </label>
                       <label class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Mère'" (change)="selectLien('Mère')" />
+                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Mère'" (change)="selectLien('Mère', $event)" />
                         <span class="form-check-label">Mère <small class="hint">(→ Tuteur)</small></span>
                       </label>
                     </div>
@@ -262,11 +262,11 @@
                     <label class="lien-groupe-label">Frère/Sœur</label>
                     <div class="lien-options">
                       <label class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Frère'" (change)="selectLien('Frère')" />
+                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Frère'" (change)="selectLien('Frère', $event)" />
                         <span class="form-check-label">Frère <small class="hint">(→ Tuteur)</small></span>
                       </label>
                       <label class="form-check form-check-inline">
-                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Sœur'" (change)="selectLien('Sœur')" />
+                        <input type="checkbox" class="form-check-input lien-checkbox" [checked]="lienParente === 'Sœur'" (change)="selectLien('Sœur', $event)" />
                         <span class="form-check-label">Sœur <small class="hint">(→ Tuteur)</small></span>
                       </label>
                     </div>

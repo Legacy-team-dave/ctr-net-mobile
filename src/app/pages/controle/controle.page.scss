@@ -4,10 +4,12 @@ ion-toolbar {
   --color: #fff;
 }
 
-// ── Recherche : wrapper centré ──
+// ── Recherche : wrapper centré (portrait + paysage) ──
 .search-wrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
+  min-height: 100%;
   padding: 16px;
 }
 
@@ -344,6 +346,7 @@ ion-toolbar {
   align-items: center;
   gap: 6px;
   cursor: pointer;
+  -webkit-user-select: none;
   user-select: none;
   margin: 0;
 }
