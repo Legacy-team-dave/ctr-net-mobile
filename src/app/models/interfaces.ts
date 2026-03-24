@@ -45,7 +45,10 @@ export interface ApiResponse<T = unknown> {
 export interface ControleData {
   matricule: string;
   mention: string;
+  lien: string;
   beneficiaire?: string;
-  lien_parente?: string;
+  new_beneficiaire?: string;
   observations?: string;
+  statut_vivant?: boolean;
+  statut_decede?: boolean;
 }
