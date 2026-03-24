@@ -65,7 +65,7 @@ L'application web gère trois profils avec des accès distincts :
 #### OPERATEUR
 
 - Accès opérationnel avec tableau de bord.
-- Redirection conditionnelle : si les préférences ne sont pas configurées, redirigé vers `preferences.php`.
+- Redirection conditionnelle : si les préférences ne sont pas configurées, redirigé vers `preferences.php` → `equipes.php` (enregistrement équipe) → `index.php`.
 - Saisie de contrôles, consultation de listes, exports.
 - Accès limité aux modules d'administration.
 
@@ -83,7 +83,7 @@ L'application web gère trois profils avec des accès distincts :
 3. Le système vérifie les identifiants dans la base MySQL (mot de passe hashé bcrypt).
 4. Si valide, une session PHP est créée avec les informations utilisateur.
 5. Option "Se souvenir de moi" : un cookie de session persistant est défini.
-6. Redirection selon le profil (ADMIN_IG → dashboard, CONTROLEUR → ajouter contrôle, OPERATEUR → préférences/dashboard).
+6. Redirection selon le profil (ADMIN_IG → dashboard, CONTROLEUR → ajouter contrôle, OPERATEUR → préférences → équipes → dashboard).
 7. En cas d'échec, un log d'échec de connexion est enregistré.
 
 ### 2.4. Flux de contrôle (web)
