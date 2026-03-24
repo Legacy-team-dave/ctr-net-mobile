@@ -4,7 +4,7 @@
       <ion-button fill="clear" slot="start" (click)="backToSearch()">
         <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
       </ion-button>
-      <ion-title>Contrôle</ion-title>
+      <ion-title>Effectuer Contrôle</ion-title>
     } @else {
       <ion-title>CTR.NET FARDC</ion-title>
     }
@@ -76,7 +76,7 @@
         <div class="militaire-info">
           <div class="militaire-info-header">
             <ion-icon name="shield-checkmark"></ion-icon>
-            <span class="fw-bold">MILITAIRE CONCERNÉ</span>
+            <span class="fw-bold">Militaire Concerné</span>
             <span class="badge-statut {{ getBadgeClass(currentMilitaire) }}">
               <ion-icon [name]="getBadgeIcon(currentMilitaire)"></ion-icon>
               {{ getBadgeLabel(currentMilitaire) }}

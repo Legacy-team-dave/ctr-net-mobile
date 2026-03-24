@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 import { ApiService } from './api.service';
+import { CacheService } from './cache.service';
 import { User } from '../models/interfaces';
 
 @Injectable({ providedIn: 'root' })
@@ -11,6 +12,7 @@ export class AuthService {
 
   constructor(
     private api: ApiService,
+    private cache: CacheService,
     private router: Router
   ) {}
 
@@ -69,7 +71,7 @@ export class AuthService {
     } catch {
       // Ignorer les erreurs de déconnexion
     }
-    await this.api.clearToken();
+    await this.cache.clearSessionData();
     this.currentUser.next(null);
     this.router.navigateByUrl('/login', { replaceUrl: true });
   }
