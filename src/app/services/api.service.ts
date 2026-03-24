@@ -41,6 +41,105 @@ export class ApiService {
     await Preferences.remove({ key: this.STORAGE_KEY_TOKEN });
   }
 
+  // ── Auto-détection serveur ──
+
+  async detectServer(): Promise<string> {
+    // 1. Essayer l'IP sauvegardée
+    const saved = await this.getServerIP();
+    if (saved) {
+      try {
+        await this.pingServer(saved);
+        return saved;
+      } catch { /* IP sauvegardée plus disponible */ }
+    }
+
+    // 2. Détecter le sous-réseau et scanner
+    const subnets = await this.detectSubnets();
+    const found = await this.scanSubnets(subnets);
+    if (found) {
+      await this.setServerIP(found);
+      return found;
+    }
+
+    throw new Error('Serveur CTR.NET introuvable sur le réseau local');
+  }
+
+  private async pingServer(ip: string): Promise<void> {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 1500);
+    try {
+      await fetch(`http://${ip}/ctr.net-fardc/api/auth.php?action=check`, {
+        signal: controller.signal,
+        headers: { 'Accept': 'application/json' }
+      });
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  private async detectSubnets(): Promise<string[]> {
+    try {
+      const localIP = await this.getLocalIP();
+      const subnet = localIP.split('.').slice(0, 3).join('.');
+      return [subnet];
+    } catch {
+      // Sous-réseaux courants (WiFi, hotspot Windows, hotspot Android)
+      return ['192.168.1', '192.168.0', '192.168.137', '192.168.43', '10.0.0'];
+    }
+  }
+
+  private getLocalIP(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const pc = new RTCPeerConnection({ iceServers: [] });
+      pc.createDataChannel('');
+      let found = false;
+
+      pc.onicecandidate = (e) => {
+        if (found || !e.candidate) return;
+        const match = e.candidate.candidate.match(/(\d+\.\d+\.\d+\.\d+)/);
+        if (match && match[1] !== '0.0.0.0' && !match[1].startsWith('127.')) {
+          found = true;
+          pc.close();
+          resolve(match[1]);
+        }
+      };
+
+      pc.createOffer().then(o => pc.setLocalDescription(o)).catch(reject);
+      setTimeout(() => { if (!found) { pc.close(); reject(new Error('Timeout')); } }, 3000);
+    });
+  }
+
+  private async scanSubnets(subnets: string[]): Promise<string | null> {
+    const priority = [1, 2, 100, 10, 50, 200, 150, 5, 20, 254];
+
+    for (const subnet of subnets) {
+      // Essayer les IPs prioritaires en parallèle
+      const results = await Promise.allSettled(
+        priority.map(n => this.pingServer(`${subnet}.${n}`).then(() => `${subnet}.${n}`))
+      );
+      const found = results.find(r => r.status === 'fulfilled') as PromiseFulfilledResult<string> | undefined;
+      if (found) return found.value;
+    }
+
+    // Scan complet du premier sous-réseau
+    if (subnets.length > 0) {
+      const subnet = subnets[0];
+      const remaining = Array.from({ length: 254 }, (_, i) => i + 1)
+        .filter(n => !priority.includes(n));
+
+      for (let i = 0; i < remaining.length; i += 25) {
+        const batch = remaining.slice(i, i + 25);
+        const results = await Promise.allSettled(
+          batch.map(n => this.pingServer(`${subnet}.${n}`).then(() => `${subnet}.${n}`))
+        );
+        const found = results.find(r => r.status === 'fulfilled') as PromiseFulfilledResult<string> | undefined;
+        if (found) return found.value;
+      }
+    }
+
+    return null;
+  }
+
   // ── Base URL ──
 
   async getBaseUrl(): Promise<string> {

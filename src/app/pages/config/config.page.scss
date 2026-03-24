@@ -150,8 +150,32 @@
     color: #c62828;
   }
 
-  ion-icon {
+  &.detecting {
+    background: #e3f2fd;
+    color: #1565c0;
+  }
+
+  ion-icon, ion-spinner {
     font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+}
+
+.detection-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  background: #e3f2fd;
+  color: #1565c0;
+
+  ion-spinner {
+    --color: #1565c0;
+    width: 1.2rem;
+    height: 1.2rem;
     flex-shrink: 0;
   }
 }

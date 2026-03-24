@@ -173,7 +173,8 @@ est effectuée côté serveur dans `api/auth.php` qui refuse les profils non aut
 
 - **Design** : Même fond d'image (fardc2.jpg) avec overlay sombre à 60%, même carte blanche avec border-radius 16px et backdrop-filter blur.
 - **Logo** : IG-FARDC en haut (même présentation que le login).
-- **Champ IP** : `.input-group-modern` avec icône Wi-Fi intégrée, placeholder "192.168.1.100".
+- **Détection automatique** : L'adresse IP du serveur est détectée automatiquement sur le réseau Wi-Fi local (scan du sous-réseau). Un indicateur de détection s'affiche pendant la recherche.
+- **Champ IP** : `.input-group-modern` avec icône Wi-Fi intégrée, **en lecture seule** (l'IP n'est pas saisie manuellement).
 - **Bouton "Tester la connexion"** : Jaune (#ffc107), même taille que le bouton de connexion (padding 12px, width 100%).
 - **Test** : Envoie une requête GET à `http://{IP}/ctr.net-fardc/api/auth.php?action=check` avec timeout de 8 secondes. Si le serveur répond (même avec 401), la connexion est considérée comme réussie.
 - **Bouton "Continuer"** : Kaki foncé (#3F5A2E), même taille, activé uniquement après un test réussi.

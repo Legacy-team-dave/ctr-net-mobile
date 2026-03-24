@@ -128,7 +128,7 @@ Puis dans Android Studio : **Build → Build Bundle(s)/APK(s) → Build APK(s)**
 ## Flux de l'application
 
 1. **Splash screen** → Logo IG-FARDC avec animation (5 secondes)
-2. **Premier lancement** → Écran de configuration IP du serveur
+2. **Premier lancement** → Détection automatique de l'IP serveur (champ en lecture seule)
 3. **Test de connexion** → Vérifie que l'API est joignable
 4. **Connexion** → Login/mot de passe (profil CONTROLEUR uniquement)
 5. **Onglet Contrôle** → Recherche par matricule/nom → Sélection militaire

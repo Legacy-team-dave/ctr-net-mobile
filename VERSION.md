@@ -1,5 +1,15 @@
 # Historique des versions - CTR.NET Mobile
 
+## v1.2.0 — Mars 2026
+
+### Détection automatique de l'IP serveur
+
+- L'adresse IP du serveur est détectée automatiquement sur le réseau Wi-Fi local
+- Scan du sous-réseau avec IPs prioritaires puis scan complet
+- Champ IP en lecture seule (plus de saisie manuelle)
+- Bouton "Tester la connexion" conservé
+- Méthodes ajoutées : `detectServer()`, `pingServer()`, `detectSubnets()`, `getLocalIP()`, `scanSubnets()`
+
 ## v1.1.0 — Mars 2026
 
 ### Alignement design et documentation

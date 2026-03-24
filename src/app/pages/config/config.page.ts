@@ -5,7 +5,7 @@ import {
   IonContent, IonInput, IonIcon, IonSpinner
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { shieldCheckmark, wifi, arrowForward, checkmarkCircle, closeCircle, informationCircleOutline } from 'ionicons/icons';
+import { shieldCheckmark, wifi, arrowForward, checkmarkCircle, closeCircle, informationCircleOutline, searchOutline } from 'ionicons/icons';
 import { ApiService } from '../../services/api.service';
 import { firstValueFrom } from 'rxjs';
 
@@ -20,6 +20,8 @@ import { firstValueFrom } from 'rxjs';
 export class ConfigPage {
   serverIP = '';
   testing = false;
+  detecting = true;
+  detectionError = '';
   connectionOk: boolean | null = null;
   connectionMessage = '';
 
@@ -27,11 +29,26 @@ export class ConfigPage {
     private api: ApiService,
     private router: Router
   ) {
-    addIcons({ shieldCheckmark, wifi, arrowForward, checkmarkCircle, closeCircle, informationCircleOutline });
+    addIcons({ shieldCheckmark, wifi, arrowForward, checkmarkCircle, closeCircle, informationCircleOutline, searchOutline });
   }
 
   async ionViewWillEnter() {
-    this.serverIP = await this.api.getServerIP();
+    this.detecting = true;
+    this.detectionError = '';
+    this.connectionOk = null;
+
+    try {
+      const ip = await this.api.detectServer();
+      this.serverIP = ip;
+      await this.api.setServerIP(ip);
+      this.connectionOk = true;
+      this.connectionMessage = 'Serveur détecté automatiquement !';
+    } catch {
+      this.detectionError = 'Serveur introuvable sur le réseau';
+      this.serverIP = '';
+    } finally {
+      this.detecting = false;
+    }
   }
 
   async testConnection() {

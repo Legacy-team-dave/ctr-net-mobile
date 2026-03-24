@@ -19,23 +19,39 @@
       </div>
 
       <div class="config-form">
-        <!-- Champ IP -->
+        <!-- Indicateur de détection -->
+        @if (detecting) {
+          <div class="detection-status detecting">
+            <ion-spinner name="crescent"></ion-spinner>
+            Recherche du serveur sur le réseau...
+          </div>
+        }
+
+        @if (detectionError && !detecting) {
+          <div class="connection-status error">
+            <ion-icon name="close-circle"></ion-icon>
+            {{ detectionError }}
+          </div>
+        }
+
+        <!-- Champ IP (lecture seule) -->
         <div class="input-group-modern">
           <ion-icon name="wifi" class="input-icon"></ion-icon>
           <ion-input
             type="text"
             [(ngModel)]="serverIP"
-            placeholder="192.168.1.100"
+            placeholder="Détection automatique..."
             autocorrect="off"
+            [readonly]="true"
           ></ion-input>
         </div>
 
         <p class="help-text">
           <ion-icon name="information-circle-outline"></ion-icon>
-          Adresse IPv4 du PC serveur (ex: 192.168.1.100)
+          Adresse détectée automatiquement sur le réseau local
         </p>
 
-        @if (connectionOk !== null) {
+        @if (connectionOk !== null && !detecting) {
           <div class="connection-status" [class.success]="connectionOk" [class.error]="!connectionOk">
             <ion-icon [name]="connectionOk ? 'checkmark-circle' : 'close-circle'"></ion-icon>
             {{ connectionMessage }}
@@ -43,7 +59,7 @@
         }
 
         <!-- Bouton tester (même taille que btn-login) -->
-        <button type="button" class="btn-test" (click)="testConnection()" [disabled]="testing || !serverIP.trim()">
+        <button type="button" class="btn-test" (click)="testConnection()" [disabled]="testing || detecting || !serverIP.trim()">
           @if (testing) {
             <ion-spinner name="crescent"></ion-spinner>
             Test en cours...
@@ -54,7 +70,7 @@
         </button>
 
         <!-- Bouton continuer (même taille que btn-config) -->
-        <button type="button" class="btn-continue" (click)="saveAndContinue()" [disabled]="!connectionOk">
+        <button type="button" class="btn-continue" (click)="saveAndContinue()" [disabled]="!connectionOk || detecting">
           <ion-icon name="arrow-forward"></ion-icon>
           Continuer
         </button>
