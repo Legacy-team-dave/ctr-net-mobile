@@ -49,6 +49,12 @@ export class ApiService {
     return `http://${ip}/ctr.net-fardc/api`;
   }
 
+  async getServerBaseUrl(): Promise<string> {
+    const ip = await this.getServerIP();
+    if (!ip) return '';
+    return `http://${ip}/ctr.net-fardc`;
+  }
+
   // ── Headers ──
 
   private async getHeaders(): Promise<HttpHeaders> {

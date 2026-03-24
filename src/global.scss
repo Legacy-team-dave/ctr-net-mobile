@@ -58,3 +58,14 @@ ion-button {
   text-transform: none;
   letter-spacing: 0;
 }
+
+// Zones de saisie fond blanc
+ion-input, ion-textarea, ion-select {
+  --background: #fff !important;
+  --color: #333;
+}
+
+input, textarea, select {
+  background-color: #fff;
+  color: #333;
+}

@@ -1,81 +1,51 @@
 <ion-header>
-  <ion-toolbar color="primary">
+  <ion-toolbar>
     <ion-title>Mon Profil</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <!-- Infos -->
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>
-        <ion-icon name="person-circle"></ion-icon> Informations
-      </ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <div class="info-row">
-        <span class="lbl">Login</span>
-        <span class="val">{{ loginName }}</span>
+<ion-content>
+  <div class="profil-wrapper">
+    <!-- Avatar -->
+    <div class="avatar-section">
+      <div class="avatar-preview">
+        <img [src]="avatarUrl" alt="Avatar" (error)="onAvatarError($event)" />
       </div>
-      <div class="info-row">
-        <span class="lbl">Serveur</span>
-        <span class="val">{{ serverIP }}</span>
+      <h2 class="user-name">{{ nomComplet || 'Utilisateur' }}</h2>
+      <span class="user-role">{{ profilRole || 'Contrôleur' }}</span>
+    </div>
+
+    <!-- Infos -->
+    <div class="card-modern">
+      <div class="card-header-modern">
+        <h3><ion-icon name="person-circle"></ion-icon> Informations</h3>
       </div>
-
-      <ion-item>
-        <ion-input
-          label="Nom complet"
-          labelPlacement="stacked"
-          type="text"
-          [(ngModel)]="nomComplet"
-          placeholder="Votre nom complet"
-        ></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-input
-          label="Email"
-          labelPlacement="stacked"
-          type="email"
-          [(ngModel)]="email"
-          placeholder="Votre email"
-        ></ion-input>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
-
-  <!-- Mot de passe -->
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Changer le mot de passe</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-note color="medium">Laissez vide si vous ne souhaitez pas changer le mot de passe.</ion-note>
-
-      <ion-item>
-        <ion-input
-          label="Ancien mot de passe"
-          labelPlacement="stacked"
-          type="password"
-          [(ngModel)]="oldPassword"
-          placeholder="Ancien mot de passe"
-        ></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-input
-          label="Nouveau mot de passe"
-          labelPlacement="stacked"
-          type="password"
-          [(ngModel)]="newPassword"
-          placeholder="Nouveau mot de passe"
-        ></ion-input>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-button expand="block" (click)="onSave()" class="btn-save">
-    <ion-icon name="save" slot="start"></ion-icon>
-    Enregistrer
-  </ion-button>
+      <div class="card-body-modern">
+        <div class="info-row">
+          <span class="lbl"><ion-icon name="person"></ion-icon> Login</span>
+          <span class="val">{{ loginName }}</span>
+        </div>
+        <div class="info-row">
+          <span class="lbl"><ion-icon name="text"></ion-icon> Nom complet</span>
+          <span class="val">{{ nomComplet || 'N/A' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="lbl"><ion-icon name="mail"></ion-icon> Email</span>
+          <span class="val">{{ email || 'N/A' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="lbl"><ion-icon name="shield-checkmark"></ion-icon> Profil</span>
+          <span class="val">{{ profilRole || 'N/A' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="lbl"><ion-icon name="server"></ion-icon> Serveur</span>
+          <span class="val">{{ serverIP }}</span>
+        </div>
+        <div class="info-row">
+          <span class="lbl"><ion-icon name="time"></ion-icon> Dernier accès</span>
+          <span class="val">{{ dernierAcces || 'N/A' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>

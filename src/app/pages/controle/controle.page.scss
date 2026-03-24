@@ -61,6 +61,8 @@ ion-toolbar {
   font-size: 1rem;
   font-family: 'Barlow', sans-serif;
   box-sizing: border-box;
+  background: #fff;
+  color: #333;
   transition: border-color 0.3s, box-shadow 0.3s;
 
   &:focus {
@@ -322,29 +324,30 @@ ion-toolbar {
 .btn-present {
   width: 100%;
   max-width: 400px;
-  padding: 14px;
+  padding: 8px 18px;
   border: none;
   border-radius: 30px;
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-size: 0.9rem;
+  font-weight: 600;
   background: #28a745;
   color: #fff;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.35);
+  margin: 3px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.3s;
   font-family: 'Barlow', sans-serif;
 
   &:active {
-    transform: scale(0.97);
     background: #218838;
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
   }
 
   ion-icon {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
   }
 }
 
@@ -497,20 +500,21 @@ textarea.form-control-modern {
 
 .btn-mention {
   border-radius: 30px;
-  padding: 12px 28px;
-  font-weight: 700;
+  padding: 8px 18px;
+  font-weight: 600;
   font-size: 0.9rem;
   border: none;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+  margin: 3px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.3s;
   font-family: 'Barlow', sans-serif;
 
   &:active {
-    transform: scale(0.96);
+    transform: translateY(-2px);
   }
 
   ion-icon {

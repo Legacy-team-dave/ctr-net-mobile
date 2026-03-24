@@ -1,15 +1,12 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import {
-  IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonInput,
-  IonIcon, IonCard, IonCardHeader, IonCardContent, IonCardTitle,
-  IonItem, IonNote
+  IonHeader, IonToolbar, IonTitle, IonContent, IonIcon
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { personCircle, save, server } from 'ionicons/icons';
-import { LoadingController, ToastController } from '@ionic/angular/standalone';
+import {
+  personCircle, server, person, mail, shieldCheckmark, time, text
+} from 'ionicons/icons';
 import { ApiService } from '../../services/api.service';
-import { AuthService } from '../../services/auth.service';
 import { User } from '../../models/interfaces';
 import { firstValueFrom } from 'rxjs';
 
@@ -18,10 +15,7 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './profil.page.html',
   styleUrls: ['./profil.page.scss'],
   imports: [
-    FormsModule,
-    IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonInput,
-    IonIcon, IonCard, IonCardHeader, IonCardContent, IonCardTitle,
-    IonItem, IonNote,
+    IonHeader, IonToolbar, IonTitle, IonContent, IonIcon,
   ],
 })
 export class ProfilPage {
@@ -29,16 +23,12 @@ export class ProfilPage {
   email = '';
   loginName = '';
   serverIP = '';
-  oldPassword = '';
-  newPassword = '';
+  profilRole = '';
+  dernierAcces = '';
+  avatarUrl = 'assets/img/default-avatar.jpg';
 
-  constructor(
-    private api: ApiService,
-    private auth: AuthService,
-    private loadingCtrl: LoadingController,
-    private toastCtrl: ToastController
-  ) {
-    addIcons({ personCircle, save, server });
+  constructor(private api: ApiService) {
+    addIcons({ personCircle, server, person, mail, shieldCheckmark, time, text });
   }
 
   async ionViewWillEnter() {
@@ -53,6 +43,13 @@ export class ProfilPage {
         this.nomComplet = u.nom_complet || '';
         this.email = u.email || '';
         this.loginName = u.login || '';
+        this.profilRole = u.profil || '';
+        this.dernierAcces = u.dernier_acces || '';
+
+        if (u.avatar) {
+          const baseUrl = await this.api.getServerBaseUrl();
+          this.avatarUrl = `${baseUrl}/assets/uploads/avatars/${u.avatar}`;
+        }
       }
     } catch {
       // Silencieux
@@ -60,41 +57,7 @@ export class ProfilPage {
     this.serverIP = await this.api.getServerIP();
   }
 
-  async onSave() {
-    if (!this.nomComplet.trim() || !this.email.trim()) {
-      this.showToast('Nom et email requis', 'warning');
-      return;
-    }
-
-    const loading = await this.loadingCtrl.create({ message: 'Mise à jour du profil...' });
-    await loading.present();
-
-    try {
-      const data: { nom_complet: string; email: string; old_password?: string; new_password?: string } = {
-        nom_complet: this.nomComplet.trim(),
-        email: this.email.trim(),
-      };
-      if (this.oldPassword && this.newPassword) {
-        data.old_password = this.oldPassword;
-        data.new_password = this.newPassword;
-      }
-
-      const res = await firstValueFrom(this.api.updateProfil(data));
-      await loading.dismiss();
-      if (res.success) {
-        this.showToast('Profil mis à jour avec succès', 'success');
-        this.oldPassword = '';
-        this.newPassword = '';
-      }
-    } catch (err: unknown) {
-      await loading.dismiss();
-      const message = err instanceof Error ? err.message : 'Erreur';
-      this.showToast(message, 'danger');
-    }
-  }
-
-  private async showToast(message: string, color: string) {
-    const toast = await this.toastCtrl.create({ message, duration: 3000, color, position: 'top' });
-    await toast.present();
+  onAvatarError(event: Event) {
+    (event.target as HTMLImageElement).src = 'assets/img/default-avatar.jpg';
   }
 }

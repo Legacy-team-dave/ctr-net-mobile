@@ -3,6 +3,10 @@ import { authGuard, noAuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
+    path: 'splash',
+    loadComponent: () => import('./pages/splash/splash.page').then(m => m.SplashPage),
+  },
+  {
     path: 'config',
     loadComponent: () => import('./pages/config/config.page').then(m => m.ConfigPage),
   },
@@ -18,7 +22,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'splash',
     pathMatch: 'full',
   },
 ];
