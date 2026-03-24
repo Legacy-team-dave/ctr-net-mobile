@@ -48,3 +48,26 @@ jobs:
         with:
           name: ctr.net-fardc-mobile
           path: android/app/build/outputs/apk/debug/ctr.net-fardc-mobile.apk
+
+      - name: Get version
+        id: version
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: CTR.NET Mobile v${{ steps.version.outputs.version }}
+          body: |
+            ## CTR.NET FARDC Mobile v${{ steps.version.outputs.version }}
+
+            APK debug pour installation directe sur Android.
+
+            ### Installation
+            1. Télécharger `ctr.net-fardc-mobile.apk`
+            2. Autoriser les sources inconnues sur votre appareil
+            3. Installer l'APK
+          files: android/app/build/outputs/apk/debug/ctr.net-fardc-mobile.apk
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
