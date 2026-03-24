@@ -4,7 +4,7 @@
     <div class="config-logo">
       <a class="brand-link">
         <img src="assets/img/logo-fardc.png" alt="FARDC Logo" class="brand-image">
-        <span class="brand-text">IG-FARDC</span>
+        <span class="brand-text">CTL EFF MIL - FARDC Mobile v1.2.0</span>
       </a>
     </div>
 
@@ -19,36 +19,21 @@
       </div>
 
       <div class="config-form">
-        <!-- Indicateur de détection -->
-        @if (detecting) {
-          <div class="detection-status detecting">
-            <ion-spinner name="crescent"></ion-spinner>
-            Recherche du serveur sur le réseau...
-          </div>
-        }
-
-        @if (detectionError && !detecting) {
-          <div class="connection-status error">
-            <ion-icon name="close-circle"></ion-icon>
-            {{ detectionError }}
-          </div>
-        }
-
-        <!-- Champ IP (lecture seule) -->
+        <!-- Champ IP (saisie manuelle) -->
         <div class="input-group-modern">
           <ion-icon name="wifi" class="input-icon"></ion-icon>
           <ion-input
             type="text"
             [(ngModel)]="serverIP"
-            placeholder="Détection automatique..."
+            placeholder="Ex: 10.71.62.9"
             autocorrect="off"
-            [readonly]="true"
+            [readonly]="false"
           ></ion-input>
         </div>
 
         <p class="help-text">
           <ion-icon name="information-circle-outline"></ion-icon>
-          Adresse détectée automatiquement sur le réseau local
+          Saisissez manuellement l'adresse IP du serveur local
         </p>
 
         @if (connectionOk !== null && !detecting) {
@@ -79,7 +64,7 @@
 
     <!-- Footer -->
     <div class="config-footer">
-      <ion-icon name="shield-checkmark"></ion-icon>  CTR.NET-FARDC Mobile v1.2.0
+      <ion-icon name="shield-checkmark"></ion-icon>  IG FARDC
     </div>
   </div>
 </ion-content>

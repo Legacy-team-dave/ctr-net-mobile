@@ -20,7 +20,7 @@ import { firstValueFrom } from 'rxjs';
 export class ConfigPage {
   serverIP = '';
   testing = false;
-  detecting = true;
+  detecting = false;
   detectionError = '';
   connectionOk: boolean | null = null;
   connectionMessage = '';
@@ -33,22 +33,10 @@ export class ConfigPage {
   }
 
   async ionViewWillEnter() {
-    this.detecting = true;
+    this.detecting = false;
     this.detectionError = '';
     this.connectionOk = null;
-
-    try {
-      const ip = await this.api.detectServer();
-      this.serverIP = ip;
-      await this.api.setServerIP(ip);
-      this.connectionOk = true;
-      this.connectionMessage = 'Serveur détecté automatiquement !';
-    } catch {
-      this.detectionError = 'Serveur introuvable sur le réseau';
-      this.serverIP = '';
-    } finally {
-      this.detecting = false;
-    }
+    this.serverIP = await this.api.getServerIP();
   }
 
   async testConnection() {
