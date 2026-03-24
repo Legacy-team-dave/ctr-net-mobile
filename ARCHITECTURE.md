@@ -7,7 +7,7 @@ Application Ionic Angular standalone compilée en APK Android via Capacitor. Des
 ## Stack technique
 
 | Couche | Technologie | Version |
-|---|---|---|
+| --- | --- | --- |
 | UI Framework | Ionic | 8.0.0 |
 | Applicatif | Angular (standalone components) | 20.0.0 |
 | Bridge natif | Capacitor | 8.2.0 |
@@ -17,7 +17,7 @@ Application Ionic Angular standalone compilée en APK Android via Capacitor. Des
 
 ## Architecture applicative
 
-```
+```text
 src/app/
 ├── app.routes.ts              ← Routes principales (splash → config → login → tabs)
 ├── app.component.ts           ← Composant racine
@@ -39,7 +39,7 @@ src/app/
 
 ## Flux de navigation
 
-```
+```text
 splash (5s) → config (si pas d'IP) → login → tabs/controle
                                       ↗
               config (si IP déjà) → login → tabs/
@@ -52,7 +52,7 @@ splash (5s) → config (si pas d'IP) → login → tabs/controle
 
 ### Schéma réseau
 
-```
+```text
 App Mobile (Android)
     ↕ HTTP (Wi-Fi intranet)
 Serveur Web (Laragon)
@@ -63,7 +63,7 @@ Base de données MySQL
 ### Endpoints utilisés
 
 | Endpoint | Méthode | Données envoyées | Réponse |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `auth.php?action=login` | POST | `{login, password}` | `{success, token, user}` |
 | `auth.php?action=logout` | POST | — | `{success}` |
 | `auth.php?action=check` | GET | — | `{success, user}` |
@@ -80,6 +80,16 @@ Base de données MySQL
 - Vérification de session à chaque navigation (authGuard)
 - Erreur 401 → déconnexion automatique
 
+## Page Configuration — Design unifié (v1.1.0)
+
+Depuis la v1.1.0, la page de configuration IP utilise le même design que la page login :
+
+- Même fond d'image (fardc2.jpg) avec overlay sombre
+- Même carte `.card-modern` (border-radius 16px, backdrop-filter blur)
+- Même `.input-group-modern` avec icône intégrée
+- Boutons natifs `<button>` au lieu de `<ion-button>` (taille identique au login)
+- Bouton "Tester" jaune (#ffc107) + Bouton "Continuer" kaki (#3F5A2E)
+
 ## Page Contrôle — Logique métier
 
 ### Étape 1 : Recherche
@@ -91,10 +101,12 @@ Base de données MySQL
 ### Étape 2 : Validation
 
 **Militaire Vivant :**
+
 - Statut "Vivant" coché → Bouton "Présent"
 - Envoi : `{matricule, mention: 'Présent', lien: 'Militaire lui-même', statut_vivant: true}`
 
 **Militaire Décédé :**
+
 - Statut "Décédé" coché (automatique si catégorie DCD_AV_BIO)
 - Bénéficiaire existant affiché + champ nouveau bénéficiaire
 - Liens de parenté : Epouse/Epoux, Fils/Fille, Père/Mère, Frère/Sœur (cases à cocher, exclusion mutuelle)
@@ -111,7 +123,7 @@ Base de données MySQL
 ## Plugins Capacitor
 
 | Plugin | Utilisation |
-|---|---|
+| --- | --- |
 | `@capacitor/geolocation` | Localisation GPS lors de la validation d'un contrôle |
 | `@capacitor/network` | Vérification de la connectivité réseau |
 | `@capacitor/preferences` | Stockage local de l'IP serveur et du token |

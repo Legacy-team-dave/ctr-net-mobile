@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import {
-  IonContent, IonButton, IonInput, IonIcon, IonSpinner
+  IonContent, IonInput, IonIcon, IonSpinner
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { shieldCheckmark, wifi, arrowForward, checkmarkCircle, closeCircle } from 'ionicons/icons';
+import { shieldCheckmark, wifi, arrowForward, checkmarkCircle, closeCircle, informationCircleOutline } from 'ionicons/icons';
 import { ApiService } from '../../services/api.service';
 import { firstValueFrom } from 'rxjs';
 
@@ -14,7 +14,7 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './config.page.html',
   styleUrls: ['./config.page.scss'],
   imports: [
-    FormsModule, IonContent, IonButton, IonInput, IonIcon, IonSpinner
+    FormsModule, IonContent, IonInput, IonIcon, IonSpinner
   ],
 })
 export class ConfigPage {
@@ -27,7 +27,7 @@ export class ConfigPage {
     private api: ApiService,
     private router: Router
   ) {
-    addIcons({ shieldCheckmark, wifi, arrowForward, checkmarkCircle, closeCircle });
+    addIcons({ shieldCheckmark, wifi, arrowForward, checkmarkCircle, closeCircle, informationCircleOutline });
   }
 
   async ionViewWillEnter() {

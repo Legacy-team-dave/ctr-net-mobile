@@ -18,6 +18,15 @@ ctr-net-mobile/
 ├── VERSION.md                   Historique des versions
 ├── QUICKSTART.txt               Guide de démarrage rapide
 ├── STRUCTURE.txt                Ce fichier
+├── PRESENTATION_CTR_NET_MOBILE.md   Présentation détaillée de l'application
+├── PROMPT_PRESENTATION.md       Prompt IA pour générer des présentations
+├── FONCTIONNEMENT_COMPLET_WEB_MOBILE.md  Fonctionnement web + mobile combiné
+│
+├── START.bat                    Démarrer le serveur de développement
+├── INSTALL.bat                  Installer les dépendances npm
+├── BUILD_APK.bat                Compiler l'APK Android
+├── launch.ps1                   Démarrer le serveur dev (PowerShell)
+├── build_apk.ps1                Compiler l'APK Android (PowerShell)
 │
 ├── .github/
 │   └── workflows/
@@ -75,8 +84,9 @@ ctr-net-mobile/
 │           │
 │           ├── config/
 │           │   ├── config.page.ts       Saisie IP serveur + test connexion
-│           │   ├── config.page.html     Formulaire IP + bouton test
-│           │   └── config.page.scss     Styles page configuration
+│           │   │                         Design identique au login (v1.1.0)
+│           │   ├── config.page.html     Carte moderne, input avec icône, boutons natifs
+│           │   └── config.page.scss     Même fond/carte/boutons que login
 │           │
 │           ├── login/
 │           │   ├── login.page.ts        Authentification CONTROLEUR

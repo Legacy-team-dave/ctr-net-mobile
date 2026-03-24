@@ -8,7 +8,7 @@ Application mobile Android destinée exclusivement au profil **CONTROLEUR** de l
 
 ## Architecture
 
-```
+```text
 ctr-net-mobile/
 ├── .github/
 │   └── workflows/
@@ -55,7 +55,7 @@ ctr-net-mobile/
 L'app mobile utilise les endpoints API dans `ctr.net-fardc/api/` :
 
 | Endpoint | Méthode | Description |
-|---|---|---|
+| --- | --- | --- |
 | `/api/auth.php?action=login` | POST | Connexion (CONTROLEUR uniquement) |
 | `/api/auth.php?action=logout` | POST | Déconnexion |
 | `/api/auth.php?action=check` | GET | Vérification de session |
@@ -97,7 +97,7 @@ L'application s'ouvre sur `http://localhost:4200`.
 
 Chaque push sur la branche `main` déclenche automatiquement le build APK via GitHub Actions. L'APK est disponible en téléchargement dans la section **Artifacts** du workflow.
 
-Repository : https://github.com/Legacy-team-dave/ctr-net-mobile/actions
+Repository : <https://github.com/Legacy-team-dave/ctr-net-mobile/actions>
 
 ### Méthode 2 : Ligne de commande
 
@@ -153,7 +153,7 @@ Puis dans Android Studio : **Build → Build Bundle(s)/APK(s) → Build APK(s)**
 ## Catégories militaires
 
 | Catégorie | Badge | Description |
-|---|---|---|
+| --- | --- | --- |
 | Actif | Vert | Militaire en service actif |
 | DCD_AV_BIO | Rouge foncé | Décédé avant biométrie |
 | DCD_AP_BIO | Rouge | Décédé après biométrie |
@@ -163,7 +163,7 @@ Puis dans Android Studio : **Build → Build Bundle(s)/APK(s) → Build APK(s)**
 ## Technologies
 
 | Technologie | Version | Rôle |
-|---|---|---|
+| --- | --- | --- |
 | **Ionic** | 8.0.0 | Framework UI mobile |
 | **Angular** | 20.0.0 | Framework applicatif (standalone components) |
 | **Capacitor** | 8.2.0 | Bridge natif Android |
@@ -173,7 +173,7 @@ Puis dans Android Studio : **Build → Build Bundle(s)/APK(s) → Build APK(s)**
 ## Plugins Capacitor
 
 | Plugin | Version | Utilisation |
-|---|---|---|
+| --- | --- | --- |
 | `@capacitor/geolocation` | 8.1.0 | Coordonnées GPS lors de la validation |
 | `@capacitor/network` | 8.0.1 | Détection connectivité Wi-Fi |
 | `@capacitor/preferences` | 8.0.1 | Stockage local (IP serveur, token) |
@@ -221,3 +221,16 @@ Le workflow `.github/workflows/build-apk.yml` :
 - **Versions** : `VERSION.md`
 - **Structure** : `STRUCTURE.txt`
 - **Démarrage rapide** : `QUICKSTART.txt`
+- **Présentation mobile** : `PRESENTATION_CTR_NET_MOBILE.md`
+- **Prompt présentation** : `PROMPT_PRESENTATION.md`
+- **Fonctionnement web+mobile** : `FONCTIONNEMENT_COMPLET_WEB_MOBILE.md`
+
+## Scripts de lancement
+
+| Script | Type | Description |
+| --- | --- | --- |
+| `START.bat` | Batch | Démarrer le serveur de développement |
+| `INSTALL.bat` | Batch | Installer les dépendances npm |
+| `BUILD_APK.bat` | Batch | Compiler l'APK Android (3 étapes) |
+| `launch.ps1` | PowerShell | Démarrer le serveur dev |
+| `build_apk.ps1` | PowerShell | Compiler l'APK Android |

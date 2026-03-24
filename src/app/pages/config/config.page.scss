@@ -1,95 +1,134 @@
+// ═══ Config page — design identique au login (même fond, même card) ═══
+
 .config-page {
-  --background: linear-gradient(135deg, #5C7A4D 0%, #3F5A2E 100%);
+  --background: transparent;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('/assets/img/fardc2.jpg') center/cover no-repeat;
+    z-index: -2;
+  }
+  &::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: -1;
+  }
 }
 
 .config-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100%;
   padding: 2rem 1rem;
+  z-index: 1;
 }
 
+// Logo section (identique au login)
 .config-logo {
-  text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 
-  .logo-image {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid white;
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
-    margin-bottom: 1rem;
+  .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
   }
 
-  h1 {
+  .brand-image {
+    max-height: 45px;
+    width: auto;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  }
+
+  .brand-text {
     color: #fff;
-    font-size: 2rem;
+    font-size: 1.3rem;
     font-weight: 700;
-    margin: 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
+  }
+}
+
+// Carte formulaire (identique au login .card-modern)
+.card-modern {
+  width: 100%;
+  max-width: 380px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+
+  .title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5rem;
   }
 
   .subtitle {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.95rem;
-    margin: 0.25rem 0;
-  }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #777;
+    font-size: 0.85rem;
 
-  .version {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.8rem;
-    margin: 0;
+    ion-icon { color: #5C7A4D; }
   }
 }
 
-.config-form {
-  width: 100%;
-  max-width: 400px;
-  background: #fff;
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+// Input group (identique au login .input-group-modern)
+.input-group-modern {
+  position: relative;
+  margin-bottom: 1rem;
 
-  .form-label {
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 0.5rem;
-    display: block;
+  .input-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #5C7A4D;
+    font-size: 1rem;
+    z-index: 1;
   }
 
-  .ip-input-group {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    margin-bottom: 0.5rem;
-
-    .input-prefix {
-      background: #e8f5e9;
-      color: #3F5A2E;
-      padding: 10px 12px;
-      border-radius: 8px 0 0 8px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      border: 1px solid #c8e6c9;
-      border-right: none;
-    }
-
-    ion-input {
-      --border-radius: 0 8px 8px 0;
-    }
+  ion-input {
+    --padding-start: 38px;
+    --background: #f8f9fa;
+    --border-radius: 8px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    min-height: 44px;
   }
+}
 
-  .help-text {
-    color: #777;
-    font-size: 0.8rem;
-    margin: 0 0 1rem;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
+.help-text {
+  color: #777;
+  font-size: 0.8rem;
+  margin: 0 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .connection-status {
@@ -98,7 +137,7 @@
   gap: 8px;
   padding: 0.75rem 1rem;
   border-radius: 8px;
-  margin: 1rem 0;
+  margin-bottom: 1rem;
   font-size: 0.85rem;
 
   &.success {
@@ -117,7 +156,90 @@
   }
 }
 
+// Bouton tester (même taille que btn-login du login)
+.btn-test {
+  width: 100%;
+  padding: 12px;
+  background: #ffc107;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s;
+  margin-top: 0.5rem;
+  font-family: 'Barlow', sans-serif;
+
+  &:hover { background: #e0a800; }
+  &:disabled { opacity: 0.6; }
+
+  ion-icon { font-size: 1.1rem; }
+  ion-spinner { width: 20px; height: 20px; }
+}
+
+// Bouton continuer (même taille que btn-config du login)
 .btn-continue {
-  margin-top: 1rem;
-  --background: #3F5A2E;
+  width: 100%;
+  padding: 12px;
+  background: #3F5A2E;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s;
+  margin-top: 0.75rem;
+  font-family: 'Barlow', sans-serif;
+
+  &:hover { background: #5C7A4D; }
+  &:disabled { opacity: 0.6; }
+
+  ion-icon { font-size: 1.1rem; }
+}
+
+// Footer (identique au login)
+.config-footer {
+  margin-top: 1.5rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+// ── Tablette paysage ──
+@media (min-width: 768px) {
+  .card-modern {
+    max-width: 440px;
+    padding: 2rem;
+  }
+
+  .form-header .title {
+    font-size: 1.7rem;
+  }
+
+  .config-logo .brand-image {
+    max-height: 55px;
+  }
+
+  .config-logo .brand-text {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-modern {
+    max-width: 480px;
+    padding: 2.5rem;
+  }
 }

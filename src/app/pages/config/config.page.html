@@ -1,58 +1,69 @@
-<ion-content class="ion-padding config-page">
+<ion-content class="config-page" [scrollY]="false">
   <div class="config-container">
-    <!-- Logo identique au web -->
+    <!-- Logo section identique au login -->
     <div class="config-logo">
-      <img src="assets/img/logo-ig-fardc.png" alt="IG-FARDC" class="logo-image">
-      <h1>CTR.NET</h1>
-      <p class="subtitle">FARDC - Application Mobile</p>
-      <p class="version">Profil CONTROLEUR</p>
+      <a class="brand-link">
+        <img src="assets/img/logo-fardc.png" alt="FARDC Logo" class="brand-image">
+        <span class="brand-text">IG-FARDC</span>
+      </a>
     </div>
 
-    <!-- Formulaire -->
-    <div class="config-form">
-      <label class="form-label">Adresse IP du serveur</label>
-      <div class="ip-input-group">
-        <span class="input-prefix">http://</span>
-        <ion-input
-          type="text"
-          [(ngModel)]="serverIP"
-          placeholder="192.168.1.100"
-          inputmode="url"
-          autocorrect="off"
-          fill="outline"
-        ></ion-input>
-      </div>
-      <p class="help-text">
-        <ion-icon name="information-circle-outline"></ion-icon>
-        Adresse IPv4 du PC serveur sur le réseau Wi-Fi
-      </p>
-
-      <ion-button expand="block" fill="outline" (click)="testConnection()" [disabled]="testing || !serverIP.trim()">
-        @if (testing) {
-          <ion-spinner name="crescent" slot="start"></ion-spinner>
-          Test en cours...
-        } @else {
-          <ion-icon name="wifi" slot="start"></ion-icon>
-          Tester la connexion
-        }
-      </ion-button>
-
-      @if (connectionOk !== null) {
-        <div class="connection-status" [class.success]="connectionOk" [class.error]="!connectionOk">
-          <ion-icon [name]="connectionOk ? 'checkmark-circle' : 'close-circle'"></ion-icon>
-          {{ connectionMessage }}
+    <!-- Carte formulaire (même style que login) -->
+    <div class="card-modern">
+      <div class="form-header">
+        <div class="title">Configuration</div>
+        <div class="subtitle">
+          <ion-icon name="wifi"></ion-icon>
+          <span>Serveur API</span>
         </div>
-      }
+      </div>
 
-      <ion-button
-        expand="block"
-        (click)="saveAndContinue()"
-        [disabled]="!connectionOk"
-        class="btn-continue"
-      >
-        <ion-icon name="arrow-forward" slot="start"></ion-icon>
-        Continuer
-      </ion-button>
+      <div class="config-form">
+        <!-- Champ IP -->
+        <div class="input-group-modern">
+          <ion-icon name="wifi" class="input-icon"></ion-icon>
+          <ion-input
+            type="text"
+            [(ngModel)]="serverIP"
+            placeholder="192.168.1.100"
+            autocorrect="off"
+          ></ion-input>
+        </div>
+
+        <p class="help-text">
+          <ion-icon name="information-circle-outline"></ion-icon>
+          Adresse IPv4 du PC serveur (ex: 192.168.1.100)
+        </p>
+
+        @if (connectionOk !== null) {
+          <div class="connection-status" [class.success]="connectionOk" [class.error]="!connectionOk">
+            <ion-icon [name]="connectionOk ? 'checkmark-circle' : 'close-circle'"></ion-icon>
+            {{ connectionMessage }}
+          </div>
+        }
+
+        <!-- Bouton tester (même taille que btn-login) -->
+        <button type="button" class="btn-test" (click)="testConnection()" [disabled]="testing || !serverIP.trim()">
+          @if (testing) {
+            <ion-spinner name="crescent"></ion-spinner>
+            Test en cours...
+          } @else {
+            <ion-icon name="wifi"></ion-icon>
+            Tester la connexion
+          }
+        </button>
+
+        <!-- Bouton continuer (même taille que btn-config) -->
+        <button type="button" class="btn-continue" (click)="saveAndContinue()" [disabled]="!connectionOk">
+          <ion-icon name="arrow-forward"></ion-icon>
+          Continuer
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="config-footer">
+      <ion-icon name="shield-checkmark"></ion-icon>  CTR.NET-FARDC Mobile v1.1.0
     </div>
   </div>
 </ion-content>

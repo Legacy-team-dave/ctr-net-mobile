@@ -17,10 +17,20 @@ INSTALLATION
    git clone https://github.com/Legacy-team-dave/ctr-net-mobile.git
    cd ctr-net-mobile
 
-2. Installer les dépendances :
+2. Installer les dépendances (2 méthodes) :
+
+   Méthode 1 - Script batch :
+   INSTALL.bat
+
+   Méthode 2 - Ligne de commande :
    npm install
 
-3. Lancer en navigateur (dev) :
+3. Lancer en navigateur (dev) — 2 méthodes :
+
+   Méthode 1 - Script batch :
+   START.bat
+
+   Méthode 2 - Ligne de commande :
    npm start
    
    → Ouvrir http://localhost:8100
@@ -58,6 +68,12 @@ UTILISATION — PROFIL
 COMPILATION APK
 ---------------
 Méthode recommandée : GitHub Actions (automatique à chaque push)
+
+Méthode script batch :
+   BUILD_APK.bat
+
+Méthode script PowerShell :
+   .\build_apk.ps1
 
 Méthode manuelle :
    npm run build

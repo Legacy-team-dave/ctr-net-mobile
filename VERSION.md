@@ -1,10 +1,24 @@
 # Historique des versions - CTR.NET Mobile
 
+## v1.1.0 — Mars 2026
+
+### Alignement design et documentation
+
+- Page de configuration IP : même design que la page de connexion (fond, carte, boutons, tailles, marges)
+- Input group : margin-bottom 1rem identique au login
+- Bouton "Tester" : margin-top 0.5rem identique au bouton "Se connecter"
+- Meta theme-color : corrigé de #1b5e20 vers #3F5A2E (kaki foncé, cohérent avec le thème)
+- Documentation complète : ARCHITECTURE.md, PRESENTATION.md, PROMPT_PRESENTATION.md, QUICKSTART.txt, STRUCTURE.txt
+- Fichier de fonctionnement combiné web+mobile (FONCTIONNEMENT_COMPLET_WEB_MOBILE.md)
+- Scripts de lancement : START.bat, INSTALL.bat, BUILD_APK.bat, launch.ps1, build_apk.ps1
+- Mise à jour de toutes les versions dans les fichiers de documentation
+
 ## v1.0.0 — Juillet 2025
 
 ### Première version
 
-**Fonctionnalités**
+### Fonctionnalités
+
 - Écran splash animé (5 secondes, logo IG-FARDC)
 - Page de configuration IP serveur avec test de connexion
 - Authentification par login/mot de passe (rôle CONTROLEUR uniquement)
@@ -19,7 +33,8 @@
 - Affichage profil utilisateur avec avatar
 - Déconnexion depuis l'onglet Quitter
 
-**Technique**
+### Technique
+
 - Ionic 8 + Angular 20 + Capacitor 8
 - Composants Angular standalone (pas de NgModules)
 - Navigation par onglets (tabs) avec guards
@@ -29,7 +44,8 @@
 - Build APK automatisé via GitHub Actions
 - Cible Android SDK API 36, minSdk 22
 
-**API REST consommées**
+### API REST consommées
+
 - auth.php (login, logout, check)
 - controles.php (search, valider, historique)
 - profil.php (get, update)
