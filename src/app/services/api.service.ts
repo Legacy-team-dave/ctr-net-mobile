@@ -3,29 +3,34 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable, throwError, from } from 'rxjs';
 import { catchError, switchMap, timeout } from 'rxjs/operators';
 import { Preferences } from '@capacitor/preferences';
+import { Capacitor, registerPlugin } from '@capacitor/core';
 import { Militaire, LoginResponse, ApiResponse, User, ControleData } from '../models/interfaces';
+
+interface WifiIpPlugin {
+  getWifiIP(): Promise<{ ip: string }>;
+}
+
+const WifiIp = registerPlugin<WifiIpPlugin>('WifiIp');
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private readonly STORAGE_KEY_IP = 'server_ip';
   private readonly STORAGE_KEY_TOKEN = 'auth_token';
   private readonly REQUEST_TIMEOUT = 15000;
+  private readonly DETECTION_TIMEOUT = 3000;
 
   constructor(private http: HttpClient) {}
 
   // ── Storage ──
 
   async setServerIP(ip: string): Promise<void> {
-    ip = ip.trim().replace(/\/+$/, '');
-    if (!ip.startsWith('http')) {
-      ip = ip.replace(/^https?:\/\//, '');
-    }
-    await Preferences.set({ key: this.STORAGE_KEY_IP, value: ip });
+    const normalizedIp = this.normalizeServerIP(ip);
+    await Preferences.set({ key: this.STORAGE_KEY_IP, value: normalizedIp });
   }
 
   async getServerIP(): Promise<string> {
     const { value } = await Preferences.get({ key: this.STORAGE_KEY_IP });
-    return value || '';
+    return this.normalizeServerIP(value || '');
   }
 
   async setToken(token: string): Promise<void> {
@@ -65,30 +70,85 @@ export class ApiService {
   }
 
   private async pingServer(ip: string): Promise<void> {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 1500);
-    try {
-      await fetch(`http://${ip}/ctr.net-fardc/api/auth.php?action=check`, {
-        signal: controller.signal,
-        headers: { 'Accept': 'application/json' }
-      });
-    } finally {
-      clearTimeout(timer);
+    const endpoint = `http://${ip}/ctr.net-fardc/api/auth.php?action=check`;
+    let lastError: unknown;
+
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), this.DETECTION_TIMEOUT);
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'GET',
+          signal: controller.signal,
+          headers: { 'Accept': 'application/json' },
+          cache: 'no-store',
+        });
+
+        // Endpoint attendu: sans token -> 401 ; avec token valide -> 200
+        if (response.status === 200 || response.status === 401) {
+          return;
+        }
+
+        throw new Error(`Statut inattendu ${response.status}`);
+      } catch (error: unknown) {
+        lastError = error;
+      } finally {
+        clearTimeout(timer);
+      }
+
+      // Petit délai avant nouvelle tentative
+      await new Promise(resolve => setTimeout(resolve, 250));
     }
+
+    throw lastError instanceof Error ? lastError : new Error('Serveur non joignable');
   }
 
   private async detectSubnets(): Promise<string[]> {
     try {
       const localIP = await this.getLocalIP();
       const subnet = localIP.split('.').slice(0, 3).join('.');
-      return [subnet];
+      return [subnet, ...this.getCommonSubnets().filter(s => s !== subnet)];
     } catch {
       // Sous-réseaux courants (WiFi, hotspot Windows, hotspot Android)
-      return ['192.168.1', '192.168.0', '192.168.137', '192.168.43', '10.0.0'];
+      return this.getCommonSubnets();
     }
   }
 
-  private getLocalIP(): Promise<string> {
+  private async getLocalIP(): Promise<string> {
+    // 1. Plugin natif Android (fiable dans WebView)
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const result = await WifiIp.getWifiIP();
+        if (result.ip) return result.ip;
+      } catch { /* Fallback WebRTC */ }
+    }
+
+    // 2. Fallback WebRTC (navigateur)
+    return this.getLocalIPWebRTC();
+  }
+
+  private normalizeServerIP(rawValue: string): string {
+    return rawValue
+      .trim()
+      .replace(/^https?:\/\//i, '')
+      .replace(/\/+$/, '')
+      .replace(/\/.*$/, '');
+  }
+
+  private getCommonSubnets(): string[] {
+    return [
+      '192.168.1',
+      '192.168.0',
+      '192.168.137',
+      '192.168.43',
+      '10.0.0',
+      '10.42.0',
+      '172.20.10',
+    ];
+  }
+
+  private getLocalIPWebRTC(): Promise<string> {
     return new Promise((resolve, reject) => {
       const pc = new RTCPeerConnection({ iceServers: [] });
       pc.createDataChannel('');
