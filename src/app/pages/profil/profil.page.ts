@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {
-  IonHeader, IonToolbar, IonTitle, IonContent, IonIcon
+  IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, ToastController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -27,7 +27,7 @@ export class ProfilPage {
   dernierAcces = '';
   avatarUrl = 'assets/img/default-avatar.jpg';
 
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService, private toastCtrl: ToastController) {
     addIcons({ personCircle, server, person, mail, shieldCheckmark, time, text });
   }
 
@@ -57,12 +57,17 @@ export class ProfilPage {
         }
       }
     } catch {
-      // Silencieux
+      await this.showToast('Impossible de charger le profil', 'warning');
     }
     this.serverIP = await this.api.getServerIP();
   }
 
   onAvatarError(event: Event) {
     (event.target as HTMLImageElement).src = 'assets/img/default-avatar.jpg';
+  }
+
+  private async showToast(message: string, color: string) {
+    const toast = await this.toastCtrl.create({ message, duration: 3000, color, position: 'top' });
+    await toast.present();
   }
 }

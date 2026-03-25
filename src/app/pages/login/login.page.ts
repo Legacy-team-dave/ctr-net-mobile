@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import {
-  IonContent, IonInput, IonIcon, IonSpinner
+  IonContent, IonInput, IonIcon, IonSpinner, ToastController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { shieldCheckmark, person, lockClosed, logIn, settings, eye, eyeOff, alertCircle } from 'ionicons/icons';
@@ -25,9 +25,15 @@ export class LoginPage {
 
   constructor(
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private toastCtrl: ToastController
   ) {
     addIcons({ shieldCheckmark, person, lockClosed, logIn, settings, eye, eyeOff, alertCircle });
+  }
+
+  private async showToast(message: string, color: string) {
+    const toast = await this.toastCtrl.create({ message, duration: 3000, color, position: 'top' });
+    await toast.present();
   }
 
   goToConfig() {
@@ -53,7 +59,8 @@ export class LoginPage {
       this.password = '';
       this.router.navigateByUrl('/tabs/controle', { replaceUrl: true });
     } catch (err: unknown) {
-      this.errorMessage = err instanceof Error ? err.message : 'Erreur de connexion';
+      const msg = err instanceof Error ? err.message : 'Erreur de connexion';
+      await this.showToast(msg, 'danger');
     } finally {
       this.loading = false;
     }
