@@ -30,7 +30,7 @@ src/app/
 │   ├── auth.service.ts        ← Session utilisateur (Observable user$, checkSession, login, logout)
 │   └── cache.service.ts       ← Nettoyage automatique des caches (Preferences, orphans, 24h)
 └── pages/
-    ├── splash/                ← Écran démarrage (5s, logo IG-FARDC, animation)
+    ├── splash/                ← Splash Angular (5s, logo IG-FARDC, animation)
     ├── config/                ← Configuration IP serveur + test connexion
     ├── login/                 ← Formulaire connexion (CONTROLEUR uniquement)
     ├── controle/              ← Recherche militaire + validation contrôle (2 étapes)
@@ -41,12 +41,14 @@ src/app/
 ## Flux de navigation
 
 ```text
-splash (5s) → config (si pas d'IP) → login → tabs/controle
-                                      ↗
-              config (si IP déjà) → login → tabs/
-                                             ├── controle (onglet 1)
-                                             ├── profil   (onglet 2)
-                                             └── quitter  (onglet 3 → logout)
+splash (5s Angular après splash natif 2s) → login → tabs/controle
+                                              │
+                                              └── config (par bouton dédié ou redirection authGuard si aucune IP n'est configurée)
+
+tabs/
+├── controle (onglet 1)
+├── profil   (onglet 2)
+└── logout   (action de déconnexion)
 ```
 
 ## Communication API
@@ -97,7 +99,8 @@ Depuis la v1.1.0, la page de configuration IP utilise le même design que la pag
 
 - Input libre (minimum 2 caractères, debounce 300ms)
 - Recherche par matricule ou nom
-- Résultats affichés avec badges catégorie (Actif, DCD_AV_BIO, DCD_AP_BIO, RETRAITES, INTEGRES)
+- Résultats affichés avec badges catégorie (ACTIF, DCD AV BIO, DCD AP BIO, RETRAITES, INTEGRES)
+- Les militaires déjà contrôlés restent visibles, portent le badge `Déjà contrôlé` et ne sont pas sélectionnables
 
 ### Étape 2 : Validation
 
@@ -110,7 +113,7 @@ Depuis la v1.1.0, la page de configuration IP utilise le même design que la pag
 
 - Statut "Décédé" coché (automatique si catégorie DCD_AV_BIO)
 - Bénéficiaire existant affiché + champ nouveau bénéficiaire
-- Liens de parenté : Epouse/Epoux, Fils/Fille, Père/Mère, Frère/Sœur (cases à cocher, exclusion mutuelle)
+- Liens de parenté saisis individuellement : `Epouse`, `Epoux`, `Fils`, `Fille`, `Père`, `Mère`, `Frère`, `Sœur` (sélection exclusive)
 - Observations (optionnel)
 - Boutons "Favorable" / "Défavorable"
 - Envoi : `{matricule, mention, lien, beneficiaire, new_beneficiaire, observations, statut_decede: true}`
@@ -172,7 +175,7 @@ Build APK automatisé via GitHub Actions (`.github/workflows/build-apk.yml`) :
 2. Ubuntu-latest + Node 22 + Java 21 + Android SDK API 36 (minSdk 24)
 3. `npm ci` → `ng build --configuration production` → `cap sync android` → `gradlew assembleDebug`
 4. APK uploadé en artifact (`ctr.net-fardc-mobile.apk`)
-5. Release GitHub créée automatiquement avec l'APK en téléchargement direct
+5. Release GitHub créée ou mise à jour automatiquement pour le tag `v<version>` avec l'APK en téléchargement direct
 
 ## Gestion du cache (v1.3.0)
 

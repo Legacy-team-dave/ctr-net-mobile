@@ -5,6 +5,7 @@
 - Mode de configuration serveur actif : **saisie manuelle de l'IP** + test de connexion
 - Cible Android effective : **SDK 36, minSdk 24**
 - Version applicative (`package.json`) : **1.3.0**
+- APK de référence : **artifact/release GitHub Actions** nommé `ctr.net-fardc-mobile.apk`
 
 ## v1.3.0 — Mars 2026
 
@@ -18,16 +19,16 @@
 - Intégration dans `AuthService.logout()` — purge session au lieu de clearToken seul
 - Workflow GitHub Actions mis à jour : release GitHub automatique avec APK attachée
 - Version package.json alignée à 1.3.0
+- Le flux utilisateur officiel reste la saisie manuelle de l'IP ; les helpers de détection sont conservés pour diagnostic côté service
 
 ## v1.2.0 — Mars 2026
 
-### Détection automatique de l'IP serveur
+### Tentative de détection automatique de l'IP serveur
 
-- L'adresse IP du serveur est détectée automatiquement sur le réseau Wi-Fi local
+- Une logique de détection automatique a été ajoutée dans le service API
 - Scan du sous-réseau avec IPs prioritaires puis scan complet
-- Champ IP en lecture seule (plus de saisie manuelle)
-- Bouton "Tester la connexion" conservé
-- Méthodes ajoutées : `detectServer()`, `pingServer()`, `detectSubnets()`, `getLocalIP()`, `scanSubnets()`
+- Les méthodes de diagnostic sont restées disponibles : `detectServer()`, `pingServer()`, `detectSubnets()`, `getLocalIP()`, `scanSubnets()`
+- Le flux utilisateur officiel a ensuite été recentré sur la saisie manuelle de l'IP (voir état actuel et v1.3.0)
 
 ## v1.1.0 — Mars 2026
 

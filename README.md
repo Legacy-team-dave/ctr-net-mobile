@@ -24,7 +24,7 @@ ctr-net-mobile/
 │   │   │   ├── controle/           ← Recherche + validation militaire (2 étapes)
 │   │   │   ├── login/              ← Connexion CONTROLEUR
 │   │   │   ├── profil/             ← Affichage profil utilisateur (lecture seule)
-│   │   │   ├── splash/             ← Écran de démarrage (5 secondes)
+│   │   │   ├── splash/             ← Splash Angular (5 secondes après splash natif Capacitor)
 │   │   │   └── tabs/               ← Navigation par onglets (Contrôle, Profil, Quitter)
 │   │   ├── services/
 │   │   │   ├── api.service.ts      ← Client HTTP (API REST + gestion token)
@@ -103,7 +103,7 @@ L'application s'ouvre sur `http://localhost:4200`.
 
 ### Méthode 1 : GitHub Actions (recommandée)
 
-Chaque push sur la branche `main` déclenche automatiquement le build APK via GitHub Actions. L'APK de référence est celui généré par ce workflow. Il est disponible en téléchargement dans la section **Artifacts** et publié sur la release GitHub quand le workflow se termine correctement.
+Chaque push sur la branche `main` déclenche automatiquement le build APK via GitHub Actions. L'APK de référence est celui généré par ce workflow. Il est disponible en téléchargement dans la section **Artifacts** et la release/tag `v<version package.json>` est créée ou mise à jour quand le workflow se termine correctement.
 
 Repository : <https://github.com/Legacy-team-dave/ctr-net-mobile/actions>
 
@@ -122,7 +122,7 @@ npx cap sync android
 cd android
 ./gradlew assembleDebug
 
-# L'APK se trouve dans : android/app/build/outputs/apk/debug/app-debug.apk
+# L'APK se trouve dans : android/app/build/outputs/apk/debug/ctr.net-fardc-mobile.apk
 ```
 
 ### Méthode 3 : Android Studio
@@ -139,8 +139,8 @@ Puis dans Android Studio : **Build → Build Bundle(s)/APK(s) → Build APK(s)**
 
 ## Flux de l'application
 
-1. **Splash screen** → Logo IG-FARDC avec animation (5 secondes)
-2. **Premier lancement** → Saisie manuelle de l'IP serveur + test de connexion
+1. **Splash** → Splash Capacitor (~2 s) puis splash Angular avec animation (~5 s)
+2. **Configuration serveur** → Saisie manuelle de l'IP serveur + test de connexion
 3. **Test de connexion** → Vérifie que l'API est joignable
 4. **Connexion** → Login/mot de passe (profil CONTROLEUR uniquement)
 5. **Onglet Contrôle** → Recherche par matricule/nom → Sélection militaire
@@ -166,7 +166,7 @@ Puis dans Android Studio : **Build → Build Bundle(s)/APK(s) → Build APK(s)**
 
 | Catégorie | Badge | Description |
 | --- | --- | --- |
-| Actif | Vert | Militaire en service actif |
+| ACTIF | Vert | Militaire en service actif |
 | DCD_AV_BIO | Rouge foncé | Décédé avant biométrie |
 | DCD_AP_BIO | Rouge | Décédé après biométrie |
 | RETRAITES | Orange | Militaire retraité |

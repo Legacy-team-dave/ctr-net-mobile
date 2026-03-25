@@ -53,8 +53,8 @@ De l'installation à la saisie d'un contrôle en 9 étapes.
 **Points à dire :**
 
 1. **Installation** : APK distribué depuis GitHub Actions ou transfert direct.
-2. **Splash screen** : Logo IG-FARDC affiché pendant 5 secondes.
-3. **Configuration** : Saisie manuelle de l'adresse IP du serveur avec test de connexion.
+2. **Splash screen** : splash natif Capacitor court, puis splash Angular avec logo IG-FARDC pendant environ 5 secondes.
+3. **Configuration** : saisie manuelle de l'adresse IP du serveur avec test de connexion depuis la page dédiée.
 4. **Connexion** : Login/mot de passe (rôle CONTROLEUR vérifié côté serveur).
 5. **Recherche** : Saisie du matricule ou nom (minimum 2 caractères, recherche AJAX).
 6. **Sélection** : Le militaire trouvé s'affiche avec sa fiche complète et son badge catégorie.
@@ -69,12 +69,12 @@ Cinq catégories de militaires et trois mentions de contrôle structurent la sai
 
 **Points à dire :**
 
-- **Actif** : Militaire en service actif → mention "Présent".
+- **ACTIF** : Militaire en service actif → mention "Présent".
 - **DCD_AV_BIO** : Décédé avant biométrie → bénéficiaire + lien de parenté → "Favorable" ou "Défavorable".
 - **DCD_AP_BIO** : Décédé après biométrie → même logique que DCD_AV_BIO.
 - **RETRAITES** : Militaire retraité → contrôle standard.
 - **INTEGRES** : Militaire intégré → contrôle standard.
-- Les liens de parenté disponibles : Epouse/Epoux, Fils/Fille, Père/Mère, Frère/Sœur.
+- Les liens de parenté disponibles sont saisis individuellement : Epouse, Epoux, Fils, Fille, Père, Mère, Frère, Sœur.
 
 ### Slide 6 — Sécurité
 
@@ -163,8 +163,8 @@ L'application est opérationnelle et prête pour un déploiement terrain.
 #### Étape 1 — Premier lancement
 
 - Ouvrir l'application sur un appareil Android ou en navigateur (npm start).
-- L'écran splash s'affiche avec le logo IG-FARDC pendant 5 secondes.
-- La page de configuration apparaît (même design que le login : fond sombre, carte blanche).
+- Le splash natif Capacitor s'affiche brièvement, puis le splash Angular avec le logo IG-FARDC pendant environ 5 secondes.
+- La page login apparaît ; la page de configuration reste accessible via le bouton "Configurer le serveur".
 
 #### Étape 2 — Configuration serveur
 

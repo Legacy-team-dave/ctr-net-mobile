@@ -33,13 +33,13 @@ INSTALLATION
    Méthode 2 - Ligne de commande :
    npm start
 
-   → Ouvrir http://localhost:8100
+   → Ouvrir http://localhost:4200
 
 CONFIGURATION
 -------------
 Au premier lancement de l'application (navigateur ou APK) :
-1. L'écran splash s'affiche pendant 5 secondes
-2. La page de configuration apparaît
+1. Le splash natif Capacitor s'affiche brièvement, puis le splash Angular pendant environ 5 secondes
+2. La connexion démarre sur le login ; la configuration serveur reste accessible via le bouton dédié
 3. Saisir manuellement l'adresse IPv4 du PC serveur (ex: 10.71.62.9)
 4. Vérifier que le téléphone et le PC sont sur le même réseau Wi-Fi
 5. Cliquer sur "Tester la connexion" pour vérifier
@@ -86,7 +86,7 @@ Méthode manuelle :
    ./gradlew assembleDebug
 
 L'APK généré se trouve dans :
-   android/app/build/outputs/apk/debug/app-debug.apk
+   android/app/build/outputs/apk/debug/ctr.net-fardc-mobile.apk
 
 Remarque : l'APK local sert au test. L'APK officiel de distribution est celui généré par GitHub Actions.
 

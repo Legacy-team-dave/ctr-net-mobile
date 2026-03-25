@@ -65,7 +65,7 @@ L'application web gère trois profils avec des accès distincts :
 #### OPERATEUR
 
 - Accès opérationnel avec tableau de bord.
-- Redirection conditionnelle : si les préférences ne sont pas configurées, redirigé vers `preferences.php` → `equipes.php` (enregistrement équipe) → `index.php`.
+- Redirection conditionnelle : si les préférences ne sont pas configurées, redirigé vers `preferences.php`. Après enregistrement des préférences, la page redirige vers `equipes.php`, puis vers `index.php` via le bouton de continuation.
 - Saisie de contrôles, consultation de listes, exports.
 - Accès limité aux modules d'administration.
 
@@ -82,7 +82,7 @@ L'application web gère trois profils avec des accès distincts :
 3. Le système vérifie les identifiants dans la base MySQL (mot de passe hashé bcrypt).
 4. Si valide, une session PHP est créée avec les informations utilisateur.
 5. Option "Se souvenir de moi" : un cookie de session persistant est défini.
-6. Redirection selon le profil (ADMIN_IG → dashboard, CONTROLEUR → **bloqué côté web**, OPERATEUR → préférences → équipes → dashboard).
+6. Redirection selon le profil (ADMIN_IG → dashboard, CONTROLEUR → **bloqué côté web**, OPERATEUR → `preferences.php` si nécessaire, sinon `modules/controles/ajouter.php`).
 7. En cas d'échec, un log d'échec de connexion est enregistré.
 
 ### 2.4. Flux de contrôle (web)
@@ -90,22 +90,14 @@ L'application web gère trois profils avec des accès distincts :
 #### Saisie d'un contrôle depuis le web
 
 1. **Recherche** : Le contrôleur saisit un matricule ou nom dans le champ de recherche (AJAX autocomplete).
-2. **Résultats** : Les militaires correspondants s'affichent avec leur catégorie, grade, unité.
-3. **Sélection** : Cliquer sur un militaire ouvre sa fiche détaillée.
-4. **Vérification doublon** : Le système vérifie si le militaire a déjà été contrôlé (bloc orange d'avertissement).
-5. **Statut** : Cases à cocher "Vivant" ou "Décédé" (automatique selon la catégorie).
-6. **Militaire vivant** :
-   - Mention automatique "Présent".
-   - Lien de parenté automatique "Militaire lui-même".
-   - Un seul bouton "Présent" pour valider.
-7. **Militaire décédé** :
-   - Bénéficiaire existant affiché (si présent en base).
-   - Champ nouveau bénéficiaire disponible.
-   - Sélection obligatoire d'un lien de parenté (Epouse/Epoux, Fils/Fille, Père/Mère, Frère/Sœur).
-   - Champ observations (optionnel).
-   - Deux boutons : "Favorable" ou "Défavorable".
-8. **Enregistrement** : Insertion en base avec horodatage, ID contrôleur, coordonnées GPS (si mobile).
-9. **Toast de confirmation** : Notification visuelle de succès.
+1. **Résultats** : Les militaires correspondants s'affichent avec leur catégorie, grade, unité.
+1. **Sélection** : Cliquer sur un militaire ouvre sa fiche détaillée.
+1. **Vérification doublon** : Le système marque les militaires déjà contrôlés dans les résultats avec un badge `Déjà contrôlé` et les rend non sélectionnables.
+1. **Statut** : Cases à cocher "Vivant" ou "Décédé" (automatique selon la catégorie).
+1. **Militaire vivant** : mention automatique "Présent", lien de parenté automatique "Militaire lui-même" et un seul bouton "Présent" pour valider.
+1. **Militaire décédé** : bénéficiaire existant affiché si présent, champ nouveau bénéficiaire disponible, sélection obligatoire d'un lien parmi `Epouse`, `Epoux`, `Fils`, `Fille`, `Père`, `Mère`, `Frère`, `Sœur`, champ observations optionnel et deux boutons "Favorable" / "Défavorable".
+1. **Enregistrement** : Insertion en base avec horodatage, ID contrôleur, coordonnées GPS (si mobile).
+1. **Toast de confirmation** : Notification visuelle de succès.
 
 ### 2.5. Modules principaux
 
@@ -120,7 +112,7 @@ L'application web gère trois profils avec des accès distincts :
 
 - **Session PHP** : Vérification d'authentification sur chaque page (`require_login()`).
 - **Contrôle de profil** : Fonctions `check_profil()` et `verifier_acces()` limitent l'accès par rôle.
-- **Chiffrement AES-256-CBC** (v1.1.0+) : 8 fichiers sensibles sont chiffrés (database.php, auth.php, functions.php, etc.).
+- **Chiffrement AES-256-CBC** (v1.1.0+) : la commande `php bin/encrypt.php encrypt` cible par défaut 8 fichiers sensibles ; le chiffrement n'est pas activé automatiquement à l'installation.
 - **Mots de passe** : Hashage bcrypt, réinitialisation par token temporaire.
 - **Logs** : Connexions, échecs, ajouts, exports, modifications sont journalisés.
 - **CSRF** : Protection des formulaires sensibles.
@@ -158,26 +150,23 @@ est effectuée côté serveur dans `api/auth.php` qui refuse les profils non aut
 
 ### 3.3. Flux complet de l'application
 
-#### 3.3.1. Écran splash (5 secondes)
+#### 3.3.1. Écran splash
 
-- Au lancement, l'écran splash s'affiche avec le logo IG-FARDC.
-- Animation de fondu (fade-in) sur fond kaki.
-- Durée fixe de 5 secondes, puis redirection automatique.
-- Le splash Capacitor natif (2 secondes) s'affiche avant le splash Angular.
-- Après le splash, le système vérifie si une IP serveur est déjà configurée.
-  - Si non → page de configuration.
-  - Si oui → vérification de session → login ou onglets.
+- Au lancement, le splash Capacitor natif s'affiche brièvement (`launchShowDuration: 2000`).
+- Ensuite, le splash Angular s'affiche avec le logo IG-FARDC et une animation de fondu.
+- Le splash Angular dure 5 secondes, puis redirige vers `/login`.
+- La redirection vers `/config` intervient plus tard via `authGuard` lorsqu'un accès protégé est tenté sans IP configurée.
 
 #### 3.3.2. Page de configuration IP (design identique au login)
 
 - **Design** : Même fond d'image (fardc2.jpg) avec overlay sombre à 60%, même carte blanche avec border-radius 16px et backdrop-filter blur.
 - **Logo** : IG-FARDC en haut (même présentation que le login).
 - **Saisie manuelle** : L'adresse IP du serveur est saisie manuellement par l'utilisateur sur le réseau Wi-Fi local.
-- **Champ IP** : `.input-group-modern` avec icône Wi-Fi intégrée, champ éditable (ex. `10.71.62.9`).
+- **Champ IP** : `.input-group-modern` avec icône Wi-Fi intégrée, préfixe visuel fixe `http://` et champ éditable (ex. `10.71.62.9`).
 - **Bouton "Tester la connexion"** : Jaune (#ffc107), même taille que le bouton de connexion (padding 12px, width 100%).
 - **Test** : Envoie une requête GET à `http://{IP}/ctr.net-fardc/api/auth.php?action=check` avec timeout de 8 secondes. Si le serveur répond (même avec 401), la connexion est considérée comme réussie.
 - **Bouton "Continuer"** : Kaki foncé (#3F5A2E), même taille, activé uniquement après un test réussi.
-- **Stockage** : L'IP est sauvegardée via `Capacitor Preferences` sous la clé `server_ip`.
+- **Stockage** : L'IP est sauvegardée via `Capacitor Preferences` sous la clé `server_ip`, sans conserver le préfixe `http://`.
 
 #### 3.3.3. Page de connexion
 
@@ -192,7 +181,7 @@ est effectuée côté serveur dans `api/auth.php` qui refuse les profils non aut
   1. Envoi POST à `api/auth.php?action=login` avec `{login, password}`.
   2. Le serveur vérifie les identifiants et le profil (CONTROLEUR uniquement).
   3. Si succès : token Bearer retourné, stocké localement, redirection vers `/tabs/controle`.
-  4. Si échec : message d'erreur affiché dans un bandeau rouge.
+  4. Si échec : toast d'erreur en haut de l'écran ; les erreurs de validation locale restent affichées inline.
 
 #### 3.3.4. Navigation par onglets
 
@@ -213,14 +202,14 @@ Les onglets sont protégés par `authGuard` : si le token est invalide ou la ses
   - Nom complet en gras.
   - Badge de catégorie coloré (Actif=vert, DCD_AV_BIO=gris, DCD_AP_BIO=violet, RETRAITES=bleu, INTEGRES=rouge).
   - Grade, unité, garnison en sous-texte.
-- **Sélection** : Cliquer sur un résultat ouvre la fiche détaillée (étape 2).
+- **Sélection** : Cliquer sur un résultat ouvre la fiche détaillée (étape 2), sauf si le militaire est déjà contrôlé.
 
 #### 3.3.6. Page Contrôle — Étape 2 : Validation
 
 La fiche du militaire sélectionné s'affiche dans une carte verte (gradient kaki) avec :
 matricule, noms, grade, unité, garnison, province, catégorie (badge).
 
-**Si le militaire est déjà contrôlé** : un avertissement orange s'affiche mais n'empêche pas la validation.
+**Si le militaire est déjà contrôlé** : le résultat affiche un badge `Déjà contrôlé`, n'est pas cliquable et un toast d'avertissement renvoie vers une nouvelle recherche.
 
 **Statut Vivant (catégorie Actif, RETRAITES, INTEGRES)** :
 
@@ -233,11 +222,7 @@ matricule, noms, grade, unité, garnison, province, catégorie (badge).
 - La case "Décédé" est cochée automatiquement.
 - Le bénéficiaire existant est affiché dans un cadre vert clair.
 - Un champ "Nouveau bénéficiaire" est disponible.
-- Les liens de parenté sont présentés en grille 2×4 (4 groupes de 2 options) :
-  - Groupe Conjoint : Epouse / Epoux
-  - Groupe Enfant : Fils / Fille
-  - Groupe Parent : Père / Mère
-  - Groupe Fratrie : Frère / Sœur
+- Les liens de parenté sont présentés individuellement en grille : `Epouse`, `Epoux`, `Fils`, `Fille`, `Père`, `Mère`, `Frère`, `Sœur`.
 - Chaque lien est une case à cocher visuelle (div/span, pas d'input natif) avec exclusion mutuelle.
 - Champ observations en textarea (optionnel).
 - Deux boutons :
@@ -255,6 +240,7 @@ matricule, noms, grade, unité, garnison, province, catégorie (badge).
 - POST à `api/controles.php?action=valider` avec le payload complet.
 - En cas de succès : toast Ionic vert de confirmation + retour à la recherche.
 - En cas d'échec : toast rouge avec le message d'erreur.
+- Si le militaire est déjà contrôlé : toast `warning` avec le nom du militaire en gras.
 
 #### 3.3.7. Page Profil
 
@@ -264,7 +250,7 @@ matricule, noms, grade, unité, garnison, province, catégorie (badge).
 
 #### 3.3.8. Déconnexion
 
-- L'onglet "Quitter" affiche une confirmation.
+- L'action de déconnexion est portée par l'onglet "Déconnexion".
 - Si confirmé : POST à `api/auth.php?action=logout`, suppression du token local, redirection vers `/login`.
 - Le guard `noAuthGuard` empêche de revenir sur le login si déjà connecté.
 
