@@ -4,7 +4,7 @@
     <div class="config-logo">
       <a class="brand-link">
         <img src="assets/img/logo-fardc.png" alt="FARDC Logo" class="brand-image">
-        <span class="brand-text">CTL EFF MIL - FARDC Mobile v1.3.0</span>
+        <span class="brand-text">CTL EFF MIL - FARDC</span>
       </a>
     </div>
 
@@ -25,7 +25,7 @@
           <ion-input
             type="text"
             [(ngModel)]="serverIP"
-            placeholder="Ex: 10.71.62.9"
+            placeholder="Ex : 192.168.1.1"
             autocorrect="off"
             [readonly]="false"
           ></ion-input>
@@ -33,7 +33,7 @@
 
         <p class="help-text">
           <ion-icon name="information-circle-outline"></ion-icon>
-          Saisissez manuellement l'adresse IP du serveur local
+          Saisir l'adresse IP du serveur local
         </p>
 
         @if (connectionOk !== null && !detecting) {
@@ -64,7 +64,8 @@
 
     <!-- Footer -->
     <div class="config-footer">
-      <ion-icon name="shield-checkmark"></ion-icon>  IG FARDC
+      <ion-icon name="shield-checkmark"></ion-icon>
+IG-FARDC © 2026 - Contrôle Effectifs Militaires
     </div>
   </div>
 </ion-content>
