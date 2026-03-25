@@ -85,6 +85,12 @@ export class ControlePage {
   }
 
   selectMilitaire(mil: Militaire) {
+    if (this.isAlreadyControlled(mil)) {
+      this.showToast('Ce militaire a déjà été contrôlé. Veuillez effectuer une nouvelle recherche.', 'warning');
+      this.backToSearch();
+      return;
+    }
+
     this.currentMilitaire = mil;
     this.step = 'controle';
     this.resetControle();
@@ -169,6 +175,25 @@ export class ControlePage {
     if (cat === 'RETRAITES') return 'RETRAITÉ';
     if (cat === 'INTEGRES') return 'INTÉGRÉ';
     return 'ACTIF';
+  }
+
+  private isAlreadyControlled(mil: Militaire): boolean {
+    const rawValue = mil.deja_controle as unknown;
+
+    if (typeof rawValue === 'boolean') {
+      return rawValue;
+    }
+
+    if (typeof rawValue === 'number') {
+      return rawValue === 1;
+    }
+
+    if (typeof rawValue === 'string') {
+      const normalized = rawValue.trim().toLowerCase();
+      return normalized === '1' || normalized === 'true' || normalized === 'oui';
+    }
+
+    return false;
   }
 
   // ── Lien de parenté ──

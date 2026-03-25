@@ -297,19 +297,6 @@ ion-toolbar {
   }
 }
 
-.deja-controle-warning {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: rgba(255, 243, 224, 0.9);
-  color: #e65100;
-  padding: 0.5rem 0.75rem;
-  border-radius: 8px;
-  margin-top: 1rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
 // ── Statut temp (copie web .statut-temp) ──
 .statut-temp {
   background: #f8f9fa;
