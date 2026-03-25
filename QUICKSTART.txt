@@ -71,6 +71,7 @@ UTILISATION — PROFIL
 COMPILATION APK
 ---------------
 Méthode recommandée : GitHub Actions (automatique à chaque push)
+APK de référence : artifact/release généré par le workflow GitHub Actions
 
 Méthode script batch :
    BUILD_APK.bat
@@ -86,6 +87,8 @@ Méthode manuelle :
 
 L'APK généré se trouve dans :
    android/app/build/outputs/apk/debug/app-debug.apk
+
+Remarque : l'APK local sert au test. L'APK officiel de distribution est celui généré par GitHub Actions.
 
 DÉPANNAGE
 ---------

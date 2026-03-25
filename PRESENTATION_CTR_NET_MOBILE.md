@@ -104,11 +104,12 @@ Les contrôles mobiles sont visibles en temps réel sur l'application web.
 ### Slide 8 — Build et déploiement
 
 **Message clé**
-L'APK est généré automatiquement à chaque modification du code.
+L'APK de référence est généré automatiquement par GitHub Actions à chaque push sur `main`.
 
 **Points à dire :**
 
 - GitHub Actions compile l'APK à chaque push sur la branche `main`.
+- L'APK de distribution à retenir est celui publié par le workflow GitHub.
 - Pipeline : npm ci → ng build → cap sync → gradlew assembleDebug.
 - L'APK est téléchargeable dans les artifacts du workflow GitHub.
 - Alternatives : build en ligne de commande ou via Android Studio.

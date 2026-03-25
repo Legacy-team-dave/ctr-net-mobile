@@ -5,6 +5,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -51,20 +54,10 @@ jobs:
 
       - name: Get version
         id: version
-        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
-
-      - name: Check tag exists
-        id: tag_check
         run: |
-          if git ls-remote --tags origin "refs/tags/v${{ steps.version.outputs.version }}" | grep -q "refs/tags/v${{ steps.version.outputs.version }}"; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-          fi
+          echo version=$(node -p 'require("./package.json").version') >> "$GITHUB_OUTPUT"
 
-      - name: Create GitHub Release
-        if: steps.tag_check.outputs.exists == 'false'
-        continue-on-error: true
+      - name: Create or Update GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.version }}
@@ -72,7 +65,7 @@ jobs:
           body: |
             ## CTR.NET FARDC Mobile v${{ steps.version.outputs.version }}
 
-            APK debug pour installation directe sur Android.
+            APK de référence généré automatiquement par GitHub Actions.
 
             ### Installation
             1. Télécharger `ctr.net-fardc-mobile.apk`

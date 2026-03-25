@@ -103,11 +103,13 @@ L'application s'ouvre sur `http://localhost:4200`.
 
 ### Méthode 1 : GitHub Actions (recommandée)
 
-Chaque push sur la branche `main` déclenche automatiquement le build APK via GitHub Actions. L'APK est disponible en téléchargement dans la section **Artifacts** du workflow.
+Chaque push sur la branche `main` déclenche automatiquement le build APK via GitHub Actions. L'APK de référence est celui généré par ce workflow. Il est disponible en téléchargement dans la section **Artifacts** et publié sur la release GitHub quand le workflow se termine correctement.
 
 Repository : <https://github.com/Legacy-team-dave/ctr-net-mobile/actions>
 
 ### Méthode 2 : Ligne de commande
+
+Cette méthode sert au contrôle local. L'APK de référence reste celui généré par GitHub Actions.
 
 ```bash
 # 1. Build Angular production
@@ -124,6 +126,8 @@ cd android
 ```
 
 ### Méthode 3 : Android Studio
+
+Cette méthode sert au debug local. L'APK de référence reste celui généré par GitHub Actions.
 
 ```bash
 npx ng build --configuration production
