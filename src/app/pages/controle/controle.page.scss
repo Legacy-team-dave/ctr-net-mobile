@@ -171,6 +171,15 @@ ion-toolbar {
   }
 }
 
+.result-item-disabled {
+  cursor: not-allowed;
+  opacity: 0.75;
+
+  &:active {
+    background: transparent;
+  }
+}
+
 .result-row-top {
   display: flex;
   justify-content: space-between;
@@ -181,6 +190,12 @@ ion-toolbar {
     font-size: 0.9rem;
     color: #212529;
   }
+}
+
+.result-row-badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .result-row-bottom {
@@ -246,6 +261,10 @@ ion-toolbar {
 
 .badge-integre {
   background: linear-gradient(135deg, #dc3545, #b02a37);
+}
+
+.badge-deja-controle-mini {
+  background: linear-gradient(135deg, #e65100, #bf360c);
 }
 
 // ── Fiche militaire (copie web .militaire-info) ──

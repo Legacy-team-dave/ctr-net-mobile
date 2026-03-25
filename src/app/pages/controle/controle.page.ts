@@ -177,7 +177,7 @@ export class ControlePage {
     return 'ACTIF';
   }
 
-  private isAlreadyControlled(mil: Militaire): boolean {
+  isAlreadyControlled(mil: Militaire): boolean {
     const rawValue = mil.deja_controle as unknown;
 
     if (typeof rawValue === 'boolean') {

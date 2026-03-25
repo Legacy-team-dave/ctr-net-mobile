@@ -46,13 +46,25 @@
           @if (searchResults.length > 0 && !searching) {
             <div class="results-list">
               @for (mil of searchResults; track mil.matricule) {
-                <div class="result-item" (click)="selectMilitaire(mil)">
+                <div
+                  class="result-item"
+                  [class.result-item-disabled]="isAlreadyControlled(mil)"
+                  (click)="!isAlreadyControlled(mil) && selectMilitaire(mil)"
+                >
                   <div class="result-row-top">
                     <strong>{{ mil.noms }}</strong>
-                    <span class="badge-statut-mini {{ getBadgeClass(mil) }}">
-                      <ion-icon [name]="getBadgeIcon(mil)"></ion-icon>
-                      {{ getBadgeLabel(mil) }}
-                    </span>
+                    <div class="result-row-badges">
+                      <span class="badge-statut-mini {{ getBadgeClass(mil) }}">
+                        <ion-icon [name]="getBadgeIcon(mil)"></ion-icon>
+                        {{ getBadgeLabel(mil) }}
+                      </span>
+                      @if (isAlreadyControlled(mil)) {
+                        <span class="badge-statut-mini badge-deja-controle-mini">
+                          <ion-icon name="alert-circle"></ion-icon>
+                          Déjà contrôlé
+                        </span>
+                      }
+                    </div>
                   </div>
                   <div class="result-row-bottom">
                     <span><ion-icon name="card"></ion-icon> {{ mil.matricule }}</span>
