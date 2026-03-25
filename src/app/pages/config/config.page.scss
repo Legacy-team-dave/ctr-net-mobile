@@ -114,8 +114,22 @@
     z-index: 1;
   }
 
+  .input-prefix {
+    position: absolute;
+    left: 34px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 0.9rem;
+    z-index: 1;
+    pointer-events: none;
+    -webkit-user-select: none;
+    user-select: none;
+    line-height: 1;
+  }
+
   ion-input {
-    --padding-start: 38px;
+    --padding-start: 88px;
     --background: #f8f9fa;
     --border-radius: 8px;
     border: 1px solid #ddd;
