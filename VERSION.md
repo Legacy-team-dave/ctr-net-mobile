@@ -6,6 +6,7 @@
 - Cible Android effective : **SDK 36, minSdk 24**
 - Version applicative (`package.json`) : **1.3.0**
 - APK de référence : **artifact/release GitHub Actions** nommé `ctr.net-fardc-mobile.apk`
+- Footer UI harmonisé sur les pages **Configuration** et **Login** : `IG-FARDC © 2026`
 
 ## v1.3.0 — Mars 2026
 
