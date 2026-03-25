@@ -121,7 +121,8 @@ L'application web gère trois profils avec des accès distincts :
 
 - **Fréquence** : Toutes les 8 heures (tâche planifiée Windows).
 - **Format** : CSV (Excel compatible) + XLSX.
-- **Mode** : Incrémental (seulement les nouveaux éléments).
+- **Mode** : Consolidé (ancienne + nouvelles données dans la même archive ZIP mise à jour).
+- **Archive principale** : `backups/backup_consolide_latest.zip`.
 - **Sources** : Tables controles, litiges, non_vus.
 - **Purge** : Suppression automatique des archives de plus de 60 jours + conservation des 30 dernières archives non identiques + déduplication SHA256.
 - **Scripts** : `setup_backup_task.bat`, `setup_backup_task.ps1`, `run_backup_job.ps1`.
@@ -329,6 +330,7 @@ Le workflow GitHub Actions (`.github/workflows/build-apk.yml`) :
 4. `npm ci` → `npx ng build --configuration production` → `npx cap sync android`.
 5. `chmod +x gradlew && ./gradlew assembleDebug`.
 6. L'APK est uploadé en artifact sous le nom `ctr.net-fardc-mobile`.
+7. En local, `BUILD_APK.bat` et `build_apk.ps1` copient aussi un APK distribuable vers `dist/apk/ctr-net-mobile-latest-debug.apk`.
 
 ---
 
@@ -434,8 +436,8 @@ Les deux applications partagent le même thème visuel :
 ### 7.2. Mobile
 
 1. Le serveur web doit être opérationnel et accessible sur le réseau Wi-Fi.
-2. Télécharger l'APK depuis les artifacts GitHub Actions.
-3. Installer l'APK sur l'appareil Android (autoriser les sources inconnues).
+2. Télécharger l'APK depuis les artifacts GitHub Actions ou générer localement via `BUILD_APK.bat` / `build_apk.ps1`.
+3. Utiliser `INSTALL_APK.bat` pour installation ADB rapide (USB) ou installer manuellement l'APK (`dist/apk/ctr-net-mobile-latest-debug.apk`).
 4. Au premier lancement : configurer l'IP du serveur et tester la connexion.
 5. Se connecter avec un compte CONTROLEUR.
 6. Commencer les contrôles terrain.

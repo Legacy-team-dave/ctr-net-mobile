@@ -122,7 +122,8 @@ npx cap sync android
 cd android
 ./gradlew assembleDebug
 
-# L'APK se trouve dans : android/app/build/outputs/apk/debug/ctr.net-fardc-mobile.apk
+# APK local source : android/app/build/outputs/apk/debug/app-debug.apk
+# APK distribuable : dist/apk/ctr-net-mobile-latest-debug.apk (via BUILD_APK.bat ou build_apk.ps1)
 ```
 
 ### Méthode 3 : Android Studio
@@ -243,6 +244,7 @@ Le workflow `.github/workflows/build-apk.yml` :
 | --- | --- | --- |
 | `START.bat` | Batch | Démarrer le serveur de développement |
 | `INSTALL.bat` | Batch | Installer les dépendances npm |
-| `BUILD_APK.bat` | Batch | Compiler l'APK Android (3 étapes) |
+| `BUILD_APK.bat` | Batch | Compiler l'APK Android, générer `dist/apk/*latest*`, proposer installation ADB |
+| `INSTALL_APK.bat` | Batch | Installer rapidement l'APK sur appareil Android connecté (ADB) |
 | `launch.ps1` | PowerShell | Démarrer le serveur dev |
-| `build_apk.ps1` | PowerShell | Compiler l'APK Android |
+| `build_apk.ps1` | PowerShell | Compiler l'APK Android et générer `dist/apk/*latest*` (`-InstallOnDevice` optionnel) |

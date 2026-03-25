@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul
 title CTR.NET FARDC Mobile - Build APK
 echo =========================================================
 echo   CTR.NET FARDC Mobile - Compilation APK Android
@@ -22,7 +23,7 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-echo [OK] Node.js : 
+echo [OK] Node.js :
 node --version
 echo [OK] Java :
 java -version 2>&1 | findstr /i "version"
@@ -67,9 +68,34 @@ if %errorlevel% neq 0 (
 )
 cd ..
 
+set "APK_SOURCE=android\app\build\outputs\apk\debug\app-debug.apk"
+set "APK_DIST_DIR=dist\apk"
+set "APK_DIST=%APK_DIST_DIR%\ctr-net-mobile-latest-debug.apk"
+
+if not exist "%APK_SOURCE%" (
+    echo [ERREUR] APK introuvable: %APK_SOURCE%
+    pause
+    exit /b 1
+)
+
+if not exist "%APK_DIST_DIR%" mkdir "%APK_DIST_DIR%" >nul 2>&1
+copy /Y "%APK_SOURCE%" "%APK_DIST%" >nul
+if %errorlevel% neq 0 (
+    echo [ERREUR] Echec de copie vers %APK_DIST%
+    pause
+    exit /b 1
+)
+
 echo.
 echo =========================================================
 echo   [OK] APK genere avec succes !
-echo   Emplacement : android\app\build\outputs\apk\debug\app-debug.apk
+echo   Emplacement source : %APK_SOURCE%
+echo   APK distribuable   : %APK_DIST%
 echo =========================================================
+
+set /p INSTALL_NOW=Installer automatiquement sur appareil Android connecte (ADB) ? [O/N]:
+if /I "%INSTALL_NOW%"=="O" (
+    call INSTALL_APK.bat "%APK_DIST%"
+)
+
 pause

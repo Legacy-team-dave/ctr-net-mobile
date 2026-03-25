@@ -78,6 +78,7 @@ Méthode script batch :
 
 Méthode script PowerShell :
    .\build_apk.ps1
+   .\build_apk.ps1 -InstallOnDevice
 
 Méthode manuelle :
    npm run build
@@ -85,8 +86,14 @@ Méthode manuelle :
    cd android
    ./gradlew assembleDebug
 
-L'APK généré se trouve dans :
-   android/app/build/outputs/apk/debug/ctr.net-fardc-mobile.apk
+L'APK local source se trouve dans :
+   android/app/build/outputs/apk/debug/app-debug.apk
+
+L'APK distribuable local est copié dans :
+   dist/apk/ctr-net-mobile-latest-debug.apk
+
+Installation rapide sur appareil Android connecté :
+   INSTALL_APK.bat
 
 Remarque : l'APK local sert au test. L'APK officiel de distribution est celui généré par GitHub Actions.
 

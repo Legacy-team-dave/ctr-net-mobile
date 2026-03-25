@@ -2,6 +2,10 @@
 #   CTR.NET FARDC Mobile - Build APK Android
 # =========================================================
 
+param(
+    [switch]$InstallOnDevice = $false
+)
+
 Write-Host "=========================================================" -ForegroundColor Cyan
 Write-Host "  CTR.NET FARDC Mobile - Compilation APK Android" -ForegroundColor Cyan
 Write-Host "=========================================================" -ForegroundColor Cyan
@@ -67,9 +71,44 @@ if ($buildResult -ne 0) {
     exit 1
 }
 
+$apkSource = Join-Path $PSScriptRoot 'android\app\build\outputs\apk\debug\app-debug.apk'
+$apkDistDir = Join-Path $PSScriptRoot 'dist\apk'
+$apkDist = Join-Path $apkDistDir 'ctr-net-mobile-latest-debug.apk'
+
+if (-not (Test-Path $apkSource)) {
+    Write-Host "[ERREUR] APK introuvable : $apkSource" -ForegroundColor Red
+    Read-Host "Appuyez sur Entree pour quitter"
+    exit 1
+}
+
+if (-not (Test-Path $apkDistDir)) {
+    New-Item -ItemType Directory -Path $apkDistDir | Out-Null
+}
+
+Copy-Item -Path $apkSource -Destination $apkDist -Force
+
 Write-Host ""
 Write-Host "=========================================================" -ForegroundColor Green
 Write-Host "  [OK] APK genere avec succes !" -ForegroundColor Green
-Write-Host "  Emplacement : android\app\build\outputs\apk\debug\app-debug.apk" -ForegroundColor Green
+Write-Host "  Emplacement source : android\app\build\outputs\apk\debug\app-debug.apk" -ForegroundColor Green
+Write-Host "  APK distribuable   : dist\apk\ctr-net-mobile-latest-debug.apk" -ForegroundColor Green
 Write-Host "=========================================================" -ForegroundColor Green
+
+if ($InstallOnDevice) {
+    $adb = Get-Command adb -ErrorAction SilentlyContinue
+    if (-not $adb) {
+        Write-Host "[ERREUR] adb introuvable dans le PATH." -ForegroundColor Red
+    }
+    else {
+        Write-Host "[INFO] Installation ADB en cours..." -ForegroundColor Yellow
+        & adb install -r $apkDist
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "[OK] APK installe sur l'appareil connecte." -ForegroundColor Green
+        }
+        else {
+            Write-Host "[ERREUR] Echec d'installation ADB." -ForegroundColor Red
+        }
+    }
+}
+
 Read-Host "Appuyez sur Entree pour quitter"
