@@ -86,7 +86,8 @@ export class ControlePage {
 
   selectMilitaire(mil: Militaire) {
     if (this.isAlreadyControlled(mil)) {
-      this.showToast('Ce militaire a déjà été contrôlé. Veuillez effectuer une nouvelle recherche.', 'warning');
+      const safeName = this.escapeHtml(mil.noms || mil.matricule || 'Militaire');
+      this.showToast(`<strong>${safeName}</strong> a déjà été contrôlé. Veuillez effectuer une nouvelle recherche.`, 'warning');
       this.backToSearch();
       return;
     }
@@ -194,6 +195,15 @@ export class ControlePage {
     }
 
     return false;
+  }
+
+  private escapeHtml(value: string): string {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/\"/g, '&quot;')
+      .replace(/'/g, '&#039;');
   }
 
   // ── Lien de parenté ──
