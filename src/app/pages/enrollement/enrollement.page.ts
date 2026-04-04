@@ -62,6 +62,8 @@ export class EnrollementPage implements OnDestroy {
   readonly isCoppernicDevice = /coppernic|c-one|c-five|c-five\.0|tab/i.test((navigator.userAgent || '').toLowerCase());
   scannerMessage = 'Visez le QR code généré depuis le PC.';
   scannedPayload: QrControlePayload | null = null;
+  qrRawPayload = '';
+  qrResolvedPayload = '';
   currentMilitaire: Militaire | null = null;
 
   photoData = '';
@@ -389,6 +391,8 @@ export class EnrollementPage implements OnDestroy {
     this.currentStep = 'scan';
     this.manualQr = '';
     this.scannedPayload = null;
+    this.qrRawPayload = '';
+    this.qrResolvedPayload = '';
     this.currentMilitaire = null;
     this.photoData = '';
     this.empreinteGaucheData = '';
@@ -420,7 +424,9 @@ export class EnrollementPage implements OnDestroy {
       }
 
       this.manualQr = raw;
+      this.qrRawPayload = raw;
       this.scannedPayload = payload;
+      this.qrResolvedPayload = JSON.stringify(payload, null, 2);
       this.stopScanner();
       await this.loadMilitaire(payload);
     } catch (error: unknown) {
@@ -437,6 +443,7 @@ export class EnrollementPage implements OnDestroy {
       const exact = await this.resolveMilitaireFromServer(enrichedPayload.matricule);
 
       this.scannedPayload = enrichedPayload;
+      this.qrResolvedPayload = JSON.stringify(enrichedPayload, null, 2);
       this.currentMilitaire = exact || this.createFallbackMilitaire(enrichedPayload);
       this.currentStep = 'scan';
 

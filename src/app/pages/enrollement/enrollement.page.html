@@ -124,6 +124,20 @@
                 Suivant : capturer la photo
               </button>
             </div>
+
+            <details class="manual-block">
+              <summary class="section-label" style="cursor:pointer;">Diagnostic QR mobile</summary>
+              <div class="info-grid mt-2">
+                <div class="info-item" style="grid-column: 1 / -1;">
+                  <span class="info-label">Payload brut scanné :</span>
+                  <pre class="info-value" style="white-space: pre-wrap;">{{ qrRawPayload || '—' }}</pre>
+                </div>
+                <div class="info-item" style="grid-column: 1 / -1;">
+                  <span class="info-label">Payload résolu / enrichi :</span>
+                  <pre class="info-value" style="white-space: pre-wrap;">{{ qrResolvedPayload || '—' }}</pre>
+                </div>
+              </div>
+            </details>
           }
         </div>
       </div>
