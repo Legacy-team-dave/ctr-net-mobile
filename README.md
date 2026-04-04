@@ -16,6 +16,9 @@
 - **Couleurs** : bleu BIC `#0057B8` / `#003C8F`
 - **Mode terrain** : compatible tablette Android / Coppernic
 - **Stockage local** : file d’attente hors ligne pour synchronisation différée
+- **Mise à jour APK** : signature stable + versionnement Android pour permettre les prochaines mises à jour sans désinstallation
+
+> Si un appareil possède encore une très ancienne APK `ENROL.NET` signée différemment, une **désinstallation unique** peut être nécessaire avant de revenir à un cycle normal de mise à jour.
 
 ## Flux métier réel
 
