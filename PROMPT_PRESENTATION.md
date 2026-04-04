@@ -19,8 +19,8 @@ Objectif de la présentation :
 Contexte fonctionnel réel à respecter :
 
 - Profil unique : `ENROLEUR`
-- Flux réel : Splash → Configuration IP → Login → Photo → Empreintes → QR / informations personnelles → Validation → Synchronisation
-- Fonction principale : enrôler un militaire vivant avec photo, empreintes, lecture du QR et validation finale
+- Flux réel : Splash → Configuration IP → Login → Capture de la carte → Empreintes via capteur → QR / informations personnelles → Validation → Synchronisation
+- Fonction principale : enrôler un militaire vivant avec capture de carte, empreintes biométriques, lecture du QR et validation finale
 - Stockage local : mise en file hors ligne via IndexedDB en attendant la synchronisation
 - Communication : API REST via Wi-Fi intranet (token Bearer, timeout 15s)
 - URL de base serveur : `http://{IP}/ctr.net-fardc/api/`
@@ -50,9 +50,9 @@ Consignes de production :
    - Saisie manuelle de l'IP serveur, clic "Tester la connexion"
    - Message de succès vert → clic "Continuer"
    - Connexion avec identifiants `ENROLEUR`
-   - Capture de la photo du militaire
-   - Capture des empreintes
-   - Scan du QR affiché côté web uniquement
+   - Capture de la carte du militaire avec la caméra arrière
+   - Capture des empreintes via le capteur biométrique
+   - Scan du QR affiché côté web avec le scanner professionnel uniquement
    - Vérification des informations personnelles puis validation finale
    - Consultation profil (onglet Profil)
    - Déconnexion (onglet Quitter avec confirmation)

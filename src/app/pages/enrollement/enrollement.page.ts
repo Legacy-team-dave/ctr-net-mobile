@@ -23,7 +23,8 @@ import {
 import { EnrollementLocalService } from '../../services/enrollement-local.service';
 
 type EnrollementStep = 'photo' | 'fingerprints' | 'scan' | 'review';
-type ScanTarget = 'photo' | 'left' | 'right';
+type CaptureTarget = 'photo';
+type FingerprintTarget = 'left' | 'right';
 
 type DetectedBarcode = { rawValue?: string };
 type BarcodeDetectorSource = HTMLVideoElement | HTMLCanvasElement | HTMLImageElement | ImageBitmap;
@@ -41,7 +42,12 @@ interface NativeBarcodeScannerPlugin {
   openSettings?: () => Promise<void>;
 }
 
+interface NativeFingerprintScannerPlugin {
+  capture?: (options?: { finger?: FingerprintTarget }) => Promise<{ imageBase64?: string; templateBase64?: string }>;
+}
+
 const NativeBarcodeScanner = registerPlugin<NativeBarcodeScannerPlugin>('BarcodeScanner');
+const NativeFingerprintScanner = registerPlugin<NativeFingerprintScannerPlugin>('FingerprintScanner');
 
 @Component({
   selector: 'app-enrollement',
@@ -56,11 +62,11 @@ const NativeBarcodeScanner = registerPlugin<NativeBarcodeScannerPlugin>('Barcode
 })
 export class EnrollementPage implements OnDestroy {
   @ViewChild('scannerVideo') scannerVideo?: ElementRef<HTMLVideoElement>;
-  @ViewChild('qrImageInput') qrImageInput?: ElementRef<HTMLInputElement>;
+  @ViewChild('cardCaptureInput') cardCaptureInput?: ElementRef<HTMLInputElement>;
 
   readonly steps: EnrollementStep[] = ['photo', 'fingerprints', 'scan', 'review'];
   readonly stepLabels: Record<EnrollementStep, string> = {
-    photo: 'Photo',
+    photo: 'Carte',
     fingerprints: 'Empreintes',
     scan: 'Infos QR',
     review: 'Validation',
@@ -71,7 +77,7 @@ export class EnrollementPage implements OnDestroy {
   scannerActive = false;
   nativeScannerBusy = false;
   readonly isCoppernicDevice = /coppernic|c-one|c-five|c-five\.0|tab/i.test((navigator.userAgent || '').toLowerCase());
-  scannerMessage = 'Utilisez le scanner natif ou une photo nette du QR pour charger les informations personnelles.';
+  scannerMessage = 'Utilisez le scanner professionnel pour lire le QR et charger les informations personnelles.';
   scannedPayload: QrControlePayload | null = null;
   qrRawPayload = '';
   qrResolvedPayload = '';
@@ -142,20 +148,21 @@ export class EnrollementPage implements OnDestroy {
 
   async nextStep() {
     if (this.currentStep === 'photo' && !this.photoData) {
-      await this.showToast('Capturez d’abord la photo du militaire.', 'warning');
+      await this.showToast('Capturez d’abord la carte du militaire.', 'warning');
       return;
     }
 
     if (this.currentStep === 'fingerprints' && !this.empreinteGaucheData && !this.empreinteDroiteData) {
-      await this.showToast('Capturez au moins une empreinte avant de continuer.', 'warning');
+      await this.showToast('Capturez au moins une empreinte via le capteur avant de continuer.', 'warning');
       return;
     }
 
     if (this.currentStep === 'scan' && !this.currentMilitaire) {
-      await this.showToast('Scannez d’abord le QR code et chargez les informations personnelles.', 'warning');
+      await this.showToast('Scannez d’abord le QR code pour charger les informations personnelles.', 'warning');
       return;
     }
 
+    this.stopScanner();
     const index = this.steps.indexOf(this.currentStep);
     if (index < this.steps.length - 1) {
       this.currentStep = this.steps[index + 1];
@@ -163,6 +170,7 @@ export class EnrollementPage implements OnDestroy {
   }
 
   previousStep() {
+    this.stopScanner();
     const index = this.steps.indexOf(this.currentStep);
     if (index > 0) {
       this.currentStep = this.steps[index - 1];
@@ -176,7 +184,7 @@ export class EnrollementPage implements OnDestroy {
     }
 
     if (!navigator.mediaDevices?.getUserMedia) {
-      this.scannerMessage = 'Caméra non disponible sur cet appareil. Utilisez le scan QR par photo.';
+      this.scannerMessage = 'Scanner QR indisponible sur cet appareil. Utilisez un terminal équipé.';
       await this.showToast(this.scannerMessage, 'warning');
       return;
     }
@@ -190,8 +198,8 @@ export class EnrollementPage implements OnDestroy {
 
       this.scannerActive = true;
       this.scannerMessage = this.canUseLiveScanner
-        ? 'Scan en cours… alignez le QR code dans le cadre.'
-        : 'Caméra ouverte. Si le scan auto ne démarre pas, reprenez le scan ou utilisez une photo du QR.';
+        ? 'Scan professionnel en cours… alignez le QR dans le cadre.'
+        : 'Caméra arrière ouverte. Présentez le QR dans le cadre de lecture.';
 
       setTimeout(async () => {
         const video = this.scannerVideo?.nativeElement;
@@ -223,7 +231,7 @@ export class EnrollementPage implements OnDestroy {
     try {
       const { supported } = await NativeBarcodeScanner.isSupported();
       if (!supported) {
-        throw new Error('Le scanner QR natif n’est pas disponible sur cet appareil. Utilisez le scan par photo du QR.');
+        throw new Error('Le scanner QR natif n’est pas disponible sur cet appareil. Utilisez un terminal équipé du module de lecture QR.');
       }
 
       if (typeof NativeBarcodeScanner.isGoogleBarcodeScannerModuleAvailable === 'function') {
@@ -243,13 +251,13 @@ export class EnrollementPage implements OnDestroy {
 
       const qrValue = barcodes.find((item: NativeScanBarcode) => typeof item.rawValue === 'string' && item.rawValue.trim());
       if (!qrValue?.rawValue) {
-        await this.showToast('Aucun QR détecté. Réessayez ou utilisez une photo plus nette du QR.', 'warning');
+        await this.showToast('Aucun QR détecté. Réessayez avec le scanner professionnel.', 'warning');
         return;
       }
 
       await this.handleQrResult(qrValue.rawValue);
     } catch (error: unknown) {
-      this.scannerMessage = 'Scan natif indisponible. Utilisez une photo nette du QR.';
+      this.scannerMessage = 'Scan natif indisponible. Utilisez un terminal biométrique compatible.';
       const message = error instanceof Error ? error.message : 'Impossible d’ouvrir le scanner QR natif.';
       await this.showToast(message, 'danger');
     } finally {
@@ -257,30 +265,27 @@ export class EnrollementPage implements OnDestroy {
     }
   }
 
-  openQrImagePicker() {
-    this.qrImageInput?.nativeElement.click();
-  }
-
-  async onQrImageSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const file = input.files?.[0];
-
-    if (!file) {
-      return;
-    }
-
+  async captureFingerprint(target: FingerprintTarget) {
     try {
-      const qrContent = await this.readQrFromFile(file);
-      if (!qrContent) {
-        throw new Error('QR code non détecté sur la photo. Réessayez avec une image plus nette.');
+      if (typeof NativeFingerprintScanner.capture === 'function') {
+        const result = await NativeFingerprintScanner.capture({ finger: target });
+        const raw = result?.imageBase64 || result?.templateBase64 || '';
+        if (raw) {
+          const normalized = raw.startsWith('data:') ? raw : `data:image/png;base64,${raw}`;
+          if (target === 'left') {
+            this.empreinteGaucheData = normalized;
+          } else {
+            this.empreinteDroiteData = normalized;
+          }
+          await this.showToast(`Empreinte ${target === 'left' ? 'gauche' : 'droite'} capturée avec succès.`, 'success');
+          return;
+        }
       }
 
-      await this.handleQrResult(qrContent);
+      await this.showToast(`Capteur biométrique non disponible pour l’empreinte ${target === 'left' ? 'gauche' : 'droite'}.`, 'warning');
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : 'Lecture du QR code impossible.';
+      const message = error instanceof Error ? error.message : 'Capture biométrique impossible.';
       await this.showToast(message, 'danger');
-    } finally {
-      input.value = '';
     }
   }
 
@@ -308,10 +313,14 @@ export class EnrollementPage implements OnDestroy {
 
   activateCoppernicMode() {
     this.stopScanner();
-    this.scannerMessage = 'Tablette Coppernic détectée : utilisez le scanner natif ou la caméra arrière pour lire le QR.';
+    this.scannerMessage = 'Terminal biométrique détecté : utilisez le scanner natif pour le QR et le capteur pour les empreintes.';
   }
 
-  async onCaptureSelected(event: Event, target: ScanTarget) {
+  openCardCapture() {
+    this.cardCaptureInput?.nativeElement.click();
+  }
+
+  async onCaptureSelected(event: Event, target: CaptureTarget) {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
 
@@ -323,10 +332,6 @@ export class EnrollementPage implements OnDestroy {
 
     if (target === 'photo') {
       this.photoData = dataUrl;
-    } else if (target === 'left') {
-      this.empreinteGaucheData = dataUrl;
-    } else {
-      this.empreinteDroiteData = dataUrl;
     }
   }
 
@@ -337,7 +342,7 @@ export class EnrollementPage implements OnDestroy {
     }
 
     if (!this.photoData) {
-      await this.showToast('La photo du militaire est obligatoire.', 'warning');
+      await this.showToast('La capture de la carte du militaire est obligatoire.', 'warning');
       return;
     }
 
@@ -434,8 +439,8 @@ export class EnrollementPage implements OnDestroy {
     this.empreinteDroiteData = '';
     this.observations = '';
     this.scannerMessage = this.isCoppernicDevice
-      ? 'Tablette Coppernic prête : utilisez le scanner natif ou la caméra arrière pour lire le QR.'
-      : 'Utilisez le scanner natif ou une photo nette du QR pour charger les informations personnelles.';
+      ? 'Terminal biométrique prêt : utilisez le scanner natif pour lire le QR.'
+      : 'Utilisez le scanner professionnel pour charger les informations personnelles via QR.';
   }
 
   formatDate(value: string): string {
@@ -455,7 +460,7 @@ export class EnrollementPage implements OnDestroy {
       }
 
       if (!this.isQrEligible(payload)) {
-        throw new Error('QR refusé : seuls les militaires contrôlés vivants peuvent être enrôlés.');
+        throw new Error('QR refusé : seuls les dossiers vivants autorisés peuvent être enrôlés.');
       }
 
       this.qrRawPayload = raw;
@@ -475,7 +480,7 @@ export class EnrollementPage implements OnDestroy {
     try {
       const enrichedPayload = await this.resolveQrPayloadFromServer(payload);
       if (!this.isQrEligible(enrichedPayload)) {
-        throw new Error('QR refusé : seuls les militaires contrôlés vivants peuvent être enrôlés.');
+        throw new Error('QR refusé : seuls les dossiers vivants autorisés peuvent être enrôlés.');
       }
 
       const exact = await this.resolveMilitaireFromServer(enrichedPayload.matricule);
@@ -488,7 +493,7 @@ export class EnrollementPage implements OnDestroy {
       if (!exact) {
         await this.showToast('Infos serveur indisponibles : poursuite avec les données du QR code.', 'warning');
       } else {
-        await this.showToast('Informations personnelles chargées. Cliquez sur Suivant pour la validation finale.', 'success');
+        await this.showToast('Informations personnelles chargées. Passez à l’étape suivante pour la validation finale.', 'success');
       }
     } catch (error: unknown) {
       if (error instanceof Error && error.message.includes('QR refusé')) {
@@ -545,7 +550,7 @@ export class EnrollementPage implements OnDestroy {
   private createFallbackMilitaire(payload: QrControlePayload): Militaire {
     return {
       matricule: payload.matricule,
-      noms: payload.noms || 'Militaire identifié par QR code',
+      noms: payload.noms || 'Dossier identifié par QR code',
       grade: payload.grade || 'N/A',
       unite: payload.unite || 'N/A',
       garnison: payload.garnison || 'N/A',
@@ -649,7 +654,7 @@ export class EnrollementPage implements OnDestroy {
         return;
       }
     } catch {
-      this.scannerMessage = 'Scan automatique indisponible. Réessayez ou utilisez une photo du QR.';
+      this.scannerMessage = 'Scan automatique indisponible. Réessayez avec le scanner QR de l’appareil.';
     }
 
     this.scanTimer = setTimeout(() => void this.runScanLoop(), 650);
@@ -659,70 +664,6 @@ export class EnrollementPage implements OnDestroy {
     return (window as Window & { BarcodeDetector?: BarcodeDetectorCtor }).BarcodeDetector;
   }
 
-  private async readQrFromFile(file: File): Promise<string | null> {
-    const BarcodeDetectorClass = this.getBarcodeDetectorCtor();
-    if (!BarcodeDetectorClass) {
-      throw new Error('Le scan automatique n’est pas disponible sur cet appareil. Réessayez avec un appareil compatible ou une photo plus nette du QR.');
-    }
-
-    const image = await this.loadImageElement(file);
-    const detector = new BarcodeDetectorClass({ formats: ['qr_code'] });
-
-    const directResults = await detector.detect(image);
-    let qrValue = directResults.find(item => typeof item.rawValue === 'string' && item.rawValue.trim());
-    if (qrValue?.rawValue) {
-      return qrValue.rawValue.trim();
-    }
-
-    const normalizedCanvas = this.buildNormalizedQrCanvas(image);
-    const normalizedResults = await detector.detect(normalizedCanvas);
-    qrValue = normalizedResults.find(item => typeof item.rawValue === 'string' && item.rawValue.trim());
-
-    return qrValue?.rawValue?.trim() || null;
-  }
-
-  private buildNormalizedQrCanvas(image: HTMLImageElement): HTMLCanvasElement {
-    const targetMaxSide = 1024;
-    const sourceWidth = Math.max(1, image.naturalWidth || image.width);
-    const sourceHeight = Math.max(1, image.naturalHeight || image.height);
-    const scale = targetMaxSide / Math.max(sourceWidth, sourceHeight);
-    const targetWidth = Math.max(1, Math.round(sourceWidth * scale));
-    const targetHeight = Math.max(1, Math.round(sourceHeight * scale));
-
-    const canvas = document.createElement('canvas');
-    canvas.width = targetWidth;
-    canvas.height = targetHeight;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) {
-      throw new Error('Impossible de normaliser l’image du QR code.');
-    }
-
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, targetWidth, targetHeight);
-    ctx.drawImage(image, 0, 0, targetWidth, targetHeight);
-
-    return canvas;
-  }
-
-  private loadImageElement(file: File): Promise<HTMLImageElement> {
-    return new Promise((resolve, reject) => {
-      const url = URL.createObjectURL(file);
-      const image = new Image();
-
-      image.onload = () => {
-        URL.revokeObjectURL(url);
-        resolve(image);
-      };
-
-      image.onerror = () => {
-        URL.revokeObjectURL(url);
-        reject(new Error('Image du QR code invalide.'));
-      };
-
-      image.src = url;
-    });
-  }
 
   private readFileAsDataUrl(file: File): Promise<string> {
     return new Promise((resolve, reject) => {

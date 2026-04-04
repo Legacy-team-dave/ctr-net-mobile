@@ -9,7 +9,6 @@ export interface Militaire {
   categorie: string;
   beneficiaire: string;
   age?: number;
-  deja_controle?: boolean;
 }
 
 export interface User {
@@ -40,17 +39,6 @@ export interface ApiResponse<T = unknown> {
   message?: string;
   data?: T;
   user?: User;
-}
-
-export interface ControleData {
-  matricule: string;
-  mention: string;
-  lien: string;
-  beneficiaire?: string;
-  new_beneficiaire?: string;
-  observations?: string;
-  statut_vivant?: boolean;
-  statut_decede?: boolean;
 }
 
 export interface QrControlePayload {

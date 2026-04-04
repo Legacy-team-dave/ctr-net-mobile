@@ -31,36 +31,21 @@
         <div class="card-body-modern">
           <div class="sync-note info">
             <ion-icon name="wifi"></ion-icon>
-            <span>Utilisez le scanner natif Android ou une photo nette du QR pour rattacher ce dossier biométrique aux informations personnelles du militaire.</span>
+            <span>Utilisez uniquement le scanner QR professionnel de l’appareil pour rattacher le dossier biométrique aux informations personnelles du militaire.</span>
           </div>
 
           @if (isCoppernicDevice) {
             <div class="sync-note coppernic">
               <ion-icon name="qr-code"></ion-icon>
-              <span>Tablette Coppernic détectée : privilégiez le scanner natif ou la caméra arrière.</span>
+              <span>Terminal biométrique détecté : privilégiez le scanner natif et le capteur embarqué.</span>
             </div>
           }
 
           <div class="scan-actions">
             <ion-button expand="block" (click)="startScanner()" [disabled]="nativeScannerBusy || searchInProgress">
               <ion-icon name="camera" slot="start"></ion-icon>
-              {{ isNativeAndroid ? 'Scanner QR natif Android' : 'Ouvrir la caméra' }}
+              {{ isNativeAndroid ? 'Scanner le QR professionnel' : 'Ouvrir le scanner QR' }}
             </ion-button>
-
-            <button class="secondary-action" type="button" (click)="openQrImagePicker()" [disabled]="searchInProgress">
-              <ion-icon name="images"></ion-icon>
-              Scanner par photo
-            </button>
-
-            <input
-              #qrImageInput
-              type="file"
-              accept="image/*"
-              capture="environment"
-              hidden
-              (change)="onQrImageSelected($event)"
-            />
-
           </div>
 
           @if (scannerActive) {
@@ -93,18 +78,31 @@
                 <div class="info-item"><span class="info-label">Province :</span><span class="info-value">{{ currentMilitaire.province || scannedPayload?.province || 'N/A' }}</span></div>
                 <div class="info-item"><span class="info-label">Catégorie :</span><span class="info-value">{{ currentMilitaire.categorie || scannedPayload?.categorie || 'N/A' }}</span></div>
                 <div class="info-item"><span class="info-label">Mention :</span><span class="info-value">{{ scannedPayload?.mention || 'N/A' }}</span></div>
-                <div class="info-item"><span class="info-label">Date contrôle :</span><span class="info-value">{{ formatDate(scannedPayload?.date_controle || '') }}</span></div>
-                <div class="info-item"><span class="info-label">Type contrôle :</span><span class="info-value">{{ scannedPayload?.type_controle || 'N/A' }}</span></div>
+                <div class="info-item"><span class="info-label">Date de référence :</span><span class="info-value">{{ formatDate(scannedPayload?.date_controle || '') }}</span></div>
+                <div class="info-item"><span class="info-label">Source QR :</span><span class="info-value">{{ scannedPayload?.type_controle || 'N/A' }}</span></div>
                 <div class="info-item"><span class="info-label">Lien parenté :</span><span class="info-value">{{ scannedPayload?.lien_parente || 'N/A' }}</span></div>
                 <div class="info-item"><span class="info-label">Bénéficiaire :</span><span class="info-value">{{ scannedPayload?.new_beneficiaire || scannedPayload?.nom_beneficiaire || 'N/A' }}</span></div>
                 <div class="info-item"><span class="info-label">Observations :</span><span class="info-value">{{ scannedPayload?.observations || 'Aucune' }}</span></div>
               </div>
             </div>
 
-            <div class="actions-row">
+            <div class="actions-row between">
+              <button class="secondary-action" type="button" (click)="previousStep()">
+                <ion-icon name="arrow-back"></ion-icon>
+                Retour
+              </button>
               <button class="primary-action" (click)="nextStep()">
                 <ion-icon name="arrow-forward"></ion-icon>
                 Suivant : validation
+              </button>
+            </div>
+          }
+
+          @if (!currentMilitaire) {
+            <div class="actions-row between">
+              <button class="secondary-action" type="button" (click)="previousStep()">
+                <ion-icon name="arrow-back"></ion-icon>
+                Retour
               </button>
             </div>
           }
@@ -115,23 +113,32 @@
     @if (isCurrentStep('photo')) {
       <div class="card-modern">
         <div class="card-header-modern">
-          <h3><ion-icon name="camera"></ion-icon> 1. Capture de la photo</h3>
+          <h3><ion-icon name="camera"></ion-icon> 1. Capture de la carte</h3>
           <button class="btn-outline-header" (click)="startNewEnrollement()">
             <ion-icon name="refresh"></ion-icon>
             Nouveau dossier
           </button>
         </div>
         <div class="card-body-modern">
+          <div class="sync-note info">
+            <ion-icon name="camera"></ion-icon>
+            <span>La première étape consiste à capturer la carte du militaire avec la caméra arrière. Aucun choix de fichier manuel n’est prévu.</span>
+          </div>
+
           <div class="capture-card">
-            <label class="capture-title"><ion-icon name="camera"></ion-icon> Photo du militaire</label>
-            <input type="file" accept="image/*" capture="environment" class="file-input" (change)="onCaptureSelected($event, 'photo')" />
+            <label class="capture-title"><ion-icon name="camera"></ion-icon> Carte du militaire</label>
+            <button class="primary-action" type="button" (click)="openCardCapture()">
+              <ion-icon name="camera"></ion-icon>
+              Capturer la carte
+            </button>
+            <input #cardCaptureInput type="file" accept="image/*" capture="environment" class="file-input visually-hidden" (change)="onCaptureSelected($event, 'photo')" />
             @if (photoData) {
-              <img [src]="photoData" alt="Photo du militaire" class="capture-preview" />
+              <img [src]="photoData" alt="Carte du militaire" class="capture-preview" />
             }
           </div>
 
           <div class="actions-row between">
-            <button class="secondary-action" (click)="previousStep()">
+            <button class="secondary-action" type="button" disabled>
               <ion-icon name="arrow-back"></ion-icon>
               Retour
             </button>
@@ -147,13 +154,21 @@
     @if (isCurrentStep('fingerprints')) {
       <div class="card-modern">
         <div class="card-header-modern">
-          <h3><ion-icon name="finger-print"></ion-icon> 2. Capture des empreintes</h3>
+          <h3><ion-icon name="finger-print"></ion-icon> 2. Capture via capteur d’empreinte</h3>
         </div>
         <div class="card-body-modern">
+          <div class="sync-note info">
+            <ion-icon name="finger-print"></ion-icon>
+            <span>Les empreintes doivent être capturées via le capteur biométrique de l’appareil. L’import manuel d’images d’empreintes n’est pas recommandé.</span>
+          </div>
+
           <div class="capture-grid">
             <div class="capture-card">
               <label class="capture-title"><ion-icon name="finger-print"></ion-icon> Empreinte pouce gauche</label>
-              <input type="file" accept="image/*" capture="environment" class="file-input" (change)="onCaptureSelected($event, 'left')" />
+              <button class="primary-action" type="button" (click)="captureFingerprint('left')">
+                <ion-icon name="finger-print"></ion-icon>
+                Capturer avec le capteur
+              </button>
               @if (empreinteGaucheData) {
                 <img [src]="empreinteGaucheData" alt="Empreinte gauche" class="capture-preview" />
               }
@@ -161,7 +176,10 @@
 
             <div class="capture-card">
               <label class="capture-title"><ion-icon name="finger-print"></ion-icon> Empreinte pouce droit</label>
-              <input type="file" accept="image/*" capture="environment" class="file-input" (change)="onCaptureSelected($event, 'right')" />
+              <button class="primary-action" type="button" (click)="captureFingerprint('right')">
+                <ion-icon name="finger-print"></ion-icon>
+                Capturer avec le capteur
+              </button>
               @if (empreinteDroiteData) {
                 <img [src]="empreinteDroiteData" alt="Empreinte droite" class="capture-preview" />
               }

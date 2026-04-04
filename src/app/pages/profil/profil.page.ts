@@ -73,9 +73,6 @@ export class ProfilPage {
       return 'Enrôleur';
     }
 
-    if (normalized === 'CONTROLEUR') {
-      return 'Contrôleur';
-    }
 
     return profil;
   }

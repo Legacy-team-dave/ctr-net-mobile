@@ -48,9 +48,9 @@ CONNEXION
 UTILISATION — ENRÔLEMENT
 ------------------------
 1. Onglet `ENROL.NET` (actif par défaut)
-2. Capture de la photo du militaire
-3. Capture / association des empreintes
-4. Scan du QR affiché côté web
+2. Capture de la carte du militaire
+3. Capture des empreintes via le capteur biométrique
+4. Scan du QR affiché côté web avec le lecteur professionnel
 5. Vérification des informations personnelles
 6. Validation finale du dossier
 7. Synchronisation immédiate ou différée

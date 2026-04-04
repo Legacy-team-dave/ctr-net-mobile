@@ -4,7 +4,7 @@ import { Observable, throwError, from } from 'rxjs';
 import { catchError, map, switchMap, timeout } from 'rxjs/operators';
 import { Preferences } from '@capacitor/preferences';
 import { Capacitor, registerPlugin } from '@capacitor/core';
-import { Militaire, LoginResponse, ApiResponse, User, ControleData, EnrollementPayload, QrControlePayload } from '../models/interfaces';
+import { Militaire, LoginResponse, ApiResponse, User, EnrollementPayload, QrControlePayload } from '../models/interfaces';
 
 interface WifiIpPlugin {
   getWifiIP(): Promise<{ ip: string }>;
@@ -349,7 +349,7 @@ export class ApiService {
     return this.request<ApiResponse<User>>('GET', '/auth.php?action=check');
   }
 
-  // ── Contrôles ──
+  // ── Référentiel d’enrôlement ──
 
   searchMilitaire(query: string): Observable<Militaire[]> {
     return this.request<Militaire[]>('GET', `/controles.php?action=search&q=${encodeURIComponent(query)}`);
@@ -377,16 +377,8 @@ export class ApiService {
     );
   }
 
-  validerControle(data: ControleData): Observable<ApiResponse> {
-    return this.request<ApiResponse>('POST', '/controles.php?action=valider', data);
-  }
-
   enrollMilitaireVivant(data: EnrollementPayload): Observable<ApiResponse<{ enrollement_id?: number }>> {
     return this.request<ApiResponse<{ enrollement_id?: number }>>('POST', '/controles.php?action=enroll_vivant', data);
-  }
-
-  getHistorique(limit = 20, offset = 0): Observable<ApiResponse> {
-    return this.request<ApiResponse>('GET', `/controles.php?action=historique&limit=${limit}&offset=${offset}`);
   }
 
   // ── Profil ──

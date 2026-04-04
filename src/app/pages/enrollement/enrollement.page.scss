@@ -332,6 +332,10 @@ ion-toolbar {
   width: 100%;
 }
 
+.visually-hidden {
+  display: none;
+}
+
 .capture-preview {
   width: 100%;
   max-height: 220px;

@@ -180,7 +180,7 @@ Le backend refuse les autres profils et renvoie des messages explicites si le co
 - **Processus** :
   1. Envoi POST à `api/auth.php?action=login` avec `{login, password}`.
   2. Le serveur vérifie les identifiants et le profil (`ENROLEUR` uniquement).
-  3. Si succès : token Bearer retourné, stocké localement, redirection vers `/tabs/controle`.
+  3. Si succès : token Bearer retourné, stocké localement, redirection vers `/tabs/enrollement`.
   4. Si échec : toast d'erreur en haut de l'écran ; les erreurs de validation locale restent affichées inline.
 
 #### 3.3.4. Navigation par onglets
@@ -193,16 +193,16 @@ Trois onglets sont disponibles après connexion :
 
 Les onglets sont protégés par `authGuard` : si le token est invalide ou la session expirée, l'utilisateur est redirigé vers le login. Le guard `noAuthGuard` empêche un utilisateur déjà connecté d'accéder au login.
 
-#### 3.3.5. Assistant d’enrôlement — Étape 1 : Photo
+#### 3.3.5. Assistant d’enrôlement — Étape 1 : Carte
 
-- **Objectif** : démarrer le dossier avec la photo du militaire.
-- **Action** : capture caméra ou import d’image selon l’équipement disponible.
-- **Contrôle** : une photo valide est exigée avant de poursuivre.
+- **Objectif** : démarrer le dossier avec la capture de la carte du militaire.
+- **Action** : usage de la caméra arrière du terminal, sans sélection manuelle de fichier.
+- **Validation** : une capture valide de la carte est exigée avant de poursuivre.
 
 #### 3.3.6. Assistant d’enrôlement — Étapes 2 à 5 : biométrie, QR et synchronisation
 
-- **Étape 2 : Empreintes** — saisie/association des empreintes selon l’équipement disponible.
-- **Étape 3 : QR / informations** — scan du QR affiché côté web, sans import d’image QR et sans saisie manuelle/externe.
+- **Étape 2 : Empreintes** — capture biométrique via le capteur d’empreinte de l’appareil.
+- **Étape 3 : QR / informations** — scan professionnel du QR affiché côté web, sans import d’image QR et sans saisie manuelle/externe.
 - **Étape 4 : Validation** — vérification des données personnelles récupérées puis validation finale du dossier.
 - **Étape 5 : Sync** — envoi immédiat ou mise en file locale pour synchronisation en fin de journée.
 
@@ -219,42 +219,9 @@ identité utilisateur, rôle/profil, état du compte, avatar et résumé de sess
 
 Cette page n’est pas destinée à la saisie des enrôlements : elle sert uniquement à la consultation du profil et à la vérification du contexte de connexion.
 
-**Statut Vivant (catégorie Actif, RETRAITES, INTEGRES)** :
-
-- La case "Vivant" est cochée automatiquement.
-- Un seul bouton vert "Présent" est affiché.
-- Au clic : `{matricule, mention: 'Présent', lien: 'Militaire lui-même', statut_vivant: true}`.
-
-**Statut Décédé (catégorie DCD_AV_BIO, DCD_AP_BIO)** :
-
-- La case "Décédé" est cochée automatiquement.
-- Le bénéficiaire existant est affiché dans un cadre vert clair.
-- Un champ "Nouveau bénéficiaire" est disponible.
-- Les liens de parenté sont présentés individuellement en grille : `Epouse`, `Epoux`, `Fils`, `Fille`, `Père`, `Mère`, `Frère`, `Sœur`.
-- Chaque lien est une case à cocher visuelle (div/span, pas d'input natif) avec exclusion mutuelle.
-- Champ observations en textarea (optionnel).
-- Deux boutons :
-  - "Favorable" (jaune #ffc107) → `{mention: 'Favorable'}`.
-  - "Défavorable" (rouge #dc3545) → `{mention: 'Défavorable'}`.
-
-**GPS** :
-
-- Avant l'envoi, l'app demande la position GPS via `@capacitor/geolocation`.
-- Timeout de 5 secondes. Si le GPS n'est pas disponible, le contrôle est envoyé sans coordonnées.
-- Les champs `latitude` et `longitude` sont ajoutés au payload s'ils sont disponibles.
-
-**Envoi** :
-
-- POST à `api/controles.php?action=valider` avec le payload complet.
-- En cas de succès : toast Ionic vert de confirmation + retour à la recherche.
-- En cas d'échec : toast rouge avec le message d'erreur.
-- Si le militaire est déjà contrôlé : toast `warning` avec le nom du militaire en gras.
-
-#### 3.3.7. Page Profil
-
-- Affiche les informations du contrôleur connecté : nom, login, email, profil, dernier accès.
-- Avatar affiché (image depuis le serveur ou placeholder).
-- Lecture seule. La modification du profil se fait depuis l'application web.
+- affichage du nom, du login, de l’e-mail et du profil ;
+- avatar chargé depuis le serveur ou remplacé par un placeholder ;
+- aucune modification directe dans l’application mobile.
 
 #### 3.3.8. Déconnexion
 
@@ -284,7 +251,7 @@ Cette page n’est pas destinée à la saisie des enrôlements : elle sert uniqu
 ### 3.5. Guards de navigation
 
 - **authGuard** : Vérifie que l'utilisateur est connecté. Si non, vérifie si un serveur est configuré. Si oui → `/login`. Si non → `/config`.
-- **noAuthGuard** : Empêche un utilisateur connecté d'accéder au login. Si connecté → `/tabs/controle`.
+- **noAuthGuard** : Empêche un utilisateur connecté d'accéder au login. Si connecté → `/tabs/enrollement`.
 
 ### 3.6. Interfaces TypeScript
 
@@ -292,7 +259,7 @@ Cette page n’est pas destinée à la saisie des enrôlements : elle sert uniqu
 interface Militaire {
   matricule: string; noms: string; grade: string; unite: string;
   garnison: string; province: string; statut: string; categorie: string;
-  beneficiaire: string; age?: number; deja_controle?: boolean;
+  beneficiaire: string; age?: number;
 }
 
 interface User {
@@ -301,19 +268,14 @@ interface User {
   dernier_acces: string; created_at: string;
 }
 
-interface LoginResponse {
-  success: boolean; message?: string; token?: string;
-  user?: { id: number; nom: string; login: string; profil: string; };
-}
-
 interface ApiResponse<T = unknown> {
   success: boolean; message?: string; data?: T; user?: User;
 }
 
-interface ControleData {
-  matricule: string; mention: string; lien: string;
-  beneficiaire?: string; new_beneficiaire?: string;
-  observations?: string; statut_vivant?: boolean; statut_decede?: boolean;
+interface EnrollementPayload {
+  matricule: string; noms: string; photo_data?: string;
+  empreinte_gauche_data?: string; empreinte_droite_data?: string;
+  qr_payload?: QrControlePayload | null; observations?: string;
 }
 ```
 
@@ -350,7 +312,7 @@ L'application web expose une API REST dans le dossier `api/` pour le mobile :
 | Fichier | Endpoints | Description |
 | --- | --- | --- |
 | `api/auth.php` | `?action=login`, `?action=logout`, `?action=check` | Authentification par token Bearer |
-| `api/controles.php` | `?action=search`, `?action=valider`, `?action=historique` | Recherche, validation et historique des contrôles |
+| `api/controles.php` | `?action=search`, `?action=qr_lookup`, `?action=enroll_vivant` | Recherche identité, résolution QR et soumission d’enrôlement |
 | `api/profil.php` | `?action=get`, `?action=update` | Lecture et mise à jour du profil |
 | `api/controles_poll.php` | `?since_id={id}` | Polling pour notifications temps réel |
 | `api/.htaccess` | — | Headers CORS + Authorization pour les appels cross-origin |

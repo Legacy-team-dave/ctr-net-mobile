@@ -70,7 +70,7 @@ ctr-net-enrollement-mobile/
 │           ├── config/                  Saisie IP serveur + test connexion
 │           ├── login/                   Authentification `ENROLEUR`
 │           ├── tabs/                    Navigation par onglets (Enrôlement, Profil, Quitter)
-│           ├── enrollement/             Assistant photo → empreintes → QR → validation
+│           ├── enrollement/             Assistant carte → empreintes capteur → QR → validation
 │           └── profil/                  Consultation du profil utilisateur
 │
 └── android/

@@ -2,7 +2,7 @@
 
 ## Résumé exécutif
 
-`ENROL.NET` est l’application mobile Android dédiée au profil **`ENROLEUR`**. Elle structure l’enrôlement terrain autour d’un parcours simple et fiable : **photo → empreintes → QR affiché côté web → vérification des informations personnelles → validation → synchronisation**.
+`ENROL.NET` est l’application mobile Android dédiée au profil **`ENROLEUR`**. Elle structure l’enrôlement terrain autour d’un parcours simple et fiable : **capture de la carte → empreintes via capteur → QR affiché côté web → vérification des informations personnelles → validation → synchronisation**.
 
 > Aucun import d’image QR n’est prévu côté application. Le QR utilisé par `ENROL.NET` est lu directement à partir du code affiché sur l’interface web centrale.
 
@@ -19,10 +19,10 @@
 
 1. **Splash** puis accès à la configuration IP du serveur.
 2. **Connexion** avec un compte `ENROLEUR`.
-3. **Capture photo** du militaire.
-4. **Capture / association des empreintes**.
-5. **Scan du QR affiché côté web**.
-6. **Chargement et contrôle** des informations personnelles.
+3. **Capture de la carte** du militaire.
+4. **Capture des empreintes via capteur**.
+5. **Scan du QR affiché côté web** avec le lecteur professionnel.
+6. **Chargement et vérification** des informations personnelles.
 7. **Validation finale** du dossier.
 8. **Synchronisation** immédiate ou différée selon la connectivité.
 

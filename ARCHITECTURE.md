@@ -47,10 +47,10 @@ splash → config → login → tabs/enrollement
 
 ## Flux métier d’enrôlement
 
-1. **Capture photo** : ouverture du dossier terrain
-2. **Capture des empreintes** : collecte/association biométrique
-3. **Lecture du QR** : scan du code affiché côté web pour charger les informations
-4. **Contrôle des informations personnelles** : revue des données préremplies
+1. **Capture de la carte** : ouverture du dossier terrain via la caméra arrière
+2. **Capture des empreintes** : collecte biométrique via le capteur d’empreinte
+3. **Lecture du QR** : scan professionnel du code affiché côté web pour charger les informations
+4. **Vérification des informations personnelles** : revue des données préremplies
 5. **Validation finale** : confirmation du dossier d’enrôlement
 6. **Synchronisation** : envoi immédiat ou mise en file hors ligne
 
