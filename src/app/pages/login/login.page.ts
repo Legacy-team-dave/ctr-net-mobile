@@ -57,9 +57,11 @@ export class LoginPage {
       await this.auth.login(this.login.trim(), this.password);
       this.login = '';
       this.password = '';
+      this.errorMessage = '';
       this.router.navigateByUrl('/tabs/controle', { replaceUrl: true });
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Erreur de connexion';
+      this.errorMessage = msg;
       await this.showToast(msg, 'danger');
     } finally {
       this.loading = false;

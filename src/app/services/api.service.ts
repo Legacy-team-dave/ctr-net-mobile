@@ -296,9 +296,11 @@ export class ApiService {
       } else if (error.status === 200) {
         message = serverMessage || 'Réponse serveur invalide malgré un statut 200.';
       } else if (error.status === 401) {
-        message = 'Session expirée. Veuillez vous reconnecter.';
+        message = serverMessage || 'Utilisateur ou mot de passe incorrect.';
       } else if (error.status === 403) {
         message = serverMessage || 'Accès refusé';
+      } else if (error.status === 404) {
+        message = serverMessage || 'Utilisateur non créé.';
       } else {
         message = serverMessage || `Erreur serveur (${error.status})`;
       }
