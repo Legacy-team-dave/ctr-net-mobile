@@ -5,7 +5,7 @@ import {
   IonIcon, IonSpinner
 } from '@ionic/angular/standalone';
 import { LoadingController, ToastController } from '@ionic/angular/standalone';
-import { Capacitor } from '@capacitor/core';
+import { Capacitor, registerPlugin } from '@capacitor/core';
 import { addIcons } from 'ionicons';
 import {
   qrCode, camera, fingerPrint, sync, shieldCheckmark,
@@ -31,6 +31,17 @@ type BarcodeDetectorInstance = {
   detect(source: BarcodeDetectorSource): Promise<DetectedBarcode[]>;
 };
 type BarcodeDetectorCtor = new (options?: { formats?: string[] }) => BarcodeDetectorInstance;
+type NativeScanBarcode = { rawValue?: string };
+
+interface NativeBarcodeScannerPlugin {
+  isSupported(): Promise<{ supported: boolean }>;
+  scan(options?: { formats?: string[]; autoZoom?: boolean }): Promise<{ barcodes: NativeScanBarcode[] }>;
+  isGoogleBarcodeScannerModuleAvailable?: () => Promise<{ available: boolean }>;
+  installGoogleBarcodeScannerModule?: () => Promise<void>;
+  openSettings?: () => Promise<void>;
+}
+
+const NativeBarcodeScanner = registerPlugin<NativeBarcodeScannerPlugin>('BarcodeScanner');
 
 @Component({
   selector: 'app-enrollement',
@@ -59,8 +70,9 @@ export class EnrollementPage implements OnDestroy {
   manualQr = '';
   searchInProgress = false;
   scannerActive = false;
+  nativeScannerBusy = false;
   readonly isCoppernicDevice = /coppernic|c-one|c-five|c-five\.0|tab/i.test((navigator.userAgent || '').toLowerCase());
-  scannerMessage = 'Visez le QR code généré depuis le PC.';
+  scannerMessage = 'Scannez le QR généré sur le PC ou utilisez la saisie manuelle.';
   scannedPayload: QrControlePayload | null = null;
   qrRawPayload = '';
   qrResolvedPayload = '';
@@ -160,8 +172,7 @@ export class EnrollementPage implements OnDestroy {
 
   async startScanner() {
     if (this.isNativeAndroid) {
-      this.scannerMessage = 'Sur smartphone Android, le scan QR direct par WebView peut être instable. Utilisez la capture photo du QR ci-dessous.';
-      this.openQrImagePicker();
+      await this.startNativeScanner();
       return;
     }
 
@@ -202,6 +213,48 @@ export class EnrollementPage implements OnDestroy {
       this.scannerMessage = 'Accès à la caméra refusé. Autorisez la caméra puis réessayez.';
       const message = error instanceof Error ? error.message : this.scannerMessage;
       await this.showToast(message, 'danger');
+    }
+  }
+
+  private async startNativeScanner() {
+    this.stopScanner();
+    this.nativeScannerBusy = true;
+    this.scannerMessage = 'Ouverture du scanner QR natif…';
+
+    try {
+      const { supported } = await NativeBarcodeScanner.isSupported();
+      if (!supported) {
+        throw new Error('Le scanner QR natif n’est pas disponible sur cet appareil. Utilisez la photo du QR ou la saisie manuelle.');
+      }
+
+      if (typeof NativeBarcodeScanner.isGoogleBarcodeScannerModuleAvailable === 'function') {
+        const availability = await NativeBarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
+        if (!availability.available && typeof NativeBarcodeScanner.installGoogleBarcodeScannerModule === 'function') {
+          await NativeBarcodeScanner.installGoogleBarcodeScannerModule();
+          this.scannerMessage = 'Le module QR Google est en cours d’installation. Relancez le scan dans quelques secondes.';
+          await this.showToast(this.scannerMessage, 'warning');
+          return;
+        }
+      }
+
+      const { barcodes } = await NativeBarcodeScanner.scan({
+        formats: ['QR_CODE'],
+        autoZoom: true,
+      });
+
+      const qrValue = barcodes.find((item: NativeScanBarcode) => typeof item.rawValue === 'string' && item.rawValue.trim());
+      if (!qrValue?.rawValue) {
+        await this.showToast('Aucun QR détecté. Réessayez ou utilisez la photo / saisie manuelle.', 'warning');
+        return;
+      }
+
+      await this.handleQrResult(qrValue.rawValue);
+    } catch (error: unknown) {
+      this.scannerMessage = 'Scan natif indisponible. Utilisez la photo du QR ou la saisie manuelle.';
+      const message = error instanceof Error ? error.message : 'Impossible d’ouvrir le scanner QR natif.';
+      await this.showToast(message, 'danger');
+    } finally {
+      this.nativeScannerBusy = false;
     }
   }
 
@@ -400,7 +453,7 @@ export class EnrollementPage implements OnDestroy {
     this.observations = '';
     this.scannerMessage = this.isCoppernicDevice
       ? 'Mode Coppernic prêt : scannez le QR depuis la tablette.'
-      : 'Visez le QR code généré depuis le PC.';
+      : 'Scannez le QR généré sur le PC ou utilisez la saisie manuelle.';
 
     if (this.isCoppernicDevice) {
       this.focusManualQrInput();
