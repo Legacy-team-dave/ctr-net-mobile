@@ -1,4 +1,4 @@
-package net.ctr.fardc.mobile;
+package net.ctr.fardc.enrollement.mobile;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

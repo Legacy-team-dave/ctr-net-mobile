@@ -1,4 +1,4 @@
-package net.ctr.fardc.mobile;
+package net.ctr.fardc.enrollement.mobile;
 
 import android.os.Bundle;
 import com.getcapacitor.BridgeActivity;

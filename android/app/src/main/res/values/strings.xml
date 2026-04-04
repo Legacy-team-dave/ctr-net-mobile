@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">CTR.NET FARDC</string>
-    <string name="title_activity_main">CTR.NET FARDC</string>
-    <string name="package_name">net.ctr.fardc.mobile</string>
-    <string name="custom_url_scheme">net.ctr.fardc.mobile</string>
+    <string name="app_name">ENROL.NET</string>
+    <string name="title_activity_main">ENROL.NET</string>
+    <string name="package_name">net.ctr.fardc.enrollement.mobile</string>
+    <string name="custom_url_scheme">net.ctr.fardc.enrollement.mobile</string>
 </resources>

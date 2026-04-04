@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'net.ctr.fardc.enrollement.mobile',
-  appName: 'CTR.NET Enrôlement',
+  appName: 'ENROL.NET',
   webDir: 'www',
   server: {
     androidScheme: 'http',
