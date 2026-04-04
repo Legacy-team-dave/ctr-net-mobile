@@ -1,4 +1,6 @@
-# Présentation - CTR.NET Mobile
+# Présentation - CTR.NET
+
+> Présentation mise à jour : `CTR.NET` reste l’application de contrôle terrain du profil `CONTROLEUR`, distincte de `ENROL.NET` pour l’enrôlement.
 
 ## Section 1 : Résumé exécutif
 

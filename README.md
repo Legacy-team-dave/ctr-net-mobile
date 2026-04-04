@@ -1,10 +1,17 @@
-# CTR.NET Mobile — Application CONTROLEUR (Ionic Angular)
+# CTR.NET — Application mobile CONTROLEUR (Ionic Angular)
 
 ## Description
 
-Application mobile Android destinée exclusivement au profil **CONTROLEUR** de l'application web CTR.NET-FARDC. Elle communique avec l'API REST du projet web via le réseau Wi-Fi (IPv4).
+`CTR.NET` est l’application mobile Android dédiée exclusivement au profil **`CONTROLEUR`** de l’écosystème `CTR.NET-FARDC`. Elle sert au **contrôle terrain** avec recherche militaire, validation, capture GPS et synchronisation immédiate.
 
-> Ce projet est **indépendant** du projet web `ctr.net-fardc`. Il se trouve dans son propre dossier `ctr-net-mobile/`.
+> Ce projet est **indépendant** du web `ctr.net-fardc` et distinct de l’application d’enrôlement `ENROL.NET` (`ctr-net-enrollement-mobile/`).
+
+## Mise à jour Avril 2026
+
+- application installée sous le nom **`CTR.NET`** ;
+- profil mobile autorisé : **`CONTROLEUR`** ;
+- les comptes `CONTROLEUR` sont créés côté web avec le mot de passe par défaut **`987654321`** puis restent **inactifs** jusqu’à activation par `ADMIN_IG` ;
+- les messages de connexion affichent désormais des erreurs plus claires (utilisateur absent, compte inactif, mot de passe erroné).
 
 ## Architecture
 
@@ -200,7 +207,7 @@ Puis dans Android Studio : **Build → Build Bundle(s)/APK(s) → Build APK(s)**
 
 ```typescript
 appId: 'net.ctr.fardc.mobile'
-appName: 'CTR.NET FARDC'
+appName: 'CTR.NET'
 webDir: 'www'
 server: {
   androidScheme: 'http',     // Intranet HTTP

@@ -1,5 +1,14 @@
 # Historique des versions - CTR.NET Mobile
 
+## 1.4.0 (2026-04-04)
+
+### ✅ Clarification fonctionnelle et documentaire
+
+- confirmation du nom installé **`CTR.NET`** ;
+- distinction officielle avec `ENROL.NET` pour l’enrôlement ;
+- messages de connexion plus explicites dans l’app mobile ;
+- documentation synchronisée avec les règles de création de compte (`987654321` + activation ADMIN_IG).
+
 ## État actuel (Mars 2026)
 
 - Mode de configuration serveur actif : **saisie manuelle de l'IP** + test de connexion

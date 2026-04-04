@@ -1,7 +1,8 @@
 # Fonctionnement complet — CTR.NET-FARDC (Web + Mobile)
 
-Ce document décrit en détail le fonctionnement des deux applications qui composent l'écosystème CTR.NET-FARDC :
-l'application web (PHP/MySQL) et l'application mobile (Ionic/Angular/Android).
+Ce document décrit en détail le fonctionnement du web `CTR.NET-FARDC` et de l’application mobile `CTR.NET` dédiée au profil `CONTROLEUR`.
+
+> Mise à jour Avril 2026 : l’écosystème comprend maintenant **deux applications mobiles distinctes** : `CTR.NET` (contrôle) et `ENROL.NET` (enrôlement).
 
 ---
 

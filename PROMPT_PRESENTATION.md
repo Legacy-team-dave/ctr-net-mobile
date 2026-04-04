@@ -1,4 +1,6 @@
-# Prompt de présentation — CTR.NET Mobile
+# Prompt de présentation — CTR.NET
+
+> Document mis à jour pour distinguer `CTR.NET` (contrôle) de `ENROL.NET` (enrôlement).
 
 Copiez-collez ce prompt dans votre assistant IA pour générer une présentation claire et professionnelle de l'application mobile.
 

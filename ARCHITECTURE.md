@@ -2,7 +2,14 @@
 
 ## Vue d'ensemble
 
-Application Ionic Angular standalone compilée en APK Android via Capacitor. Destinée exclusivement au profil **CONTROLEUR** pour la saisie terrain des contrôles militaires.
+Application Ionic Angular standalone compilée en APK Android via Capacitor. Destinée exclusivement au profil **`CONTROLEUR`** pour le **contrôle terrain** des militaires.
+
+### Mise à jour Avril 2026
+
+- nom installé : `CTR.NET` ;
+- application sœur : `ENROL.NET` pour le profil `ENROLEUR` ;
+- messages de connexion clarifiés côté mobile ;
+- comptes `CONTROLEUR` créés inactifs par défaut jusqu’à activation.
 
 ## Stack technique
 
