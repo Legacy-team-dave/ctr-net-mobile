@@ -7,7 +7,7 @@ param(
 )
 
 Write-Host "=========================================================" -ForegroundColor Cyan
-Write-Host "  CTR.NET FARDC Mobile - Compilation APK Android" -ForegroundColor Cyan
+Write-Host "  CTR.NET FARDC Enrollement - Compilation APK Android" -ForegroundColor Cyan
 Write-Host "=========================================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -77,7 +77,7 @@ $apkCandidates = @(
 )
 $apkSource = $apkCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
 $apkDistDir = Join-Path $PSScriptRoot 'dist\apk'
-$apkDist = Join-Path $apkDistDir 'ctr-net-mobile-latest-debug.apk'
+$apkDist = Join-Path $apkDistDir 'ctr-net-enrollement-mobile-latest-debug.apk'
 
 if (-not $apkSource) {
     Write-Host "[ERREUR] APK introuvable. Fichiers attendus :" -ForegroundColor Red

@@ -1,0 +1,390 @@
+ion-toolbar {
+  --background: linear-gradient(135deg, #5C7A4D 0%, #3F5A2E 100%);
+  --color: #fff;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  min-height: 100%;
+  padding: 16px;
+}
+
+.card-modern {
+  width: 100%;
+  max-width: 760px;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background: #fff;
+}
+
+.stepper-card {
+  max-width: 760px;
+}
+
+.card-header-modern {
+  background: linear-gradient(135deg, #5C7A4D 0%, #3F5A2E 100%);
+  padding: 14px 18px;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  h3 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.02rem;
+    font-weight: 600;
+  }
+}
+
+.card-body-modern {
+  padding: 18px;
+}
+
+.stepper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.step-item {
+  text-align: center;
+  padding: 8px;
+  border-radius: 10px;
+  background: #f3f5f1;
+  color: #5d6b57;
+}
+
+.step-item.active {
+  background: #e6efe1;
+  color: #2f4f20;
+  border: 1px solid #b9c9af;
+}
+
+.step-item.completed {
+  background: #dff2e2;
+  color: #1b5e20;
+}
+
+.step-badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #5C7A4D;
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.step-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.btn-outline-header {
+  border-radius: 30px;
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Barlow', sans-serif;
+}
+
+.scan-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.form-control-modern {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Barlow', sans-serif;
+  box-sizing: border-box;
+  background: #fff;
+  color: #333;
+
+  &:focus {
+    border-color: #5C7A4D;
+    box-shadow: 0 0 0 0.2rem rgba(92, 122, 77, 0.25);
+    outline: none;
+  }
+}
+
+.manual-block {
+  margin-top: 12px;
+}
+
+.section-label {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.manual-actions,
+.actions-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.actions-row.between {
+  justify-content: space-between;
+}
+
+.actions-row.multi-line {
+  align-items: center;
+}
+
+.primary-action,
+.secondary-action {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-family: 'Barlow', sans-serif;
+  cursor: pointer;
+}
+
+.primary-action {
+  background: #5C7A4D;
+  color: #fff;
+}
+
+.primary-action.success {
+  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+}
+
+.primary-action.delayed {
+  background: linear-gradient(135deg, #ffb300 0%, #fb8c00 100%);
+  color: #1f1f1f;
+}
+
+.secondary-action {
+  background: #e9ecef;
+  color: #333;
+}
+
+.scanner-preview {
+  background: #0f1a0c;
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 12px;
+
+  video {
+    width: 100%;
+    max-height: 280px;
+    border-radius: 10px;
+    background: #000;
+    object-fit: cover;
+  }
+
+  p {
+    margin: 10px 0;
+    font-size: 0.9rem;
+  }
+}
+
+.loading-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  color: #5C7A4D;
+  font-weight: 600;
+}
+
+.militaire-info {
+  background: linear-gradient(135deg, #5C7A4D 0%, #3F5A2E 100%);
+  color: #fff;
+  padding: 1.2rem 1.5rem;
+  border-radius: 12px;
+  margin-top: 14px;
+  box-shadow: 0 4px 15px rgba(92, 122, 77, 0.3);
+}
+
+.militaire-info.review-box {
+  margin-bottom: 14px;
+}
+
+.militaire-info-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+
+  .fw-bold {
+    font-weight: 700;
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.info-item {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  font-size: 0.88rem;
+}
+
+.info-label {
+  font-weight: 700;
+}
+
+.info-value {
+  font-weight: 500;
+}
+
+.sync-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  font-size: 0.9rem;
+}
+
+.sync-note.info {
+  background: #e8f4fd;
+  color: #0c5460;
+}
+
+.sync-note.warning {
+  background: #fff3cd;
+  color: #7a5a00;
+}
+
+.capture-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.capture-card {
+  border: 1px dashed #c5d2bc;
+  border-radius: 12px;
+  padding: 12px;
+  background: #f8f9fa;
+}
+
+.capture-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  color: #2f4f20;
+  margin-bottom: 8px;
+}
+
+.file-input {
+  width: 100%;
+}
+
+.capture-preview {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-top: 10px;
+  border: 1px solid #d9e2d2;
+  background: #fff;
+}
+
+.review-grid .capture-preview {
+  max-height: 200px;
+}
+
+.queue-badge {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.queue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.queue-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #e4e7eb;
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fff;
+}
+
+.queue-subline {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-top: 2px;
+}
+
+.queue-status {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: #fff3cd;
+  color: #7a5a00;
+}
+
+.queue-status.synced {
+  background: #d4edda;
+  color: #155724;
+}
+
+.empty-state {
+  text-align: center;
+  color: #6c757d;
+  padding: 16px 0;
+}
+
+@media (max-width: 640px) {
+  .stepper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .actions-row.between {
+    justify-content: flex-start;
+  }
+}

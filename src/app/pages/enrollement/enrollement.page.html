@@ -1,0 +1,269 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Enrôlement des vivants</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="page-wrapper">
+    <div class="card-modern stepper-card">
+      <div class="card-body-modern">
+        <div class="stepper">
+          @for (step of steps; track step; let index = $index) {
+            <div class="step-item" [class.active]="isCurrentStep(step)" [class.completed]="isStepCompleted(step)">
+              <div class="step-badge">{{ index + 1 }}</div>
+              <div class="step-label">{{ stepLabels[step] }}</div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    @if (isCurrentStep('scan')) {
+      <div class="card-modern">
+        <div class="card-header-modern">
+          <h3><ion-icon name="qr-code"></ion-icon> 1. Scanner le QR code</h3>
+          <button class="btn-outline-header" (click)="synchroniserLocal()" [disabled]="syncing">
+            <ion-icon name="sync"></ion-icon>
+            Sync fin de journée
+          </button>
+        </div>
+        <div class="card-body-modern">
+          <div class="sync-note info">
+            <ion-icon name="wifi"></ion-icon>
+            <span>Scannez le QR affiché sur le PC pour récupérer automatiquement les informations du militaire.</span>
+          </div>
+
+          <div class="scan-actions">
+            <ion-button expand="block" (click)="startScanner()">
+              <ion-icon name="camera" slot="start"></ion-icon>
+              Ouvrir la caméra
+            </ion-button>
+          </div>
+
+          @if (scannerActive) {
+            <div class="scanner-preview">
+              <video #scannerVideo autoplay muted playsinline></video>
+              <p>{{ scannerMessage }}</p>
+              <button class="secondary-action" (click)="stopScanner()">Arrêter le scan</button>
+            </div>
+          }
+
+          <div class="manual-block">
+            <label class="section-label">Contenu QR / matricule</label>
+            <textarea
+              class="form-control-modern"
+              rows="4"
+              placeholder="Collez ici le contenu JSON du QR ou le matricule…"
+              [(ngModel)]="manualQr"
+            ></textarea>
+            <div class="manual-actions">
+              <button class="primary-action" (click)="applyManualQr()">
+                <ion-icon name="search"></ion-icon>
+                Récupérer les informations
+              </button>
+            </div>
+          </div>
+
+          @if (searchInProgress) {
+            <div class="loading-inline">
+              <ion-spinner name="crescent"></ion-spinner>
+              <span>Chargement des informations du militaire…</span>
+            </div>
+          }
+
+          @if (currentMilitaire) {
+            <div class="militaire-info">
+              <div class="militaire-info-header">
+                <ion-icon name="checkmark-circle"></ion-icon>
+                <span class="fw-bold">Informations récupérées</span>
+              </div>
+              <div class="info-grid">
+                <div class="info-item"><span class="info-label">Matricule :</span><span class="info-value">{{ currentMilitaire.matricule }}</span></div>
+                <div class="info-item"><span class="info-label">Noms :</span><span class="info-value">{{ currentMilitaire.noms }}</span></div>
+                <div class="info-item"><span class="info-label">Grade :</span><span class="info-value">{{ currentMilitaire.grade || 'N/A' }}</span></div>
+                <div class="info-item"><span class="info-label">Unité :</span><span class="info-value">{{ currentMilitaire.unite || 'N/A' }}</span></div>
+                <div class="info-item"><span class="info-label">Garnison :</span><span class="info-value">{{ currentMilitaire.garnison || 'N/A' }}</span></div>
+                <div class="info-item"><span class="info-label">Province :</span><span class="info-value">{{ currentMilitaire.province || 'N/A' }}</span></div>
+              </div>
+            </div>
+
+            <div class="actions-row">
+              <button class="primary-action" (click)="nextStep()">
+                <ion-icon name="arrow-forward"></ion-icon>
+                Suivant : capturer la photo
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    @if (isCurrentStep('photo') && currentMilitaire) {
+      <div class="card-modern">
+        <div class="card-header-modern">
+          <h3><ion-icon name="camera"></ion-icon> 2. Capture de la photo</h3>
+          <button class="btn-outline-header" (click)="startNewEnrollement()">
+            <ion-icon name="refresh"></ion-icon>
+            Nouveau scan
+          </button>
+        </div>
+        <div class="card-body-modern">
+          <div class="capture-card">
+            <label class="capture-title"><ion-icon name="camera"></ion-icon> Photo du militaire</label>
+            <input type="file" accept="image/*" capture="environment" class="file-input" (change)="onCaptureSelected($event, 'photo')" />
+            @if (photoData) {
+              <img [src]="photoData" alt="Photo du militaire" class="capture-preview" />
+            }
+          </div>
+
+          <div class="actions-row between">
+            <button class="secondary-action" (click)="previousStep()">
+              <ion-icon name="arrow-back"></ion-icon>
+              Retour
+            </button>
+            <button class="primary-action" (click)="nextStep()">
+              <ion-icon name="arrow-forward"></ion-icon>
+              Suivant : empreintes
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (isCurrentStep('fingerprints') && currentMilitaire) {
+      <div class="card-modern">
+        <div class="card-header-modern">
+          <h3><ion-icon name="finger-print"></ion-icon> 3. Capture des empreintes</h3>
+        </div>
+        <div class="card-body-modern">
+          <div class="capture-grid">
+            <div class="capture-card">
+              <label class="capture-title"><ion-icon name="finger-print"></ion-icon> Empreinte pouce gauche</label>
+              <input type="file" accept="image/*" capture="environment" class="file-input" (change)="onCaptureSelected($event, 'left')" />
+              @if (empreinteGaucheData) {
+                <img [src]="empreinteGaucheData" alt="Empreinte gauche" class="capture-preview" />
+              }
+            </div>
+
+            <div class="capture-card">
+              <label class="capture-title"><ion-icon name="finger-print"></ion-icon> Empreinte pouce droit</label>
+              <input type="file" accept="image/*" capture="environment" class="file-input" (change)="onCaptureSelected($event, 'right')" />
+              @if (empreinteDroiteData) {
+                <img [src]="empreinteDroiteData" alt="Empreinte droite" class="capture-preview" />
+              }
+            </div>
+          </div>
+
+          <div class="manual-block">
+            <label class="section-label">Observations</label>
+            <textarea
+              class="form-control-modern"
+              rows="3"
+              placeholder="Notes complémentaires sur l’enrôlement…"
+              [(ngModel)]="observations"
+            ></textarea>
+          </div>
+
+          <div class="actions-row between">
+            <button class="secondary-action" (click)="previousStep()">
+              <ion-icon name="arrow-back"></ion-icon>
+              Retour
+            </button>
+            <button class="primary-action" (click)="nextStep()">
+              <ion-icon name="arrow-forward"></ion-icon>
+              Suivant : revue finale
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (isCurrentStep('review') && currentMilitaire) {
+      <div class="card-modern">
+        <div class="card-header-modern">
+          <h3><ion-icon name="shield-checkmark"></ion-icon> 4. Revoir et valider</h3>
+        </div>
+        <div class="card-body-modern">
+          <div class="militaire-info review-box">
+            <div class="militaire-info-header">
+              <ion-icon name="shield-checkmark"></ion-icon>
+              <span class="fw-bold">Résumé du dossier</span>
+            </div>
+            <div class="info-grid">
+              <div class="info-item"><span class="info-label">Matricule :</span><span class="info-value">{{ currentMilitaire.matricule }}</span></div>
+              <div class="info-item"><span class="info-label">Noms :</span><span class="info-value">{{ currentMilitaire.noms }}</span></div>
+              <div class="info-item"><span class="info-label">Grade :</span><span class="info-value">{{ currentMilitaire.grade || 'N/A' }}</span></div>
+              <div class="info-item"><span class="info-label">Observations :</span><span class="info-value">{{ observations || 'Aucune' }}</span></div>
+            </div>
+          </div>
+
+          <div class="capture-grid review-grid">
+            <div class="capture-card review-card">
+              <label class="capture-title">Photo capturée</label>
+              <img [src]="photoData" alt="Photo capturée" class="capture-preview" />
+            </div>
+            @if (empreinteGaucheData) {
+              <div class="capture-card review-card">
+                <label class="capture-title">Empreinte gauche</label>
+                <img [src]="empreinteGaucheData" alt="Empreinte gauche" class="capture-preview" />
+              </div>
+            }
+            @if (empreinteDroiteData) {
+              <div class="capture-card review-card">
+                <label class="capture-title">Empreinte droite</label>
+                <img [src]="empreinteDroiteData" alt="Empreinte droite" class="capture-preview" />
+              </div>
+            }
+          </div>
+
+          <div class="sync-note warning">
+            <ion-icon name="alert-circle"></ion-icon>
+            <span>Vous pouvez synchroniser maintenant ou garder le dossier sur la tablette pour la synchronisation de fin de journée.</span>
+          </div>
+
+          <div class="actions-row between multi-line">
+            <button class="secondary-action" (click)="previousStep()">
+              <ion-icon name="arrow-back"></ion-icon>
+              Retour
+            </button>
+            <button class="primary-action delayed" (click)="saveEnrollement(false)">
+              <ion-icon name="save"></ion-icon>
+              Stocker pour la fin de journée
+            </button>
+            <button class="primary-action success" (click)="saveEnrollement(true)">
+              <ion-icon name="cloud-upload"></ion-icon>
+              Synchroniser maintenant
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+
+    <div class="card-modern">
+      <div class="card-header-modern">
+        <h3><ion-icon name="images"></ion-icon> File locale</h3>
+        <span class="queue-badge">{{ pendingCount }} en attente</span>
+      </div>
+      <div class="card-body-modern">
+        @if (pendingEnrollements.length === 0) {
+          <div class="empty-state">Aucun enrôlement local pour le moment.</div>
+        } @else {
+          <div class="queue-list">
+            @for (item of pendingEnrollements; track item.localId) {
+              <div class="queue-item">
+                <div>
+                  <strong>{{ item.payload.noms }}</strong>
+                  <div class="queue-subline">{{ item.payload.matricule }} • {{ formatDate(item.createdAt) }}</div>
+                </div>
+                <span class="queue-status" [class.synced]="item.syncStatus === 'synced'">
+                  {{ item.syncStatus === 'synced' ? 'Synchronisé' : 'En attente' }}
+                </span>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</ion-content>

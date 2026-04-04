@@ -4,7 +4,7 @@ import { Observable, throwError, from } from 'rxjs';
 import { catchError, switchMap, timeout } from 'rxjs/operators';
 import { Preferences } from '@capacitor/preferences';
 import { Capacitor, registerPlugin } from '@capacitor/core';
-import { Militaire, LoginResponse, ApiResponse, User, ControleData } from '../models/interfaces';
+import { Militaire, LoginResponse, ApiResponse, User, ControleData, EnrollementPayload } from '../models/interfaces';
 
 interface WifiIpPlugin {
   getWifiIP(): Promise<{ ip: string }>;
@@ -357,6 +357,10 @@ export class ApiService {
 
   validerControle(data: ControleData): Observable<ApiResponse> {
     return this.request<ApiResponse>('POST', '/controles.php?action=valider', data);
+  }
+
+  enrollMilitaireVivant(data: EnrollementPayload): Observable<ApiResponse<{ enrollement_id?: number }>> {
+    return this.request<ApiResponse<{ enrollement_id?: number }>>('POST', '/controles.php?action=enroll_vivant', data);
   }
 
   getHistorique(limit = 20, offset = 0): Observable<ApiResponse> {

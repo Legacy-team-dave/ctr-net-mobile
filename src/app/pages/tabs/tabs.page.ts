@@ -3,7 +3,7 @@ import {
   IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { clipboardOutline, personOutline, logOutOutline } from 'ionicons/icons';
+import { personOutline, logOutOutline, qrCodeOutline } from 'ionicons/icons';
 import { AlertController } from '@ionic/angular/standalone';
 import { AuthService } from '../../services/auth.service';
 
@@ -18,7 +18,7 @@ export class TabsPage {
     private auth: AuthService,
     private alertCtrl: AlertController
   ) {
-    addIcons({ clipboardOutline, personOutline, logOutOutline });
+    addIcons({ personOutline, logOutOutline, qrCodeOutline });
   }
 
   async logout() {

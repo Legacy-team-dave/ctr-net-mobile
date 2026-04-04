@@ -7,8 +7,8 @@ export const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'controle',
-        loadComponent: () => import('../controle/controle.page').then(m => m.ControlePage),
+        path: 'enrollement',
+        loadComponent: () => import('../enrollement/enrollement.page').then(m => m.EnrollementPage),
       },
       {
         path: 'profil',
@@ -16,7 +16,7 @@ export const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'controle',
+        redirectTo: 'enrollement',
         pathMatch: 'full',
       },
     ],
