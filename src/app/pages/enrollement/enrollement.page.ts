@@ -506,26 +506,26 @@ export class EnrollementPage implements OnDestroy {
     const cleaned = trimmed.replace(/^(CTR\.NET|ENROL\.NET)\s*[:|-]?\s*/i, '').trim();
 
     try {
-      const parsed = JSON.parse(cleaned) as Partial<QrControlePayload>;
+      const parsed = JSON.parse(cleaned) as Partial<QrControlePayload> & Record<string, unknown>;
       if (parsed && typeof parsed === 'object') {
         return {
-          source: parsed.source ? String(parsed.source) : undefined,
-          payload_version: parsed.payload_version !== undefined ? Number(parsed.payload_version) : undefined,
-          controle_id: parsed.controle_id !== undefined ? Number(parsed.controle_id) : undefined,
-          matricule: String(parsed.matricule || '').trim(),
-          noms: parsed.noms ? String(parsed.noms) : undefined,
-          grade: parsed.grade ? String(parsed.grade) : undefined,
-          mention: parsed.mention ? String(parsed.mention) : undefined,
-          date_controle: parsed.date_controle ? String(parsed.date_controle) : undefined,
-          unite: parsed.unite ? String(parsed.unite) : undefined,
-          garnison: parsed.garnison ? String(parsed.garnison) : undefined,
-          province: parsed.province ? String(parsed.province) : undefined,
-          categorie: parsed.categorie ? String(parsed.categorie) : undefined,
-          type_controle: parsed.type_controle ? String(parsed.type_controle) : undefined,
-          lien_parente: parsed.lien_parente ? String(parsed.lien_parente) : undefined,
-          nom_beneficiaire: parsed.nom_beneficiaire ? String(parsed.nom_beneficiaire) : undefined,
-          new_beneficiaire: parsed.new_beneficiaire ? String(parsed.new_beneficiaire) : undefined,
-          observations: parsed.observations ? String(parsed.observations) : undefined,
+          source: parsed.source ? String(parsed.source) : (parsed['s'] ? String(parsed['s']) : undefined),
+          payload_version: parsed.payload_version !== undefined ? Number(parsed.payload_version) : (parsed['v'] !== undefined ? Number(parsed['v']) : undefined),
+          controle_id: parsed.controle_id !== undefined ? Number(parsed.controle_id) : (parsed['id'] !== undefined ? Number(parsed['id']) : undefined),
+          matricule: String(parsed.matricule || parsed['m'] || '').trim(),
+          noms: parsed.noms ? String(parsed.noms) : (parsed['n'] ? String(parsed['n']) : undefined),
+          grade: parsed.grade ? String(parsed.grade) : (parsed['g'] ? String(parsed['g']) : undefined),
+          mention: parsed.mention ? String(parsed.mention) : (parsed['mn'] ? String(parsed['mn']) : undefined),
+          date_controle: parsed.date_controle ? String(parsed.date_controle) : (parsed['d'] ? String(parsed['d']) : undefined),
+          unite: parsed.unite ? String(parsed.unite) : (parsed['u'] ? String(parsed['u']) : undefined),
+          garnison: parsed.garnison ? String(parsed.garnison) : (parsed['ga'] ? String(parsed['ga']) : undefined),
+          province: parsed.province ? String(parsed.province) : (parsed['p'] ? String(parsed['p']) : undefined),
+          categorie: parsed.categorie ? String(parsed.categorie) : (parsed['c'] ? String(parsed['c']) : undefined),
+          type_controle: parsed.type_controle ? String(parsed.type_controle) : (parsed['tc'] ? String(parsed['tc']) : undefined),
+          lien_parente: parsed.lien_parente ? String(parsed.lien_parente) : (parsed['lp'] ? String(parsed['lp']) : undefined),
+          nom_beneficiaire: parsed.nom_beneficiaire ? String(parsed.nom_beneficiaire) : (parsed['b'] ? String(parsed['b']) : undefined),
+          new_beneficiaire: parsed.new_beneficiaire ? String(parsed.new_beneficiaire) : (parsed['nb'] ? String(parsed['nb']) : undefined),
+          observations: parsed.observations ? String(parsed.observations) : (parsed['o'] ? String(parsed['o']) : undefined),
           raw_value: trimmed,
         };
       }

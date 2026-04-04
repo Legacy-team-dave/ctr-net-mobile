@@ -105,11 +105,16 @@
                 <div class="info-item"><span class="info-label">Matricule :</span><span class="info-value">{{ currentMilitaire.matricule }}</span></div>
                 <div class="info-item"><span class="info-label">Noms :</span><span class="info-value">{{ currentMilitaire.noms }}</span></div>
                 <div class="info-item"><span class="info-label">Grade :</span><span class="info-value">{{ currentMilitaire.grade || 'N/A' }}</span></div>
-                <div class="info-item"><span class="info-label">Unité :</span><span class="info-value">{{ currentMilitaire.unite || 'N/A' }}</span></div>
-                <div class="info-item"><span class="info-label">Garnison :</span><span class="info-value">{{ currentMilitaire.garnison || 'N/A' }}</span></div>
-                <div class="info-item"><span class="info-label">Province :</span><span class="info-value">{{ currentMilitaire.province || 'N/A' }}</span></div>
+                <div class="info-item"><span class="info-label">Unité :</span><span class="info-value">{{ currentMilitaire.unite || scannedPayload?.unite || 'N/A' }}</span></div>
+                <div class="info-item"><span class="info-label">Garnison :</span><span class="info-value">{{ currentMilitaire.garnison || scannedPayload?.garnison || 'N/A' }}</span></div>
+                <div class="info-item"><span class="info-label">Province :</span><span class="info-value">{{ currentMilitaire.province || scannedPayload?.province || 'N/A' }}</span></div>
+                <div class="info-item"><span class="info-label">Catégorie :</span><span class="info-value">{{ currentMilitaire.categorie || scannedPayload?.categorie || 'N/A' }}</span></div>
                 <div class="info-item"><span class="info-label">Mention :</span><span class="info-value">{{ scannedPayload?.mention || 'N/A' }}</span></div>
                 <div class="info-item"><span class="info-label">Date contrôle :</span><span class="info-value">{{ formatDate(scannedPayload?.date_controle || '') }}</span></div>
+                <div class="info-item"><span class="info-label">Type contrôle :</span><span class="info-value">{{ scannedPayload?.type_controle || 'N/A' }}</span></div>
+                <div class="info-item"><span class="info-label">Lien parenté :</span><span class="info-value">{{ scannedPayload?.lien_parente || 'N/A' }}</span></div>
+                <div class="info-item"><span class="info-label">Bénéficiaire :</span><span class="info-value">{{ scannedPayload?.new_beneficiaire || scannedPayload?.nom_beneficiaire || 'N/A' }}</span></div>
+                <div class="info-item"><span class="info-label">Observations :</span><span class="info-value">{{ scannedPayload?.observations || 'Aucune' }}</span></div>
               </div>
             </div>
 
