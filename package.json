@@ -1,6 +1,6 @@
 {
   "name": "ctr-net-enrollement-mobile",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Application mobile ENROL.NET dédiée à l’enrôlement des militaires vivants (Ionic Angular)",
   "author": "ENROL.NET",
   "scripts": {
