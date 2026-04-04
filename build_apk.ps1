@@ -77,7 +77,7 @@ $apkCandidates = @(
     (Join-Path $PSScriptRoot 'android\app\build\outputs\apk\debug\app-debug.apk')
 )
 $apkSource = $apkCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
-$apkDistDir = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\mobile-apks'))
+$apkDistDir = Join-Path $PSScriptRoot 'dist\apk'
 $apkDist = Join-Path $apkDistDir 'ctr-net-controle-mobile-latest-debug.apk'
 
 if (-not $apkSource) {
