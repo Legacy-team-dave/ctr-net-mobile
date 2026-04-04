@@ -6,7 +6,7 @@
 
 > Ce projet est **indépendant** du web `ctr.net-fardc` et distinct de l’application d’enrôlement `ENROL.NET` (`ctr-net-enrollement-mobile/`).
 >
-> **Impact QR Avril 2026 :** la restriction “QR uniquement pour les contrôles vivants” ne nécessite **pas de changement de code** dans `CTR.NET`. Elle concerne le web `ctr.net-fardc` et l’application `ENROL.NET`. `CTR.NET` reste l’application de **contrôle** ; la documentation est simplement alignée sur cette règle.
+> **Impact QR Avril 2026 :** la restriction “QR uniquement pour les contrôles vivants” ne nécessite **pas de changement de code** dans `CTR.NET`. Elle concerne le web `ctr.net-fardc` et l’application `ENROL.NET`, qui suit désormais le parcours **capture de carte + empreintes via capteur + scan QR professionnel**. `CTR.NET` reste l’application de **contrôle** ; la documentation est simplement alignée sur cette séparation.
 
 ## Mise à jour Avril 2026
 
