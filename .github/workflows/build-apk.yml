@@ -1,77 +1,94 @@
-name: Build APK
+name: Build Android APK
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'src/**'
+      - 'android/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'angular.json'
+      - 'capacitor.config.ts'
+      - '.github/workflows/build-apk.yml'
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  build-apk:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22"
-          cache: "npm"
+          node-version: 22
+          cache: npm
 
-      - name: Setup Java JDK
+      - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: "temurin"
-          java-version: "21"
+          distribution: temurin
+          java-version: 21
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install Android SDK platforms
-        run: sdkmanager "platforms;android-36" "build-tools;35.0.0"
+      - name: Install Android packages
+        shell: bash
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platform-tools" "platforms;android-36" "build-tools;35.0.0"
 
-      - name: Install dependencies
+      - name: Install npm dependencies
         run: npm ci
 
-      - name: Build Angular
+      - name: Build Angular app
         run: npx ng build --configuration production
 
-      - name: Sync Capacitor
+      - name: Sync Capacitor Android
         run: npx cap sync android
 
-      - name: Build APK
+      - name: Build debug APK
         working-directory: android
-        run: chmod +x gradlew && ./gradlew assembleDebug
+        shell: bash
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug
 
-      - name: Upload APK
+      - name: Prepare APK artifacts
+        id: prep
+        shell: bash
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          mkdir -p dist/apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk "dist/apk/ctr-net-mobile-v${VERSION}-debug.apk"
+          cp android/app/build/outputs/apk/debug/app-debug.apk "dist/apk/ctr-net-mobile-latest-debug.apk"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ctr.net-fardc-mobile
-          path: android/app/build/outputs/apk/debug/ctr.net-fardc-mobile.apk
+          name: ctr-net-mobile-apk-v${{ steps.prep.outputs.version }}
+          path: |
+            dist/apk/ctr-net-mobile-v${{ steps.prep.outputs.version }}-debug.apk
+            dist/apk/ctr-net-mobile-latest-debug.apk
+          if-no-files-found: error
 
-      - name: Get version
-        id: version
-        run: |
-          echo version=$(node -p 'require("./package.json").version') >> "$GITHUB_OUTPUT"
-
-      - name: Create or Update GitHub Release
+      - name: Publish GitHub release
+        if: github.ref_name == 'main' || github.ref_name == 'master'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ steps.version.outputs.version }}
-          name: CTR.NET Mobile v${{ steps.version.outputs.version }}
-          body: |
-            ## CTR.NET FARDC Mobile v${{ steps.version.outputs.version }}
-
-            APK de référence généré automatiquement par GitHub Actions.
-
-            ### Installation
-            1. Télécharger `ctr.net-fardc-mobile.apk`
-            2. Autoriser les sources inconnues sur votre appareil
-            3. Installer l'APK
-          files: android/app/build/outputs/apk/debug/ctr.net-fardc-mobile.apk
-          make_latest: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: v${{ steps.prep.outputs.version }}
+          name: CTR.NET Mobile v${{ steps.prep.outputs.version }}
+          generate_release_notes: true
+          files: |
+            dist/apk/ctr-net-mobile-v${{ steps.prep.outputs.version }}-debug.apk
+            dist/apk/ctr-net-mobile-latest-debug.apk

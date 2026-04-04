@@ -285,9 +285,12 @@ export class ControlePage {
     try {
       const result = await firstValueFrom(this.api.validerControle(data));
       await loading.dismiss();
+
       if (result.success) {
         this.showToast(result.message || 'Contrôle enregistré', 'success');
         setTimeout(() => this.backToSearch(), 1500);
+      } else {
+        this.showToast(result.message || 'Impossible d\'enregistrer le contrôle.', 'danger');
       }
     } catch (err: unknown) {
       await loading.dismiss();

@@ -251,18 +251,56 @@ export class ApiService {
     );
   }
 
+  private extractServerMessage(error: HttpErrorResponse): string | null {
+    if (typeof error.error?.message === 'string' && error.error.message.trim()) {
+      return error.error.message.trim();
+    }
+
+    const rawPayload = typeof error.error === 'string'
+      ? error.error
+      : typeof error.error?.text === 'string'
+        ? error.error.text
+        : '';
+
+    if (!rawPayload) {
+      return null;
+    }
+
+    try {
+      const parsed = JSON.parse(rawPayload);
+      if (typeof parsed?.message === 'string' && parsed.message.trim()) {
+        return parsed.message.trim();
+      }
+    } catch {
+      const cleaned = rawPayload
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      if (cleaned) {
+        return cleaned.slice(0, 220);
+      }
+    }
+
+    return null;
+  }
+
   private handleError(error: HttpErrorResponse | Error): Observable<never> {
     let message = 'Erreur inconnue';
 
     if (error instanceof HttpErrorResponse) {
+      const serverMessage = this.extractServerMessage(error);
+
       if (error.status === 0) {
         message = 'Impossible de joindre le serveur. Vérifiez la connexion Wi-Fi et l\'adresse IP.';
+      } else if (error.status === 200) {
+        message = serverMessage || 'Réponse serveur invalide malgré un statut 200.';
       } else if (error.status === 401) {
         message = 'Session expirée. Veuillez vous reconnecter.';
       } else if (error.status === 403) {
-        message = error.error?.message || 'Accès refusé';
+        message = serverMessage || 'Accès refusé';
       } else {
-        message = error.error?.message || `Erreur serveur (${error.status})`;
+        message = serverMessage || `Erreur serveur (${error.status})`;
       }
     } else if (error.name === 'TimeoutError') {
       message = 'Délai de connexion dépassé. Vérifiez l\'IP serveur et le réseau Wi-Fi.';
