@@ -1,4 +1,4 @@
-# Prompt de présentation — CTR.NET Mobile
+# Prompt de présentation — ENROL.NET
 
 Copiez-collez ce prompt dans votre assistant IA pour générer une présentation claire et professionnelle de l'application mobile.
 
@@ -7,7 +7,7 @@ Copiez-collez ce prompt dans votre assistant IA pour générer une présentation
 ## Prompt prêt à utiliser
 
 Tu es un expert en communication de solutions mobiles et en systèmes d'information militaires.
-Je dois présenter l'application mobile CTR.NET-FARDC devant [type de public : direction / contrôleurs terrain / équipe technique / partenaires].
+Je dois présenter l'application mobile ENROL.NET devant [type de public : direction / enrôleurs terrain / équipe technique / partenaires].
 
 Objectif de la présentation :
 
@@ -18,17 +18,15 @@ Objectif de la présentation :
 
 Contexte fonctionnel réel à respecter :
 
-- Profil unique : CONTROLEUR (seul profil autorisé sur mobile)
-- Mentions de contrôle : Présent, Favorable, Défavorable
-- Flux d'accès : Splash (5s) → Configuration IP → Login → Onglets (Contrôle, Profil, Quitter)
-- Fonctions principales : recherche militaire (min 2 caractères, debounce 300ms), validation contrôle en 2 étapes, capture GPS (timeout 5s, non bloquant)
-- 5 catégories militaires : Actif, DCD_AV_BIO, DCD_AP_BIO, RETRAITES, INTEGRES
-- Liens de parenté pour les décédés : Epouse/Epoux, Fils/Fille, Père/Mère, Frère/Sœur
+- Profil unique : `ENROLEUR`
+- Flux réel : Splash → Configuration IP → Login → Scan QR → Infos → Photo → Empreintes → Revue → Synchronisation
+- Fonction principale : enrôler un militaire vivant avec collecte biométrique et photo
+- Stockage local : mise en file hors ligne via IndexedDB en attendant la synchronisation
 - Communication : API REST via Wi-Fi intranet (token Bearer, timeout 15s)
 - URL de base serveur : `http://{IP}/ctr.net-fardc/api/`
-- Synchronisation : contrôles visibles en temps réel côté web (polling 10s via `controles_poll.php`)
-- GPS : capture automatique via `@capacitor/geolocation`, non bloquant si indisponible
-- Sécurité : token Bearer via Capacitor Preferences, authGuard + noAuthGuard, déconnexion auto sur 401
+- Endpoint métier : `controles.php?action=enroll_vivant`
+- Sécurité : token Bearer, contrôle du profil, messages de connexion explicites
+- Branding : bleu BIC `#0057B8` / `#003C8F`
 
 Technologies réelles :
 
@@ -37,7 +35,7 @@ Technologies réelles :
 - RxJS 7.8.0 pour la programmation réactive
 - Android SDK API 36, minSdk 24 (Android 7.0+)
 - Build automatisé via GitHub Actions (Node 22, Java 21, Ubuntu-latest)
-- Thème kaki militaire (#5C7A4D / #3F5A2E), police Barlow
+- Thème bleu BIC (#0057B8 / #003C8F), police Barlow
 - Plugins : @capacitor/geolocation, @capacitor/network, @capacitor/preferences, @capacitor/splash-screen, @capacitor/status-bar
 
 Consignes de production :
@@ -81,7 +79,7 @@ Format de sortie attendu :
 
 ## Variante courte (30 secondes)
 
-Fais-moi un pitch de 30 secondes de CTR.NET Mobile pour un décideur, en mettant l'accent sur :
+Fais-moi un pitch de 30 secondes de ENROL.NET pour un décideur, en mettant l'accent sur :
 
 - la mobilité terrain des contrôleurs,
 - la capture GPS automatique,
@@ -90,7 +88,7 @@ Fais-moi un pitch de 30 secondes de CTR.NET Mobile pour un décideur, en mettant
 
 ## Variante moyenne (2 minutes)
 
-Fais-moi un pitch de 2 minutes de CTR.NET Mobile pour une réunion de pilotage, avec :
+Fais-moi un pitch de 2 minutes de ENROL.NET pour une réunion de pilotage, avec :
 
 - problème initial (contrôles papier, pas de traçabilité terrain),
 - solution apportée (app mobile dédiée au CONTROLEUR),
@@ -101,14 +99,14 @@ Fais-moi un pitch de 2 minutes de CTR.NET Mobile pour une réunion de pilotage, 
 
 ## Variante technique (pour développeurs)
 
-Fais-moi une présentation technique de CTR.NET Mobile avec :
+Fais-moi une présentation technique de ENROL.NET avec :
 
 - Architecture : Ionic 8.0.0 + Angular 20.0.0 standalone + Capacitor 8.2.0
 - Communication : HTTP REST avec token Bearer (header `Authorization`), timeout 15s
 - Stockage local : Capacitor Preferences (`server_ip`, `auth_token`)
 - GPS : `@capacitor/geolocation` avec timeout 5s non bloquant
 - Build : GitHub Actions (Node 22, Java 21, Android SDK API 36)
-- Design : thème kaki (#5C7A4D / #3F5A2E), police Barlow, cards modernes, config et login avec même design
+- Design : thème bleu BIC (#0057B8 / #003C8F), police Barlow, cards modernes, config et login cohérents avec ENROL.NET
 - Guards : `authGuard` (vérifie session, redirige vers /login ou /config) + `noAuthGuard` (empêche double login)
 - Interfaces TypeScript : Militaire, User, LoginResponse, ApiResponse, ControleData
 - Services : ApiService (client HTTP central) + AuthService (gestion session, BehaviorSubject)

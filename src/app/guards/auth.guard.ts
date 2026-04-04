@@ -25,13 +25,13 @@ export const noAuthGuard: CanActivateFn = async () => {
   const router = inject(Router);
 
   if (auth.isLoggedIn) {
-    router.navigateByUrl('/tabs/controle', { replaceUrl: true });
+    router.navigateByUrl('/tabs/enrollement', { replaceUrl: true });
     return false;
   }
 
   const valid = await auth.checkSession();
   if (valid) {
-    router.navigateByUrl('/tabs/controle', { replaceUrl: true });
+    router.navigateByUrl('/tabs/enrollement', { replaceUrl: true });
     return false;
   }
   return true;

@@ -247,7 +247,7 @@ export class ApiService {
         }
       }),
       timeout(this.REQUEST_TIMEOUT),
-      catchError(this.handleError)
+      catchError((error) => this.handleError(error))
     );
   }
 
@@ -285,7 +285,7 @@ export class ApiService {
     return null;
   }
 
-  private handleError(error: HttpErrorResponse | Error): Observable<never> {
+  private handleError = (error: HttpErrorResponse | Error): Observable<never> => {
     let message = 'Erreur inconnue';
 
     if (error instanceof HttpErrorResponse) {

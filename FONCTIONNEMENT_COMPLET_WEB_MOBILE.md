@@ -1,38 +1,32 @@
-# Fonctionnement complet — CTR.NET-FARDC (Web + Mobile)
+# Fonctionnement complet — Web + ENROL.NET
 
-Ce document décrit en détail le fonctionnement des deux applications qui composent l'écosystème CTR.NET-FARDC :
-l'application web (PHP/MySQL) et l'application mobile (Ionic/Angular/Android).
+Ce document décrit le fonctionnement combiné du backend `CTR.NET-FARDC` et de l’application mobile `ENROL.NET`, dédiée à l’**enrôlement des militaires vivants**.
 
 ---
 
 ## 1. Vue d'ensemble du système
 
-CTR.NET-FARDC est un système de contrôle des effectifs militaires composé de deux applications complémentaires :
+L’écosystème comporte désormais **trois briques complémentaires** :
 
 ```text
-┌──────────────────────────┐         ┌──────────────────────────┐
-│   APPLICATION WEB        │         │   APPLICATION MOBILE     │
-│   (PHP / MySQL)          │         │   (Ionic / Angular)      │
-│                          │         │                          │
-│   Profils web :          │  HTTP   │   Profil unique :        │
-│   - ADMIN_IG             │◄───────►│   - CONTROLEUR           │
-│   - OPERATEUR            │  REST   │                          │
-│   (CONTROLEUR bloqué)    │   API   │   Plateforme :           │
-│                          │         │   - Android (APK)        │
-│   Serveur : Laragon      │         │   - Wi-Fi intranet       │
-│   (Apache + MySQL)       │         │                          │
-└──────────────────────────┘         └──────────────────────────┘
-         │                                      │
-         ▼                                      ▼
-┌──────────────────────────┐         ┌──────────────────────────┐
-│   Base de données MySQL  │         │   Stockage local         │
-│   - utilisateurs         │         │   (Capacitor Preferences)│
-│   - militaires           │         │   - IP serveur           │
-│   - controles            │         │   - Token Bearer         │
-│   - litiges              │         └──────────────────────────┘
-│   - logs                 │
-└──────────────────────────┘
+┌──────────────────────────┐
+│   APPLICATION WEB        │
+│   CTR.NET-FARDC          │
+│   Profils web :          │
+│   - ADMIN_IG             │
+│   - OPERATEUR            │
+└─────────────┬────────────┘
+              │ API REST
+      ┌───────┴────────┬───────────────────────┐
+      ▼                ▼                       ▼
+┌───────────────┐ ┌───────────────┐   ┌─────────────────────┐
+│ CTR.NET       │ │ ENROL.NET     │   │ Base MySQL          │
+│ CONTROLEUR    │ │ ENROLEUR      │   │ + enrollements      │
+│ Contrôle      │ │ Enrôlement    │   │ + logs + utilisateurs│
+└───────────────┘ └───────────────┘   └─────────────────────┘
 ```
+
+`ENROL.NET` est l’application mobile spécialisée dans l’enrôlement avec **photo, empreintes et synchronisation différée**.
 
 ---
 
@@ -71,7 +65,7 @@ L'application web gère trois profils avec des accès distincts :
 
 #### CONTROLEUR
 
-- Profil réservé exclusivement à l'application mobile CTR.NET Mobile.
+- Profil réservé exclusivement à l'application mobile ENROL.NET.
 - Connexion web bloquée (v1.4.0).
 - Accès uniquement via l'app mobile : saisie de contrôles, profil, historique.
 
@@ -143,11 +137,10 @@ L'application web gère trois profils avec des accès distincts :
 | CI/CD | GitHub Actions | Node 22, Java 21 |
 | Cible Android | SDK API | 36 (minSdk 24) |
 
-### 3.2. Profil unique : CONTROLEUR
+### 3.2. Profil unique : ENROLEUR
 
-L'application mobile est conçue exclusivement pour le profil CONTROLEUR.
-Aucun autre profil (ADMIN_IG, OPERATEUR) ne peut se connecter. La vérification
-est effectuée côté serveur dans `api/auth.php` qui refuse les profils non autorisés.
+L'application `ENROL.NET` est conçue exclusivement pour le profil `ENROLEUR`.
+Le backend refuse les autres profils et renvoie des messages explicites si le compte est absent, inactif ou non autorisé.
 
 ### 3.3. Flux complet de l'application
 
@@ -181,7 +174,7 @@ est effectuée côté serveur dans `api/auth.php` qui refuse les profils non aut
 - **Bouton "Configurer le serveur"** : Kaki foncé (#3F5A2E), même taille.
 - **Processus** :
   1. Envoi POST à `api/auth.php?action=login` avec `{login, password}`.
-  2. Le serveur vérifie les identifiants et le profil (CONTROLEUR uniquement).
+  2. Le serveur vérifie les identifiants et le profil (`ENROLEUR` uniquement).
   3. Si succès : token Bearer retourné, stocké localement, redirection vers `/tabs/controle`.
   4. Si échec : toast d'erreur en haut de l'écran ; les erreurs de validation locale restent affichées inline.
 
@@ -195,7 +188,7 @@ Trois onglets sont disponibles après connexion :
 
 Les onglets sont protégés par `authGuard` : si le token est invalide ou la session expirée, l'utilisateur est redirigé vers le login. Le guard `noAuthGuard` empêche un utilisateur déjà connecté d'accéder au login.
 
-#### 3.3.5. Page Contrôle — Étape 1 : Recherche
+#### 3.3.5. Assistant d’enrôlement — Étape 1 : Identification
 
 - **Champ de recherche** : Input pleine largeur avec icône loupe, minimum 2 caractères.
 - **Debounce** : 300ms entre la saisie et la requête pour éviter les appels excessifs.
@@ -206,7 +199,21 @@ Les onglets sont protégés par `authGuard` : si le token est invalide ou la ses
   - Grade, unité, garnison en sous-texte.
 - **Sélection** : Cliquer sur un résultat ouvre la fiche détaillée (étape 2), sauf si le militaire est déjà contrôlé.
 
-#### 3.3.6. Page Contrôle — Étape 2 : Validation
+#### 3.3.6. Assistant d’enrôlement — Étapes 2 à 6 : capture et synchronisation
+
+- **Étape 2 : Informations** — affichage des données QR/backend et validation utilisateur.
+- **Étape 3 : Photo** — capture ou import de la photo du militaire.
+- **Étape 4 : Empreintes** — saisie/association des empreintes selon l’équipement disponible.
+- **Étape 5 : Revue** — vérification du dossier complet avant envoi.
+- **Étape 6 : Sync** — envoi immédiat ou mise en file locale pour synchronisation en fin de journée.
+
+### Données locales
+
+- Les enrôlements non encore envoyés sont conservés via `enrollement-local.service.ts`.
+- La reprise d’un dossier interrompu est possible tant qu’il n’a pas été synchronisé.
+- Le backend enregistre les soumissions via `api/controles.php?action=enroll_vivant`.
+
+#### 3.3.7. Page Profil
 
 La fiche du militaire sélectionné s'affiche dans une carte verte (gradient kaki) avec :
 matricule, noms, grade, unité, garnison, province, catégorie (badge).

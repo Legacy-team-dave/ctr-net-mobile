@@ -1,8 +1,8 @@
-# Présentation - CTR.NET Mobile
+# Présentation - ENROL.NET
 
 ## Section 1 : Résumé exécutif
 
-CTR.NET Mobile est l'extension terrain de l'application web CTR.NET-FARDC. Conçue exclusivement pour le profil **CONTROLEUR**, elle permet la saisie des contrôles militaires directement depuis un smartphone Android, avec capture GPS automatique et synchronisation en temps réel avec le serveur central. L'application fonctionne sur réseau Wi-Fi intranet et communique avec l'API REST du serveur web via des requêtes HTTP authentifiées par token Bearer. Le contrôleur peut rechercher un militaire, valider un contrôle (Présent, Favorable ou Défavorable) et transmettre instantanément les données au système central, où elles apparaissent en temps réel via le mécanisme de polling.
+`ENROL.NET` est l’application mobile de terrain dédiée au profil **`ENROLEUR`**. Elle permet l’enrôlement des militaires vivants depuis une tablette ou un smartphone Android, avec récupération d’informations par QR code, capture photo, capture d’empreintes et synchronisation immédiate ou différée avec le backend `CTR.NET-FARDC`.
 
 ---
 
@@ -11,11 +11,11 @@ CTR.NET Mobile est l'extension terrain de l'application web CTR.NET-FARDC. Conç
 ### Slide 1 — Titre et objectif
 
 **Message clé**
-Présenter CTR.NET Mobile comme l'outil terrain du contrôleur, complémentaire à l'application web.
+Présenter ENROL.NET comme l'outil terrain de l’enrôleur, complémentaire à l'application web.
 
 **Points à dire :**
 
-- CTR.NET Mobile est une application Android dédiée au contrôle terrain des effectifs militaires.
+- ENROL.NET est une application Android dédiée à l’enrôlement terrain des militaires vivants.
 - Elle s'intègre à l'écosystème CTR.NET-FARDC existant via une API REST.
 - Seul le profil CONTROLEUR est autorisé à se connecter.
 - L'objectif est d'accélérer la saisie et d'ajouter la géolocalisation automatique.
@@ -42,13 +42,13 @@ Une application Android légère, sécurisée, synchronisée en temps réel.
 - Application native Android compilée via Capacitor (Ionic 8.0.0 + Angular 20.0.0).
 - Saisie directe sur le terrain avec résultat immédiat côté serveur.
 - Capture GPS automatique à chaque validation de contrôle.
-- Design identique à l'application web (thème kaki, police Barlow).
+- Design cohérent avec l’écosystème web, avec une identité visuelle bleu BIC et la police Barlow.
 - Fonctionne sur réseau Wi-Fi intranet (pas besoin d'Internet).
 
-### Slide 4 — Flux complet de l'application
+### Slide 4 — Flux complet de l’application
 
 **Message clé**
-De l'installation à la saisie d'un contrôle en 9 étapes.
+De l’installation à l’envoi d’un dossier d’enrôlement en 8 étapes.
 
 **Points à dire :**
 
@@ -122,7 +122,7 @@ L'identité visuelle est cohérente entre web et mobile.
 
 **Points à dire :**
 
-- Couleur primaire : kaki militaire #5C7A4D.
+- Couleur primaire : bleu BIC #0057B8.
 - Couleur secondaire : kaki foncé #3F5A2E.
 - Police : Barlow (Regular, Medium, SemiBold, Bold).
 - Logo : IG-FARDC (inspectorat général).
@@ -132,7 +132,7 @@ L'identité visuelle est cohérente entre web et mobile.
 ### Slide 10 — Bénéfices opérationnels
 
 **Message clé**
-CTR.NET Mobile apporte mobilité, rapidité et preuve géographique.
+ENROL.NET apporte mobilité, capture biométrique et continuité opérationnelle.
 
 **Points à dire :**
 
@@ -238,7 +238,7 @@ L'application est opérationnelle et prête pour un déploiement terrain.
    Le contrôle échoue et un message d'erreur s'affiche. Le contrôleur peut réessayer dès que la connexion est rétablie.
 
 9. **Le design est-il le même que l'application web ?**
-   Oui, les deux applications partagent le même thème kaki, la même police Barlow, et les mêmes composants visuels (cards, badges, boutons).
+   Oui, les deux applications partagent la même base visuelle et la police Barlow, mais ENROL.NET utilise un thème bleu BIC distinct de CTR.NET.
 
 10. **L'application est-elle disponible sur iOS ?**
    Actuellement non. L'application cible Android uniquement (API 36, minSdk 24).
@@ -247,7 +247,7 @@ L'application est opérationnelle et prête pour un déploiement terrain.
 
 ## Section 5 : Conclusion et recommandations
 
-CTR.NET Mobile apporte une dimension terrain indispensable au dispositif de contrôle. L'application permet au CONTROLEUR d'effectuer ses saisies directement sur le terrain avec preuve GPS, tout en maintenant une synchronisation instantanée avec le système central. Le design unifié entre web et mobile garantit une expérience cohérente et réduit la courbe d'apprentissage.
+ENROL.NET apporte une capacité d’enrôlement mobile structurée, compatible avec les usages terrain et les contraintes de connectivité. L’application permet à l’`ENROLEUR` de capturer les éléments d’identification, de conserver localement les dossiers si besoin et de les synchroniser ensuite avec le système central.
 
 ### Prochaines actions recommandées
 

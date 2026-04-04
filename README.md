@@ -1,253 +1,130 @@
-# CTR.NET Mobile — Application CONTROLEUR (Ionic Angular)
+# ENROL.NET — Application mobile ENROLEUR (Ionic Angular)
 
 ## Description
 
-Application mobile Android destinée exclusivement au profil **CONTROLEUR** de l'application web CTR.NET-FARDC. Elle communique avec l'API REST du projet web via le réseau Wi-Fi (IPv4).
+`ENROL.NET` est l’application Android dédiée à l’**enrôlement des militaires vivants** pour l’écosystème `CTR.NET-FARDC`. Elle est réservée au profil **`ENROLEUR`** et reprend le design général des autres applications mobiles tout en ajoutant un flux terrain complet : **scan QR → récupération d’informations → photo → empreintes → revue → synchronisation**.
 
-> Ce projet est **indépendant** du projet web `ctr.net-fardc`. Il se trouve dans son propre dossier `ctr-net-mobile/`.
+> Ce projet est **séparé** de `ctr-net-mobile/`. Le contrôle terrain et l’enrôlement terrain sont désormais gérés par **deux applications différentes**.
 
-## Architecture
+## Points clés
 
-```text
-ctr-net-mobile/
-├── .github/
-│   └── workflows/
-│       └── build-apk.yml           ← CI/CD GitHub Actions (APK automatique)
-├── src/
-│   ├── app/
-│   │   ├── guards/
-│   │   │   └── auth.guard.ts       ← Guards d'authentification (authGuard, noAuthGuard)
-│   │   ├── models/
-│   │   │   └── interfaces.ts       ← Interfaces TypeScript (Militaire, User, ControleData)
-│   │   ├── pages/
-│   │   │   ├── config/             ← Configuration IP serveur + test connexion
-│   │   │   ├── controle/           ← Recherche + validation militaire (2 étapes)
-│   │   │   ├── login/              ← Connexion CONTROLEUR
-│   │   │   ├── profil/             ← Affichage profil utilisateur (lecture seule)
-│   │   │   ├── splash/             ← Splash Angular (5 secondes après splash natif Capacitor)
-│   │   │   └── tabs/               ← Navigation par onglets (Contrôle, Profil, Quitter)
-│   │   ├── services/
-│   │   │   ├── api.service.ts      ← Client HTTP (API REST + gestion token)
-│   │   │   ├── auth.service.ts     ← Gestion de l'authentification et session
-│   │   │   └── cache.service.ts    ← Nettoyage automatique des caches
-│   │   ├── app.component.ts
-│   │   └── app.routes.ts           ← Routes principales
-│   ├── assets/
-│   │   ├── img/                    ← Logo FARDC, images
-│   │   ├── icon/                   ← Icônes progressives
-│   │   └── fonts/                  ← Police Barlow (Regular/Medium/SemiBold/Bold)
-│   ├── theme/
-│   │   └── variables.scss          ← Thème kaki militaire (#5C7A4D / #3F5A2E)
-│   ├── environments/               ← Environnements dev/prod
-│   ├── index.html
-│   ├── main.ts
-│   └── global.scss                 ← Styles globaux (police Barlow)
-├── android/                        ← Projet Android Studio (Capacitor)
-├── www/                            ← Build output (après ng build)
-├── capacitor.config.ts             ← Configuration Capacitor (appId, plugins)
-├── angular.json                    ← Configuration Angular CLI
-├── ionic.config.json               ← Configuration Ionic
-├── package.json                    ← Dépendances NPM
-└── README.md
-```
+- **Nom installé** : `ENROL.NET`
+- **App ID** : `net.ctr.fardc.enrollement.mobile`
+- **Profil autorisé** : `ENROLEUR`
+- **Couleurs** : bleu BIC `#0057B8` / `#003C8F`
+- **Mode terrain** : compatible tablette Android / Coppernic
+- **Stockage local** : file d’attente hors ligne pour synchronisation différée
+
+## Flux métier réel
+
+1. **Splash** et configuration du serveur
+2. **Connexion** avec un compte `ENROLEUR`
+3. **Scan QR** ou récupération d’un militaire depuis le backend
+4. **Validation des informations** d’identité
+5. **Capture photo**
+6. **Capture des empreintes**
+7. **Revue du dossier**
+8. **Synchronisation immédiate** ou envoi en fin de journée
+
+## Authentification et comptes
+
+- L’application n’accepte que les comptes ayant le profil **`ENROLEUR`**.
+- Les comptes `OPERATEUR`, `CONTROLEUR` et `ENROLEUR` sont créés avec le mot de passe par défaut **`987654321`** dans le web.
+- Ces comptes sont **inactifs par défaut** tant qu’un `ADMIN_IG` ne les a pas activés.
+- Les messages de connexion sont explicites :
+  - `Utilisateur non créé dans la base de données.`
+  - `Ce compte existe mais il est en attente d'activation.`
+  - `Utilisateur ou mot de passe incorrects.`
 
 ## Communication avec le serveur web
 
-### 2. Communication avec l'application web
+L’application consomme les endpoints du backend `ctr.net-fardc/api/` :
 
-- L'application mobile communique avec l'application web `ctr.net-fardc` via IPv4 sur le réseau Wi-Fi.
-- Le téléphone et le PC serveur doivent être connectés au même réseau.
-- Avant connexion, l'utilisateur renseigne manuellement l'adresse IP du serveur web.
-- En environnement **Laragon standard**, il suffit généralement de saisir l’**IP seule** (ex. `10.71.62.9`) sans `:port`.
-- Ajouter `:port` uniquement si Apache/Laragon n’écoute pas sur le port HTTP par défaut (`80`) ou HTTPS (`443`).
-- Cette IP est stockée localement (`server_ip`) et peut être modifiée à tout moment depuis la page Configuration.
-
-L'app mobile utilise les endpoints API dans `ctr.net-fardc/api/` :
-
-| Endpoint | Méthode | Description |
+| Endpoint | Méthode | Usage |
 | --- | --- | --- |
-| `/api/auth.php?action=login` | POST | Connexion (CONTROLEUR uniquement) |
+| `/api/auth.php?action=login` | POST | Connexion mobile `ENROLEUR` |
 | `/api/auth.php?action=logout` | POST | Déconnexion |
 | `/api/auth.php?action=check` | GET | Vérification de session |
-| `/api/controles.php?action=search` | GET | Recherche de militaire (matricule ou nom) |
-| `/api/controles.php?action=valider` | POST | Validation d'un contrôle + coordonnées GPS |
-| `/api/controles.php?action=historique` | GET | Historique des contrôles |
-| `/api/profil.php?action=get` | GET | Lecture du profil |
-| `/api/profil.php?action=update` | POST | Mise à jour du profil |
+| `/api/controles.php?action=search` | GET | Recherche/chargement d’un militaire |
+| `/api/controles.php?action=enroll_vivant` | POST | Envoi d’un enrôlement vivant |
+| `/api/controles.php?action=historique` | GET | Historique/suivi |
+| `/api/profil.php?action=get` | GET | Consultation du profil |
 
-## Prérequis
+## Architecture résumée
 
-1. **Node.js** (v22+) — [nodejs.org](https://nodejs.org)
-2. **Java JDK 21** — [adoptium.net](https://adoptium.net)
-3. **Android Studio** — [developer.android.com](https://developer.android.com/studio)
-   - Installer le **Android SDK** (API Level 36)
-   - Build Tools 35.0.0
-   - Configurer la variable `ANDROID_HOME`
+```text
+ctr-net-enrollement-mobile/
+├── src/app/pages/enrollement/          ← assistant multi-étapes d’enrôlement
+├── src/app/services/enrollement-local.service.ts
+│                                        ← file d’attente locale IndexedDB
+├── src/app/pages/login/                 ← connexion ENROLEUR
+├── src/app/pages/config/                ← configuration IP serveur
+├── src/app/pages/profil/                ← consultation du profil connecté
+├── src/theme/variables.scss             ← thème bleu BIC
+├── capacitor.config.ts                  ← appName ENROL.NET + appId dédié
+└── .github/workflows/build-apk.yml      ← génération APK GitHub Actions
+```
 
-## Installation
+## Prérequis développement
+
+1. **Node.js** v22+
+2. **Java JDK 21**
+3. **Android Studio** avec SDK 36 / build-tools 35
+4. Un backend `ctr.net-fardc` accessible sur le même réseau Wi-Fi
+
+## Installation locale
 
 ```bash
-cd ctr-net-mobile
+cd ctr-net-enrollement-mobile
 npm install
-```
-
-## Développement (navigateur)
-
-```bash
 npm start
-# ou
-ionic serve
 ```
-
-L'application s'ouvre sur `http://localhost:4200`.
 
 ## Compilation APK
 
-### Méthode 1 : GitHub Actions (recommandée)
+### GitHub Actions
 
-Chaque push sur la branche `main` déclenche automatiquement le build APK via GitHub Actions. L'APK de référence est celui généré par ce workflow. Il est disponible en téléchargement dans la section **Artifacts** et la release/tag `v<version package.json>` est créée ou mise à jour quand le workflow se termine correctement.
+L’APK de référence est généré par le workflow GitHub Actions du dépôt. Le nom distribué côté projet est :
 
-Repository : <https://github.com/Legacy-team-dave/ctr-net-mobile/actions>
+- `ctr-net-enrollement-mobile-latest-debug.apk`
 
-### Méthode 2 : Ligne de commande
-
-Cette méthode sert au contrôle local. L'APK de référence reste celui généré par GitHub Actions.
+### Local
 
 ```bash
-# 1. Build Angular production
 npx ng build --configuration production
-
-# 2. Synchroniser Capacitor
 npx cap sync android
-
-# 3. Build APK
 cd android
 ./gradlew assembleDebug
-
-# APK local source : android/app/build/outputs/apk/debug/ctr.net-fardc-mobile.apk
-# Fallback possible selon l'environnement Gradle : android/app/build/outputs/apk/debug/app-debug.apk
-# APK distribuable : dist/apk/ctr-net-mobile-latest-debug.apk (via BUILD_APK.bat ou build_apk.ps1)
 ```
 
-### Méthode 3 : Android Studio
+Sorties usuelles :
 
-Cette méthode sert au debug local. L'APK de référence reste celui généré par GitHub Actions.
-
-```bash
-npx ng build --configuration production
-npx cap sync android
-npx cap open android
-```
-
-Puis dans Android Studio : **Build → Build Bundle(s)/APK(s) → Build APK(s)**
-
-## Flux de l'application
-
-1. **Splash** → Splash Capacitor (~2 s) puis splash Angular avec animation (~5 s)
-2. **Configuration serveur** → Saisie manuelle de l'IP serveur + test de connexion
-3. **Test de connexion** → Vérifie que l'API est joignable
-4. **Connexion** → Login/mot de passe (profil CONTROLEUR uniquement)
-5. **Onglet Contrôle** → Recherche par matricule/nom → Sélection militaire
-6. **Contrôle Vivant** → Bouton "Présent" (mention automatique)
-7. **Contrôle Décédé** → Bénéficiaire + Lien de parenté + Observations → "Favorable" ou "Défavorable"
-8. **Onglet Profil** → Consultation des informations (lecture seule avec avatar)
-9. **Quitter** → Déconnexion avec confirmation
-
-## Mentions de contrôle
-
-- **Présent** — Militaire vivant confirmé sur site
-- **Favorable** — Bénéficiaire décédé conforme
-- **Défavorable** — Bénéficiaire décédé non conforme
-
-## Liens de parenté (pour décédé)
-
-- Epouse / Epoux
-- Fils / Fille
-- Père / Mère
-- Frère / Sœur
-
-## Catégories militaires
-
-| Catégorie | Badge | Description |
-| --- | --- | --- |
-| ACTIF | Vert | Militaire en service actif |
-| DCD_AV_BIO | Rouge foncé | Décédé avant biométrie |
-| DCD_AP_BIO | Rouge | Décédé après biométrie |
-| RETRAITES | Orange | Militaire retraité |
-| INTEGRES | Bleu | Militaire intégré |
+- source Gradle : `android/app/build/outputs/apk/debug/ctr.net-fardc-mobile.apk`
+- copie distribuable : `dist/apk/ctr-net-enrollement-mobile-latest-debug.apk`
 
 ## Technologies
 
 | Technologie | Version | Rôle |
 | --- | --- | --- |
-| **Ionic** | 8.0.0 | Framework UI mobile |
-| **Angular** | 20.0.0 | Framework applicatif (standalone components) |
-| **Capacitor** | 8.2.0 | Bridge natif Android |
-| **TypeScript** | 5.9.0 | Langage typé |
-| **RxJS** | 7.8.0 | Programmation réactive |
+| Ionic | 8 | UI mobile |
+| Angular | 20 | Application standalone |
+| Capacitor | 8 | Bridge Android |
+| TypeScript | 5.9 | Logique applicative |
+| IndexedDB | navigateur/app webview | stockage local des enrôlements |
 
-## Plugins Capacitor
+## Charte visuelle
 
-| Plugin | Version | Utilisation |
-| --- | --- | --- |
-| `@capacitor/geolocation` | 8.1.0 | Coordonnées GPS lors de la validation |
-| `@capacitor/network` | 8.0.1 | Détection connectivité Wi-Fi |
-| `@capacitor/preferences` | 8.0.1 | Stockage local (IP serveur, token) |
-| `@capacitor/splash-screen` | 8.0.1 | Écran de démarrage natif |
-| `@capacitor/status-bar` | 8.0.1 | Barre d'état kaki #3F5A2E |
-
-## Configuration Capacitor
-
-```typescript
-appId: 'net.ctr.fardc.mobile'
-appName: 'CTR.NET FARDC'
-webDir: 'www'
-server: {
-  androidScheme: 'http',     // Intranet HTTP
-  cleartext: true,
-  allowNavigation: ['*']
-}
-```
-
-## CI/CD — GitHub Actions
-
-Le workflow `.github/workflows/build-apk.yml` :
-
-1. Setup Node.js v22 + cache npm
-2. Setup Java JDK 21 (Temurin)
-3. Setup Android SDK (API 36 + build-tools 35.0.0)
-4. `npm ci` — Installation dépendances
-5. `npx ng build --configuration production` — Build Angular
-6. `npx cap sync android` — Synchronisation Capacitor
-7. `./gradlew assembleDebug` — Build APK
-8. Upload artifact — APK téléchargeable (`ctr.net-fardc-mobile.apk`)
-
-## Thème visuel
-
-- **Couleur primaire** : Kaki militaire `#5C7A4D`
-- **Couleur secondaire** : Kaki foncé `#3F5A2E`
-- **Police** : Barlow (Regular, Medium, SemiBold, Bold)
-- **Icône** : IG-FARDC (logo inspectorat)
+- **Primaire** : `#0057B8`
+- **Secondaire** : `#003C8F`
+- **Police** : Barlow
+- **Nom affiché** : `ENROL.NET`
 
 ## Documentation liée
 
-- **Web** : `ctr.net-fardc/README.md`
-- **API** : `ctr.net-fardc/api/`
-- **Architecture mobile** : `ARCHITECTURE.md`
-- **Versions** : `VERSION.md`
-- **Structure** : `STRUCTURE.txt`
-- **Démarrage rapide** : `QUICKSTART.txt`
-- **Présentation mobile** : `PRESENTATION_CTR_NET_MOBILE.md`
-- **Prompt présentation** : `PROMPT_PRESENTATION.md`
-- **Fonctionnement web+mobile** : `FONCTIONNEMENT_COMPLET_WEB_MOBILE.md`
+- `ARCHITECTURE.md`
+- `VERSION.md`
+- `FONCTIONNEMENT_COMPLET_WEB_MOBILE.md`
+- `PRESENTATION_CTR_NET_MOBILE.md`
+- `PROMPT_PRESENTATION.md`
+- `../ctr.net-fardc/README.md`
 
-## Scripts de lancement
-
-| Script | Type | Description |
-| --- | --- | --- |
-| `START.bat` | Batch | Démarrer le serveur de développement |
-| `INSTALL.bat` | Batch | Installer les dépendances npm |
-| `BUILD_APK.bat` | Batch | Compiler l'APK Android, générer `dist/apk/*latest*`, proposer installation ADB |
-| `INSTALL_APK.bat` | Batch | Installer rapidement l'APK sur appareil Android connecté (ADB) |
-| `launch.ps1` | PowerShell | Démarrer le serveur dev |
-| `build_apk.ps1` | PowerShell | Compiler l'APK Android et générer `dist/apk/*latest*` (`-InstallOnDevice` optionnel) |

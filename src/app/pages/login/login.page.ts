@@ -58,7 +58,7 @@ export class LoginPage {
       this.login = '';
       this.password = '';
       this.errorMessage = '';
-      this.router.navigateByUrl('/tabs/controle', { replaceUrl: true });
+      this.router.navigateByUrl('/tabs/enrollement', { replaceUrl: true });
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Erreur de connexion';
       this.errorMessage = msg;
