@@ -68,10 +68,19 @@ jobs:
         shell: bash
         run: |
           VERSION=$(node -p "require('./package.json').version")
+          APK_SOURCE=$(find android/app/build/outputs/apk/debug -maxdepth 1 -type f -name '*.apk' | head -n 1)
+
+          if [ -z "$APK_SOURCE" ]; then
+            echo "APK introuvable dans android/app/build/outputs/apk/debug" >&2
+            ls -R android/app/build/outputs || true
+            exit 1
+          fi
+
           mkdir -p dist/apk
-          cp android/app/build/outputs/apk/debug/app-debug.apk "dist/apk/ctr-net-mobile-v${VERSION}-debug.apk"
-          cp android/app/build/outputs/apk/debug/app-debug.apk "dist/apk/ctr-net-mobile-latest-debug.apk"
+          cp "$APK_SOURCE" "dist/apk/ctr-net-mobile-v${VERSION}-debug.apk"
+          cp "$APK_SOURCE" "dist/apk/ctr-net-mobile-latest-debug.apk"
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "apk_source=${APK_SOURCE}" >> "$GITHUB_OUTPUT"
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4

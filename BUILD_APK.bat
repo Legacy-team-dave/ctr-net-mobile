@@ -68,7 +68,8 @@ if %errorlevel% neq 0 (
 )
 cd ..
 
-set "APK_SOURCE=android\app\build\outputs\apk\debug\app-debug.apk"
+set "APK_SOURCE=android\app\build\outputs\apk\debug\ctr.net-fardc-mobile.apk"
+if not exist "%APK_SOURCE%" set "APK_SOURCE=android\app\build\outputs\apk\debug\app-debug.apk"
 set "APK_DIST_DIR=dist\apk"
 set "APK_DIST=%APK_DIST_DIR%\ctr-net-mobile-latest-debug.apk"
 

@@ -71,12 +71,17 @@ if ($buildResult -ne 0) {
     exit 1
 }
 
-$apkSource = Join-Path $PSScriptRoot 'android\app\build\outputs\apk\debug\app-debug.apk'
+$apkCandidates = @(
+    (Join-Path $PSScriptRoot 'android\app\build\outputs\apk\debug\ctr.net-fardc-mobile.apk'),
+    (Join-Path $PSScriptRoot 'android\app\build\outputs\apk\debug\app-debug.apk')
+)
+$apkSource = $apkCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
 $apkDistDir = Join-Path $PSScriptRoot 'dist\apk'
 $apkDist = Join-Path $apkDistDir 'ctr-net-mobile-latest-debug.apk'
 
-if (-not (Test-Path $apkSource)) {
-    Write-Host "[ERREUR] APK introuvable : $apkSource" -ForegroundColor Red
+if (-not $apkSource) {
+    Write-Host "[ERREUR] APK introuvable. Fichiers attendus :" -ForegroundColor Red
+    $apkCandidates | ForEach-Object { Write-Host "  - $_" -ForegroundColor DarkGray }
     Read-Host "Appuyez sur Entree pour quitter"
     exit 1
 }
@@ -90,7 +95,7 @@ Copy-Item -Path $apkSource -Destination $apkDist -Force
 Write-Host ""
 Write-Host "=========================================================" -ForegroundColor Green
 Write-Host "  [OK] APK genere avec succes !" -ForegroundColor Green
-Write-Host "  Emplacement source : android\app\build\outputs\apk\debug\app-debug.apk" -ForegroundColor Green
+Write-Host "  Emplacement source : $apkSource" -ForegroundColor Green
 Write-Host "  APK distribuable   : dist\apk\ctr-net-mobile-latest-debug.apk" -ForegroundColor Green
 Write-Host "=========================================================" -ForegroundColor Green
 
