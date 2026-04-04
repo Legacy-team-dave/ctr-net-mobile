@@ -71,6 +71,7 @@ jobs:
         run: |
           VERSION=$(node -p "require('./package.json').version")
           APK_SOURCE=$(find android/app/build/outputs/apk/debug -maxdepth 1 -type f -name '*.apk' | head -n 1)
+          APK_DIST_DIR="dist/apk"
 
           if [ -z "$APK_SOURCE" ]; then
             echo "APK introuvable dans android/app/build/outputs/apk/debug" >&2
@@ -78,19 +79,20 @@ jobs:
             exit 1
           fi
 
-          mkdir -p dist/apk
-          cp "$APK_SOURCE" "dist/apk/ctr-net-enrollement-mobile-v${VERSION}-debug.apk"
-          cp "$APK_SOURCE" "dist/apk/ctr-net-enrollement-mobile-latest-debug.apk"
+          mkdir -p "$APK_DIST_DIR"
+          cp "$APK_SOURCE" "$APK_DIST_DIR/ctr-net-enrollement-mobile-v${VERSION}-debug.apk"
+          cp "$APK_SOURCE" "$APK_DIST_DIR/ctr-net-enrollement-mobile-latest-debug.apk"
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
           echo "apk_source=${APK_SOURCE}" >> "$GITHUB_OUTPUT"
+          echo "apk_dist_dir=${APK_DIST_DIR}" >> "$GITHUB_OUTPUT"
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: ctr-net-enrollement-mobile-apk-v${{ steps.prep.outputs.version }}
           path: |
-            dist/apk/ctr-net-enrollement-mobile-v${{ steps.prep.outputs.version }}-debug.apk
-            dist/apk/ctr-net-enrollement-mobile-latest-debug.apk
+            ${{ steps.prep.outputs.apk_dist_dir }}/ctr-net-enrollement-mobile-v${{ steps.prep.outputs.version }}-debug.apk
+            ${{ steps.prep.outputs.apk_dist_dir }}/ctr-net-enrollement-mobile-latest-debug.apk
           if-no-files-found: error
 
       - name: Publish GitHub release
@@ -101,5 +103,5 @@ jobs:
           name: ENROL.NET Mobile v${{ steps.prep.outputs.version }}
           generate_release_notes: true
           files: |
-            dist/apk/ctr-net-enrollement-mobile-v${{ steps.prep.outputs.version }}-debug.apk
-            dist/apk/ctr-net-enrollement-mobile-latest-debug.apk
+            ${{ steps.prep.outputs.apk_dist_dir }}/ctr-net-enrollement-mobile-v${{ steps.prep.outputs.version }}-debug.apk
+            ${{ steps.prep.outputs.apk_dist_dir }}/ctr-net-enrollement-mobile-latest-debug.apk
