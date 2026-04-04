@@ -31,25 +31,27 @@
 }
 
 :root {
-  // Couleurs kaki identiques au web
-  --kaki-primary: #5C7A4D;
-  --kaki-dark: #3F5A2E;
-  --green-primary: #2e7d32;
-  --green-dark: #1b5e20;
+  // Couleurs bleu BIC pour ENROL.NET
+  --kaki-primary: #0057B8;
+  --kaki-dark: #003C8F;
+  --green-primary: #0057B8;
+  --green-dark: #003C8F;
+  --bic-primary: #0057B8;
+  --bic-dark: #003C8F;
 
-  --ion-color-primary: #5C7A4D;
-  --ion-color-primary-rgb: 92, 122, 77;
+  --ion-color-primary: #0057B8;
+  --ion-color-primary-rgb: 0, 87, 184;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #3F5A2E;
-  --ion-color-primary-tint: #6d8a5e;
+  --ion-color-primary-shade: #004ca2;
+  --ion-color-primary-tint: #1a67c0;
 
-  --ion-color-secondary: #3F5A2E;
-  --ion-color-secondary-rgb: 63, 90, 46;
+  --ion-color-secondary: #003C8F;
+  --ion-color-secondary-rgb: 0, 60, 143;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #354e27;
-  --ion-color-secondary-tint: #526b43;
+  --ion-color-secondary-shade: #00357e;
+  --ion-color-secondary-tint: #1a509a;
 
   --ion-color-tertiary: #6f42c1;
   --ion-color-tertiary-rgb: 111, 66, 193;
@@ -58,12 +60,12 @@
   --ion-color-tertiary-shade: #623aaa;
   --ion-color-tertiary-tint: #7d55c7;
 
-  --ion-color-success: #28a745;
-  --ion-color-success-rgb: 40, 167, 69;
+  --ion-color-success: #0d6efd;
+  --ion-color-success-rgb: 13, 110, 253;
   --ion-color-success-contrast: #ffffff;
   --ion-color-success-contrast-rgb: 255, 255, 255;
-  --ion-color-success-shade: #239a3d;
-  --ion-color-success-tint: #3eb058;
+  --ion-color-success-shade: #0b61df;
+  --ion-color-success-tint: #257dfd;
 
   --ion-color-warning: #ffc107;
   --ion-color-warning-rgb: 255, 193, 7;

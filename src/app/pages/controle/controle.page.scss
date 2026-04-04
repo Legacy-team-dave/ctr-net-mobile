@@ -1,6 +1,6 @@
 // ── Toolbar ──
 ion-toolbar {
-  --background: linear-gradient(135deg, #5C7A4D 0%, #3F5A2E 100%);
+  --background: linear-gradient(135deg, #0057B8 0%, #003C8F 100%);
   --color: #fff;
 }
 
@@ -35,7 +35,7 @@ ion-toolbar {
 }
 
 .card-header-modern {
-  background: linear-gradient(135deg, #5C7A4D 0%, #3F5A2E 100%);
+  background: linear-gradient(135deg, #0057B8 0%, #003C8F 100%);
   padding: 14px 18px;
   color: #fff;
   display: flex;
@@ -105,8 +105,8 @@ ion-toolbar {
   transition: border-color 0.3s, box-shadow 0.3s;
 
   &:focus {
-    border-color: #5C7A4D;
-    box-shadow: 0 0 0 0.2rem rgba(92, 122, 77, 0.25);
+    border-color: #0057B8;
+    box-shadow: 0 0 0 0.2rem rgba(0, 87, 184, 0.25);
     outline: none;
   }
 
@@ -167,7 +167,7 @@ ion-toolbar {
   }
 
   &:active {
-    background: #e8f5e9;
+    background: #eef5ff;
   }
 }
 
@@ -244,7 +244,7 @@ ion-toolbar {
 }
 
 .badge-actif {
-  background: #28a745;
+  background: #0d6efd;
 }
 
 .badge-decede-av-bio {
@@ -269,12 +269,12 @@ ion-toolbar {
 
 // ── Fiche militaire (copie web .militaire-info) ──
 .militaire-info {
-  background: linear-gradient(135deg, #5C7A4D 0%, #3F5A2E 100%);
+  background: linear-gradient(135deg, #0057B8 0%, #003C8F 100%);
   color: #fff;
   padding: 1.2rem 1.5rem;
   border-radius: 12px;
   margin-bottom: 16px;
-  box-shadow: 0 4px 15px rgba(92, 122, 77, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 87, 184, 0.3);
 }
 
 .militaire-info-header {
@@ -322,7 +322,7 @@ ion-toolbar {
   border-radius: 10px;
   padding: 12px;
   margin-bottom: 16px;
-  border-left: 4px solid #5C7A4D;
+  border-left: 4px solid #0057B8;
 }
 .statut-section {
   display: flex;
@@ -341,7 +341,7 @@ ion-toolbar {
 
   ion-icon {
     font-size: 1rem;
-    color: #5C7A4D;
+    color: #0057B8;
   }
 }
 
@@ -379,8 +379,8 @@ ion-toolbar {
   flex-shrink: 0;
 
   &:checked {
-    background: #5C7A4D;
-    border-color: #5C7A4D;
+    background: #0057B8;
+    border-color: #0057B8;
 
     &::after {
       content: '✓';
@@ -401,8 +401,8 @@ ion-toolbar {
 }
 
 .statut-checkbox:checked {
-  background: #5C7A4D;
-  border-color: #5C7A4D;
+  background: #0057B8;
+  border-color: #0057B8;
 }
 
 .form-check-label {
@@ -417,7 +417,7 @@ ion-toolbar {
   display: inline-block;
   padding: 2px 8px;
   border-radius: 6px;
-  background: #28a745;
+  background: #0d6efd;
   color: #fff;
   font-size: 0.82rem;
   font-weight: 600;
@@ -453,12 +453,12 @@ ion-toolbar {
 }
 
 .btn-present {
-  background: #28a745;
+  background: #0d6efd;
   color: #fff;
 
   &:active {
-    background: #218838;
-    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+    background: #0b5ed7;
+    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
   }
 }
 
@@ -478,16 +478,16 @@ ion-toolbar {
 
   ion-icon {
     font-size: 1rem;
-    color: #5C7A4D;
+    color: #0057B8;
   }
 }
 
 .benef-value {
-  background: #e8f5e9;
+  background: #eaf3ff;
   padding: 10px 14px;
   border-radius: 8px;
   font-weight: 600;
-  color: #3F5A2E;
+  color: #003C8F;
   font-size: 0.9rem;
 }
 
@@ -520,7 +520,7 @@ ion-toolbar {
 
   ion-icon {
     font-size: 1rem;
-    color: #5C7A4D;
+    color: #0057B8;
   }
 }
 
@@ -546,7 +546,7 @@ ion-toolbar {
 .lien-groupe-label {
   display: block;
   font-weight: 600;
-  color: #5C7A4D;
+  color: #0057B8;
   margin-bottom: 6px;
   border-bottom: 1px solid #dee2e6;
   padding-bottom: 4px;
@@ -565,8 +565,8 @@ ion-toolbar {
   flex-shrink: 0;
 
   &.checked {
-    background: #5C7A4D;
-    border-color: #5C7A4D;
+    background: #0057B8;
+    border-color: #0057B8;
 
     &::after {
       content: '✓';
@@ -625,7 +625,7 @@ ion-toolbar {
 
   ion-icon {
     font-size: 1rem;
-    color: #5C7A4D;
+    color: #0057B8;
   }
 }
 

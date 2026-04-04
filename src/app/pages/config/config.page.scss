@@ -95,7 +95,7 @@
     color: #777;
     font-size: 0.85rem;
 
-    ion-icon { color: #5C7A4D; }
+    ion-icon { color: #0057B8; }
   }
 }
 
@@ -109,7 +109,7 @@
     left: 12px;
     top: 50%;
     transform: translateY(-50%);
-    color: #5C7A4D;
+    color: #0057B8;
     font-size: 1rem;
     z-index: 1;
   }
@@ -158,8 +158,8 @@
   font-size: 0.85rem;
 
   &.success {
-    background: #e8f5e9;
-    color: #3F5A2E;
+    background: #eaf3ff;
+    color: #003C8F;
   }
 
   &.error {
@@ -223,11 +223,11 @@
   ion-spinner { width: 20px; height: 20px; }
 }
 
-// Bouton continuer (même taille que btn-config du login)
+// Bouton continuer bleu BIC
 .btn-continue {
   width: 100%;
   padding: 12px;
-  background: #3F5A2E;
+  background: #003C8F;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -242,7 +242,7 @@
   margin-top: 0.75rem;
   font-family: 'Barlow', sans-serif;
 
-  &:hover { background: #5C7A4D; }
+  &:hover { background: #0057B8; }
   &:disabled { opacity: 0.6; }
 
   ion-icon { font-size: 1.1rem; }

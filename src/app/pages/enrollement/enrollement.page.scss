@@ -1,5 +1,5 @@
 ion-toolbar {
-  --background: linear-gradient(135deg, #5C7A4D 0%, #3F5A2E 100%);
+  --background: linear-gradient(135deg, #0057B8 0%, #003C8F 100%);
   --color: #fff;
 }
 
@@ -27,7 +27,7 @@ ion-toolbar {
 }
 
 .card-header-modern {
-  background: linear-gradient(135deg, #5C7A4D 0%, #3F5A2E 100%);
+  background: linear-gradient(135deg, #0057B8 0%, #003C8F 100%);
   padding: 14px 18px;
   color: #fff;
   display: flex;
@@ -60,19 +60,19 @@ ion-toolbar {
   text-align: center;
   padding: 8px;
   border-radius: 10px;
-  background: #f3f5f1;
-  color: #5d6b57;
+  background: #eef4ff;
+  color: #4e6188;
 }
 
 .step-item.active {
-  background: #e6efe1;
-  color: #2f4f20;
-  border: 1px solid #b9c9af;
+  background: #e5efff;
+  color: #003C8F;
+  border: 1px solid #bed3f6;
 }
 
 .step-item.completed {
-  background: #dff2e2;
-  color: #1b5e20;
+  background: #dcecff;
+  color: #003C8F;
 }
 
 .step-badge {
@@ -82,7 +82,7 @@ ion-toolbar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #5C7A4D;
+  background: #0057B8;
   color: #fff;
   font-weight: 700;
   margin-bottom: 6px;
@@ -120,9 +120,9 @@ ion-toolbar {
 }
 
 .sync-note.coppernic {
-  background: #eef7e8;
-  color: #2f4f20;
-  border: 1px solid #cddfc0;
+  background: #eef5ff;
+  color: #003C8F;
+  border: 1px solid #c9dbfb;
 }
 
 .form-control-modern {
@@ -137,8 +137,8 @@ ion-toolbar {
   color: #333;
 
   &:focus {
-    border-color: #5C7A4D;
-    box-shadow: 0 0 0 0.2rem rgba(92, 122, 77, 0.25);
+    border-color: #0057B8;
+    box-shadow: 0 0 0 0.2rem rgba(0, 87, 184, 0.25);
     outline: none;
   }
 }
@@ -184,12 +184,12 @@ ion-toolbar {
 }
 
 .primary-action {
-  background: #5C7A4D;
+  background: #0057B8;
   color: #fff;
 }
 
 .primary-action.success {
-  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+  background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
 }
 
 .primary-action.delayed {
@@ -203,7 +203,7 @@ ion-toolbar {
 }
 
 .scanner-preview {
-  background: #0f1a0c;
+  background: #0b1b3d;
   border-radius: 12px;
   padding: 12px;
   text-align: center;
@@ -229,17 +229,17 @@ ion-toolbar {
   align-items: center;
   gap: 10px;
   margin-top: 12px;
-  color: #5C7A4D;
+  color: #0057B8;
   font-weight: 600;
 }
 
 .militaire-info {
-  background: linear-gradient(135deg, #5C7A4D 0%, #3F5A2E 100%);
+  background: linear-gradient(135deg, #0057B8 0%, #003C8F 100%);
   color: #fff;
   padding: 1.2rem 1.5rem;
   border-radius: 12px;
   margin-top: 14px;
-  box-shadow: 0 4px 15px rgba(92, 122, 77, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 87, 184, 0.3);
 }
 
 .militaire-info.review-box {
@@ -305,7 +305,7 @@ ion-toolbar {
 }
 
 .capture-card {
-  border: 1px dashed #c5d2bc;
+  border: 1px dashed #c7d9f5;
   border-radius: 12px;
   padding: 12px;
   background: #f8f9fa;
@@ -316,7 +316,7 @@ ion-toolbar {
   align-items: center;
   gap: 6px;
   font-weight: 700;
-  color: #2f4f20;
+  color: #003C8F;
   margin-bottom: 8px;
 }
 
@@ -330,7 +330,7 @@ ion-toolbar {
   object-fit: cover;
   border-radius: 10px;
   margin-top: 10px;
-  border: 1px solid #d9e2d2;
+  border: 1px solid #d4e1f7;
   background: #fff;
 }
 
@@ -380,8 +380,8 @@ ion-toolbar {
 }
 
 .queue-status.synced {
-  background: #d4edda;
-  color: #155724;
+  background: #dbeafe;
+  color: #0b4ea2;
 }
 
 .empty-state {
