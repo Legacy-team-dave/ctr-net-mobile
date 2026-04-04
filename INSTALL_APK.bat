@@ -3,7 +3,8 @@ chcp 65001 >nul
 title CTR.NET FARDC Mobile - Installation APK
 
 set "APK_PATH=%~1"
-if "%APK_PATH%"=="" set "APK_PATH=dist\apk\ctr-net-mobile-latest-debug.apk"
+if "%APK_PATH%"=="" set "APK_PATH=%~dp0..\mobile-apks\ctr-net-controle-mobile-latest-debug.apk"
+if not exist "%APK_PATH%" set "APK_PATH=android\app\build\outputs\apk\debug\ctr-net-controle-mobile-debug.apk"
 if not exist "%APK_PATH%" set "APK_PATH=android\app\build\outputs\apk\debug\ctr.net-fardc-mobile.apk"
 if not exist "%APK_PATH%" set "APK_PATH=android\app\build\outputs\apk\debug\app-debug.apk"
 

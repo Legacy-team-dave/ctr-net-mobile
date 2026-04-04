@@ -77,7 +77,7 @@ $apkCandidates = @(
     (Join-Path $PSScriptRoot 'android\app\build\outputs\apk\debug\app-debug.apk')
 )
 $apkSource = $apkCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
-$apkDistDir = Join-Path $PSScriptRoot 'dist\apk'
+$apkDistDir = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\mobile-apks'))
 $apkDist = Join-Path $apkDistDir 'ctr-net-controle-mobile-latest-debug.apk'
 
 if (-not $apkSource) {
@@ -97,7 +97,7 @@ Write-Host ""
 Write-Host "=========================================================" -ForegroundColor Green
 Write-Host "  [OK] APK genere avec succes !" -ForegroundColor Green
 Write-Host "  Emplacement source : $apkSource" -ForegroundColor Green
-Write-Host "  APK distribuable   : dist\apk\ctr-net-controle-mobile-latest-debug.apk" -ForegroundColor Green
+Write-Host "  APK distribuable   : $apkDist" -ForegroundColor Green
 Write-Host "=========================================================" -ForegroundColor Green
 
 if ($InstallOnDevice) {
