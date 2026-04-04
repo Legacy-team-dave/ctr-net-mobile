@@ -2,7 +2,7 @@
 
 ## Description
 
-`ENROL.NET` est l’application Android dédiée à l’**enrôlement terrain** pour l’écosystème `CTR.NET-FARDC`. Elle est réservée au profil **`ENROLEUR`** et reprend le design général des autres applications mobiles avec un flux métier désormais ordonné ainsi : **photo → empreintes → QR / informations personnelles → validation finale → synchronisation**. Dans l’interface, le titre affiché est désormais **`ENROL.NET`**.
+`ENROL.NET` est l’application Android dédiée à l’**enrôlement terrain** reliée au backend web central. Elle est réservée au profil **`ENROLEUR`** et suit désormais un flux métier clair : **photo → empreintes → QR / informations personnelles → validation finale → synchronisation**. Dans l’interface, le titre affiché est **`ENROL.NET`**.
 
 > Le QR utilisé par `ENROL.NET` doit provenir de `ctr.net-fardc/modules/controles/liste.php` et n’est généré **que pour les contrôles marqués vivants** (`type_controle = Militaire`). Aucun QR d’enrôlement n’est proposé pour un contrôle marqué **décédé / bénéficiaire**.
 
@@ -26,8 +26,8 @@
 2. **Connexion** avec un compte `ENROLEUR`
 3. **Capture photo** du militaire
 4. **Capture des empreintes**
-5. **Scan du QR** généré côté web, ou import d’une image QR, **sans saisie manuelle/externe**
-6. **Chargement et contrôle** des informations personnelles récupérées depuis le backend `CTR.NET-FARDC`
+5. **Scan du QR** généré côté web, **sans import d’image QR et sans saisie manuelle/externe**
+6. **Chargement et contrôle** des informations personnelles récupérées depuis le backend central
 7. **Validation finale** du dossier d’enrôlement
 8. **Synchronisation immédiate** ou envoi en fin de journée
 
@@ -89,9 +89,9 @@ npm start
 
 ### GitHub Actions
 
-L’APK de référence est généré par le workflow GitHub Actions du dépôt. Le nom distribué côté projet est :
+L’APK de référence est généré par le workflow GitHub Actions du dépôt. L’artifact publié suit le format :
 
-- `ctr-net-enrollement-mobile-latest-debug.apk`
+- `ctr-net-enrollement-mobile-apk-v<version>`
 
 ### Local
 
@@ -104,8 +104,8 @@ cd android
 
 Sorties usuelles :
 
-- source Gradle : `android/app/build/outputs/apk/debug/ctr.net-fardc-mobile.apk`
-- copie distribuable : `dist/apk/ctr-net-enrollement-mobile-latest-debug.apk`
+- source Gradle : `android/app/build/outputs/apk/debug/app-debug.apk`
+- copie distribuable locale : `dist/apk/ctr-net-enrollement-mobile-latest-debug.apk`
 
 ## Technologies
 
@@ -129,7 +129,7 @@ Sorties usuelles :
 - `ARCHITECTURE.md`
 - `VERSION.md`
 - `FONCTIONNEMENT_COMPLET_WEB_MOBILE.md`
-- `PRESENTATION_CTR_NET_MOBILE.md`
+- `PRESENTATION_ENROL_NET_MOBILE.md`
 - `PROMPT_PRESENTATION.md`
 - `../ctr.net-fardc/README.md`
 

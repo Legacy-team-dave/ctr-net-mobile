@@ -73,7 +73,6 @@ if ($buildResult -ne 0) {
 
 $apkCandidates = @(
     (Join-Path $PSScriptRoot 'android\app\build\outputs\apk\debug\ctr-net-enrollement-mobile-debug.apk'),
-    (Join-Path $PSScriptRoot 'android\app\build\outputs\apk\debug\ctr.net-fardc-mobile.apk'),
     (Join-Path $PSScriptRoot 'android\app\build\outputs\apk\debug\app-debug.apk')
 )
 $apkSource = $apkCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1

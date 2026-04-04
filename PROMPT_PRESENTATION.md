@@ -50,10 +50,9 @@ Consignes de production :
    - Saisie manuelle de l'IP serveur, clic "Tester la connexion"
    - Message de succès vert → clic "Continuer"
    - Connexion avec identifiants `ENROLEUR`
-   - Connexion avec identifiants `ENROLEUR`
    - Capture de la photo du militaire
    - Capture des empreintes
-   - Scan du QR affiché côté web ou import d’une image QR
+   - Scan du QR affiché côté web uniquement
    - Vérification des informations personnelles puis validation finale
    - Consultation profil (onglet Profil)
    - Déconnexion (onglet Quitter avec confirmation)
@@ -66,7 +65,7 @@ Contraintes importantes :
 
 - N'invente pas de fonctionnalités non présentes.
 - Respecte strictement le profil `ENROLEUR` et le parcours réel d’enrôlement (photo, empreintes, QR / informations personnelles, validation, synchronisation).
-- Mentionne la dépendance au serveur web CTR.NET-FARDC pour l'API.
+- Mentionne la dépendance au serveur web central pour l'API.
 - Sois concret et orienté usage terrain.
 - Le design de la page de configuration IP est identique à celui de la page de connexion (même fond, carte, boutons, tailles).
 
@@ -106,12 +105,12 @@ Fais-moi une présentation technique de ENROL.NET avec :
 
 - Architecture : Ionic 8.0.0 + Angular 20.0.0 standalone + Capacitor 8.2.0
 - Communication : HTTP REST avec token Bearer (header `Authorization`), timeout 15s
-- Stockage local : Capacitor Preferences (`server_ip`, `auth_token`)
-- GPS : `@capacitor/geolocation` avec timeout 5s non bloquant
+- Stockage local : Capacitor Preferences (`server_ip`, `auth_token`) + IndexedDB pour les dossiers en attente
+- Synchronisation : envoi immédiat ou différé selon la connectivité
 - Build : GitHub Actions (Node 22, Java 21, Android SDK API 36)
 - Design : thème bleu BIC (#0057B8 / #003C8F), police Barlow, cards modernes, config et login cohérents avec ENROL.NET
 - Guards : `authGuard` (vérifie session, redirige vers /login ou /config) + `noAuthGuard` (empêche double login)
-- Interfaces TypeScript : Militaire, User, LoginResponse, ApiResponse, ControleData
-- Services : ApiService (client HTTP central) + AuthService (gestion session, BehaviorSubject)
-- Routes : splash → config → login (noAuthGuard) → tabs (authGuard) → controle / profil
+- Interfaces TypeScript : `EnrollementPayload`, `LocalEnrollementRecord`, `User`, `ApiResponse`
+- Services : `ApiService` (client HTTP central) + `AuthService` (gestion session) + `EnrollementLocalService` (file locale hors ligne)
+- Routes : splash → config → login (noAuthGuard) → tabs (authGuard) → enrollement / profil
 - Plugins : geolocation, network, preferences, splash-screen, status-bar

@@ -47,12 +47,12 @@ splash → config → login → tabs/enrollement
 
 ## Flux métier d’enrôlement
 
-1. **Identification** : scan QR ou recherche du militaire
-2. **Préremplissage** : récupération des données déjà connues
-3. **Capture photo**
-4. **Capture des empreintes**
-5. **Revue du dossier**
-6. **Choix de synchronisation** : maintenant ou fin de journée
+1. **Capture photo** : ouverture du dossier terrain
+2. **Capture des empreintes** : collecte/association biométrique
+3. **Lecture du QR** : scan du code affiché côté web pour charger les informations
+4. **Contrôle des informations personnelles** : revue des données préremplies
+5. **Validation finale** : confirmation du dossier d’enrôlement
+6. **Synchronisation** : envoi immédiat ou mise en file hors ligne
 
 ## Communication API
 
@@ -98,6 +98,6 @@ webDir: 'www'
 
 Le workflow `.github/workflows/build-apk.yml` produit l’APK distribuable du projet :
 
-- artifact/release : `ctr-net-enrollement-mobile-latest-debug.apk`
-- build local secondaire : `android/app/build/outputs/apk/debug/ctr.net-fardc-mobile.apk`
+- artifact/release : `ctr-net-enrollement-mobile-apk-v<version>`
+- build local secondaire : `android/app/build/outputs/apk/debug/app-debug.apk`
 

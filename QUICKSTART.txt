@@ -1,5 +1,5 @@
 =========================================================
-  CTR.NET FARDC Mobile — Guide de démarrage rapide
+  ENROL.NET Mobile — Guide de démarrage rapide
 =========================================================
 
 PRÉREQUIS
@@ -9,28 +9,22 @@ PRÉREQUIS
 - Java JDK 21 (Temurin)
 - Android SDK API 36, build-tools 35.0.0
 - Android Studio (recommandé pour debug)
-- Serveur web CTR.NET FARDC opérationnel
+- Serveur web central opérationnel (`ctr.net-fardc`)
 
 INSTALLATION
 ------------
 1. Cloner le dépôt :
    git clone https://github.com/Legacy-team-dave/ctr-net-mobile.git
-   cd ctr-net-mobile
+   cd ctr-net-enrollement-mobile
 
-2. Installer les dépendances (2 méthodes) :
-
-   Méthode 1 - Script batch :
+2. Installer les dépendances :
    INSTALL.bat
-
-   Méthode 2 - Ligne de commande :
+   ou
    npm install
 
-3. Lancer en navigateur (dev) — 2 méthodes :
-
-   Méthode 1 - Script batch :
+3. Lancer en navigateur (dev) :
    START.bat
-
-   Méthode 2 - Ligne de commande :
+   ou
    npm start
 
    → Ouvrir http://localhost:4200
@@ -38,40 +32,38 @@ INSTALLATION
 CONFIGURATION
 -------------
 Au premier lancement de l'application (navigateur ou APK) :
-1. Le splash natif Capacitor s'affiche brièvement, puis le splash Angular pendant environ 5 secondes
-2. La connexion démarre sur le login ; la configuration serveur reste accessible via le bouton dédié
+1. Le splash natif Capacitor s'affiche brièvement, puis le splash Angular `ENROL.NET`
+2. La configuration serveur reste accessible tant qu'aucune IP valide n'est enregistrée
 3. Saisir manuellement l'adresse IPv4 du PC serveur (ex: 10.71.62.9)
 4. Vérifier que le téléphone et le PC sont sur le même réseau Wi-Fi
-5. Cliquer sur "Tester la connexion" pour vérifier
+5. Cliquer sur "Tester la connexion"
 6. Si OK → l'IP est sauvegardée et la page login s'affiche
-
-L'adresse IP enregistrée peut être modifiée à tout moment depuis la page Configuration.
 
 CONNEXION
 ---------
-- Seuls les utilisateurs avec le rôle CONTROLEUR peuvent se connecter
+- Seuls les utilisateurs avec le rôle `ENROLEUR` peuvent se connecter
 - Saisir identifiant et mot de passe
 - Le token est stocké localement pour les requêtes suivantes
 
-UTILISATION — CONTRÔLE
-----------------------
-1. Onglet "Contrôle" (actif par défaut)
-2. Rechercher un militaire (matricule ou nom, minimum 2 caractères)
-3. Sélectionner le militaire dans les résultats
-4. Remplir les champs selon la catégorie :
-   - Militaire vivant  → Bouton "Présent"
-   - Militaire décédé  → Lien de parenté + Mention
-5. Valider → GPS capturé automatiquement → envoi au serveur
+UTILISATION — ENRÔLEMENT
+------------------------
+1. Onglet `ENROL.NET` (actif par défaut)
+2. Capture de la photo du militaire
+3. Capture / association des empreintes
+4. Scan du QR affiché côté web
+5. Vérification des informations personnelles
+6. Validation finale du dossier
+7. Synchronisation immédiate ou différée
 
 UTILISATION — PROFIL
 --------------------
-- Onglet "Profil" : affiche les informations du contrôleur connecté
-- Lecture seule (modification depuis le web)
+- Onglet `Profil` : affiche les informations du compte connecté
+- Onglet `Quitter` : déconnexion avec confirmation
 
 COMPILATION APK
 ---------------
 Méthode recommandée : GitHub Actions (automatique à chaque push)
-APK de référence : artifact/release généré par le workflow GitHub Actions
+Artifact GitHub Actions : `ctr-net-enrollement-mobile-apk-v<version>`
 
 Méthode script batch :
    BUILD_APK.bat
@@ -90,7 +82,7 @@ L'APK local source se trouve dans :
    android/app/build/outputs/apk/debug/app-debug.apk
 
 L'APK distribuable local est copié dans :
-   dist/apk/ctr-net-mobile-latest-debug.apk
+   dist/apk/ctr-net-enrollement-mobile-latest-debug.apk
 
 Installation rapide sur appareil Android connecté :
    INSTALL_APK.bat
@@ -101,8 +93,7 @@ DÉPANNAGE
 ---------
 - "Connexion impossible" : vérifier que l'IP est correcte et que
   le serveur web tourne (Laragon démarré, Apache actif)
-- "Accès refusé" : seul le rôle CONTROLEUR est autorisé
-- GPS non disponible : le contrôle est envoyé sans coordonnées
-  (la géolocalisation n'est pas bloquante)
+- "Accès refusé" : seul le rôle `ENROLEUR` est autorisé
+- "QR non trouvé" : vérifier qu'il provient bien du web et qu'il est lié à un militaire vivant
 - Écran blanc : vérifier la console (F12 en navigateur),
   relancer avec npm start

@@ -4,7 +4,7 @@
 
 ### 🆕 Application d’enrôlement dédiée
 
-- séparation complète entre `CTR.NET` (contrôle) et `ENROL.NET` (enrôlement) ;
+- séparation complète entre l’application de contrôle et `ENROL.NET`
 - nom installé `ENROL.NET` et `appId` dédié `net.ctr.fardc.enrollement.mobile` ;
 - authentification réservée au profil **`ENROLEUR`** ;
 - assistant d’enrôlement terrain : **photo → empreintes → QR / informations personnelles → validation → sync** ;

@@ -11,7 +11,7 @@ interface SyncReport {
 
 @Injectable({ providedIn: 'root' })
 export class EnrollementLocalService {
-  private readonly DB_NAME = 'ctr_net_enrollement_mobile_db';
+  private readonly DB_NAME = 'enrol_net_enrollement_mobile_db';
   private readonly STORE_NAME = 'enrollements_vivants';
   private readonly DB_VERSION = 1;
   private dbPromise: Promise<IDBDatabase> | null = null;

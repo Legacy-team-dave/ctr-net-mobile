@@ -12,7 +12,7 @@ while (versionTokens.size() < 3) {
 }
 def appVersionCode = (versionTokens[0] * 10000) + (versionTokens[1] * 100) + versionTokens[2]
 
-def stableKeystoreFile = file("ctrnet-update.pfx")
+def stableKeystoreFile = file("enrolnet-update.pfx")
 def stableStorePassword = "CtrNet2026!"
 def stableKeyPassword = "CtrNet2026!"
 def detectPkcs12Alias = { File keystoreFile, String password ->

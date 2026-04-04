@@ -1,123 +1,84 @@
-=====================================================
-  CTR.NET FARDC Mobile — Structure du projet
-=====================================================
+=========================================================
+  ENROL.NET Mobile — Structure du projet
+=========================================================
 
-ctr-net-mobile/
+ctr-net-enrollement-mobile/
 │
-├── angular.json                 Configuration Angular CLI
-├── capacitor.config.ts          Configuration Capacitor (appId, serveur, plugins)
-├── ionic.config.json            Configuration Ionic CLI
-├── karma.conf.js                Configuration tests unitaires
-├── package.json                 Dépendances npm et scripts
-├── tsconfig.json                Configuration TypeScript racine
-├── tsconfig.app.json            Configuration TS pour le build
-├── tsconfig.spec.json           Configuration TS pour les tests
+├── angular.json                         Configuration Angular CLI
+├── capacitor.config.ts                  Configuration Capacitor (`ENROL.NET`)
+├── ionic.config.json                    Configuration Ionic CLI
+├── karma.conf.js                        Configuration tests unitaires
+├── package.json                         Dépendances npm et scripts
+├── tsconfig.json                        Configuration TypeScript racine
+├── tsconfig.app.json                    Configuration TS pour le build
+├── tsconfig.spec.json                   Configuration TS pour les tests
 │
-├── README.md                    Documentation principale du projet
-├── ARCHITECTURE.md              Architecture technique détaillée
-├── VERSION.md                   Historique des versions
-├── QUICKSTART.txt               Guide de démarrage rapide
-├── STRUCTURE.txt                Ce fichier
-├── PRESENTATION_CTR_NET_MOBILE.md   Présentation détaillée de l'application
-├── PROMPT_PRESENTATION.md       Prompt IA pour générer des présentations
-├── FONCTIONNEMENT_COMPLET_WEB_MOBILE.md  Fonctionnement web + mobile combiné
+├── README.md                            Documentation principale du projet
+├── ARCHITECTURE.md                      Architecture technique détaillée
+├── VERSION.md                           Historique des versions
+├── QUICKSTART.txt                       Guide de démarrage rapide
+├── STRUCTURE.txt                        Ce fichier
+├── PRESENTATION_ENROL_NET_MOBILE.md     Présentation détaillée de l'application
+├── PROMPT_PRESENTATION.md               Prompt IA pour générer des présentations
+├── FONCTIONNEMENT_COMPLET_WEB_MOBILE.md Fonctionnement web + mobile combiné
 │
-├── START.bat                    Démarrer le serveur de développement
-├── INSTALL.bat                  Installer les dépendances npm
-├── BUILD_APK.bat                Compiler l'APK Android
-├── launch.ps1                   Démarrer le serveur dev (PowerShell)
-├── build_apk.ps1                Compiler l'APK Android (PowerShell)
+├── START.bat                            Démarrer le serveur de développement
+├── INSTALL.bat                          Installer les dépendances npm
+├── BUILD_APK.bat                        Compiler l'APK Android
+├── launch.ps1                           Démarrer le serveur dev (PowerShell)
+├── build_apk.ps1                        Compiler l'APK Android (PowerShell)
 │
 ├── .github/
 │   └── workflows/
-│       └── build-apk.yml       Pipeline CI/CD GitHub Actions (build APK)
+│       └── build-apk.yml                Pipeline CI/CD GitHub Actions (build APK)
 │
 ├── src/
-│   ├── index.html               Point d'entrée HTML
-│   ├── main.ts                  Bootstrap Angular standalone
-│   ├── global.scss              Styles globaux (thème kaki, Barlow)
+│   ├── index.html                       Point d'entrée HTML
+│   ├── main.ts                          Bootstrap Angular standalone
+│   ├── global.scss                      Styles globaux (thème bleu BIC, Barlow)
 │   ├── theme/
-│   │   └── variables.scss       Variables CSS Ionic (couleurs, polices)
+│   │   └── variables.scss               Variables CSS Ionic (couleurs, polices)
 │   │
 │   ├── assets/
-│   │   ├── fonts/               Police Barlow (Regular, Medium, SemiBold, Bold)
-│   │   ├── icon/                Icônes application (favicon, logo IG-FARDC)
-│   │   └── splash/             Image écran de démarrage
+│   │   ├── fonts/                       Police Barlow (Regular, Medium, SemiBold, Bold)
+│   │   ├── icon/                        Icônes et identité visuelle ENROL.NET
+│   │   └── splash/                      Image écran de démarrage
 │   │
 │   └── app/
-│       ├── app.component.ts     Composant racine (initialisation StatusBar, SplashScreen)
-│       ├── app.routes.ts        Définition des routes (splash → config → login → tabs)
+│       ├── app.component.ts             Composant racine (StatusBar, SplashScreen)
+│       ├── app.routes.ts                Définition des routes (splash → config → login → tabs)
 │       │
 │       ├── guards/
-│       │   └── auth.guard.ts    Guards de navigation
-│       │                         - authGuard : redirige vers /login si pas connecté
-│       │                         - noAuthGuard : redirige vers /tabs si déjà connecté
+│       │   └── auth.guard.ts            Guards de navigation
+│       │                                 - `authGuard` : redirige vers /login si pas connecté
+│       │                                 - `noAuthGuard` : redirige vers /tabs si déjà connecté
 │       │
 │       ├── models/
-│       │   └── interfaces.ts    Interfaces TypeScript
-│       │                         - Militaire : données du militaire recherché
-│       │                         - User : profil utilisateur connecté
-│       │                         - LoginResponse : réponse auth.php login
-│       │                         - ApiResponse : réponse générique API
-│       │                         - ControleData : payload envoyé pour valider
+│       │   └── interfaces.ts            Interfaces TypeScript
+│       │                                 - `User`, `ApiResponse`, `EnrollementPayload`
+│       │                                 - `LocalEnrollementRecord`, réponses QR / historique
 │       │
 │       ├── services/
-│       │   ├── api.service.ts   Client HTTP REST
-│       │   │                     - Gestion du token Bearer
-│       │   │                     - Timeout 15 secondes
-│       │   │                     - URL dynamique (IP configurable)
-│       │   │                     - Méthodes : login, logout, checkSession,
-│       │   │                       searchMilitaire, validerControle,
-│       │   │                       getHistorique, getProfil, updateProfil
-│       │   │
-│       │   └── auth.service.ts  Gestion de session
-│       │                         - Observable user$ (BehaviorSubject)
-│       │                         - Stockage token via Preferences
-│       │                         - Stockage IP serveur via Preferences
-│       │                         - Auto-logout sur erreur 401
+│       │   ├── api.service.ts           Client HTTP REST + token Bearer
+│       │   ├── auth.service.ts          Gestion de session et stockage Preferences
+│       │   ├── cache.service.ts         Nettoyage stockage local
+│       │   └── enrollement-local.service.ts
+│       │                                 File IndexedDB + synchronisation différée
 │       │
 │       └── pages/
-│           ├── splash/
-│           │   ├── splash.page.ts       Écran démarrage (timer 5s, animation)
-│           │   ├── splash.page.html     Template avec logo centré
-│           │   └── splash.page.scss     Styles (fond kaki, fade-in)
-│           │
-│           ├── config/
-│           │   ├── config.page.ts       Saisie IP serveur + test connexion
-│           │   │                         Design identique au login (v1.1.0)
-│           │   ├── config.page.html     Carte moderne, input avec icône, boutons natifs
-│           │   └── config.page.scss     Même fond/carte/boutons que login
-│           │
-│           ├── login/
-│           │   ├── login.page.ts        Authentification CONTROLEUR
-│           │   ├── login.page.html      Formulaire login/password
-│           │   └── login.page.scss      Styles page connexion
-│           │
-│           ├── tabs/
-│           │   ├── tabs.page.ts         Navigation par onglets
-│           │   ├── tabs.page.html       3 onglets : Contrôle, Profil, Quitter
-│           │   ├── tabs.page.scss       Styles barre d'onglets
-│           │   └── tabs.routes.ts       Sous-routes des onglets
-│           │
-│           ├── controle/
-│           │   ├── controle.page.ts     Logique contrôle (recherche + validation)
-│           │   │                         - Recherche debounce 300ms, min 2 chars
-│           │   │                         - 5 catégories militaires avec badges
-│           │   │                         - Liens de parenté (cases à cocher)
-│           │   │                         - Capture GPS (timeout 5s, non bloquant)
-│           │   │                         - Mentions : Présent, Favorable, Défavorable
-│           │   ├── controle.page.html   Template 2 sections (recherche + détail)
-│           │   └── controle.page.scss   Styles cards, badges, formulaire
-│           │
-│           └── profil/
-│               ├── profil.page.ts       Affichage profil utilisateur
-│               ├── profil.page.html     Carte profil avec avatar
-│               └── profil.page.scss     Styles page profil
+│           ├── splash/                  Écran de démarrage `ENROL.NET`
+│           ├── config/                  Saisie IP serveur + test connexion
+│           ├── login/                   Authentification `ENROLEUR`
+│           ├── tabs/                    Navigation par onglets (Enrôlement, Profil, Quitter)
+│           ├── enrollement/             Assistant photo → empreintes → QR → validation
+│           └── profil/                  Consultation du profil utilisateur
 │
 └── android/
-    ├── build.gradle             Configuration Gradle racine
-    ├── gradle.properties        Propriétés Gradle (AndroidX, Jetifier)
-    ├── gradlew                  Wrapper Gradle Unix
+    ├── app/build.gradle                 Configuration signature/version Android
+    ├── app/enrolnet-update.pfx          Keystore PKCS12 pour signature stable
+    ├── build.gradle                     Configuration Gradle racine
+    ├── gradle.properties                Propriétés Gradle (AndroidX, Jetifier)
+    └── gradlew                          Wrapper Gradle Unix/Windows
     ├── gradlew.bat              Wrapper Gradle Windows
     ├── capacitor.settings.gradle Inclusion plugin Capacitor
     ├── settings.gradle          Settings projet Android

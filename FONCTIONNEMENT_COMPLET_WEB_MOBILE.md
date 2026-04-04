@@ -202,7 +202,7 @@ Les onglets sont protégés par `authGuard` : si le token est invalide ou la ses
 #### 3.3.6. Assistant d’enrôlement — Étapes 2 à 5 : biométrie, QR et synchronisation
 
 - **Étape 2 : Empreintes** — saisie/association des empreintes selon l’équipement disponible.
-- **Étape 3 : QR / informations** — scan du QR affiché côté web, ou import d’une image QR, sans saisie manuelle/externe.
+- **Étape 3 : QR / informations** — scan du QR affiché côté web, sans import d’image QR et sans saisie manuelle/externe.
 - **Étape 4 : Validation** — vérification des données personnelles récupérées puis validation finale du dossier.
 - **Étape 5 : Sync** — envoi immédiat ou mise en file locale pour synchronisation en fin de journée.
 
@@ -214,10 +214,10 @@ Les onglets sont protégés par `authGuard` : si le token est invalide ou la ses
 
 #### 3.3.7. Page Profil
 
-La fiche du militaire sélectionné s'affiche dans une carte verte (gradient kaki) avec :
-matricule, noms, grade, unité, garnison, province, catégorie (badge).
+La page **Profil** affiche les informations du compte `ENROLEUR` connecté dans une carte en lecture seule :
+identité utilisateur, rôle/profil, état du compte, avatar et résumé de session.
 
-**Si le militaire est déjà contrôlé** : le résultat affiche un badge `Déjà contrôlé`, n'est pas cliquable et un toast d'avertissement renvoie vers une nouvelle recherche.
+Cette page n’est pas destinée à la saisie des enrôlements : elle sert uniquement à la consultation du profil et à la vérification du contexte de connexion.
 
 **Statut Vivant (catégorie Actif, RETRAITES, INTEGRES)** :
 
@@ -336,8 +336,8 @@ Le workflow GitHub Actions (`.github/workflows/build-apk.yml`) :
 3. Installation Android SDK : `platforms;android-36` + `build-tools;35.0.0`.
 4. `npm ci` → `npx ng build --configuration production` → `npx cap sync android`.
 5. `chmod +x gradlew && ./gradlew assembleDebug`.
-6. L'APK est uploadé en artifact sous le nom `ctr.net-fardc-mobile`.
-7. En local, `BUILD_APK.bat` et `build_apk.ps1` copient aussi un APK distribuable vers `dist/apk/ctr-net-mobile-latest-debug.apk`.
+6. L'APK est uploadé en artifact sous le nom `ctr-net-enrollement-mobile-apk-v<version>`.
+7. En local, `BUILD_APK.bat` et `build_apk.ps1` copient aussi un APK distribuable vers `dist/apk/ctr-net-enrollement-mobile-latest-debug.apk`.
 
 ---
 
@@ -443,7 +443,7 @@ Les deux applications partagent le même thème visuel :
 
 1. Le serveur web doit être opérationnel et accessible sur le réseau Wi-Fi.
 2. Télécharger l'APK depuis les artifacts GitHub Actions ou générer localement via `BUILD_APK.bat` / `build_apk.ps1`.
-3. Utiliser `INSTALL_APK.bat` pour installation ADB rapide (USB) ou installer manuellement l'APK (`dist/apk/ctr-net-mobile-latest-debug.apk`).
+3. Utiliser `INSTALL_APK.bat` pour installation ADB rapide (USB) ou installer manuellement l'APK (`dist/apk/ctr-net-enrollement-mobile-latest-debug.apk`).
 4. Au premier lancement : configurer l'IP du serveur et tester la connexion.
 5. Se connecter avec un compte `ENROLEUR`.
 6. Commencer les contrôles terrain.
@@ -455,15 +455,15 @@ Les deux applications partagent le même thème visuel :
 | Document | Emplacement | Contenu |
 | --- | --- | --- |
 | README web | `ctr.net-fardc/README.md` | Vue d'ensemble web |
-| README mobile | `ctr-net-mobile/README.md` | Vue d'ensemble mobile |
+| README mobile | `ctr-net-enrollement-mobile/README.md` | Vue d'ensemble mobile |
 | Architecture web | `ctr.net-fardc/ARCHITECTURE.md` | Architecture technique web |
-| Architecture mobile | `ctr-net-mobile/ARCHITECTURE.md` | Architecture technique mobile |
+| Architecture mobile | `ctr-net-enrollement-mobile/ARCHITECTURE.md` | Architecture technique mobile |
 | Versions web | `ctr.net-fardc/VERSION.md` | Historique versions web |
-| Versions mobile | `ctr-net-mobile/VERSION.md` | Historique versions mobile |
+| Versions mobile | `ctr-net-enrollement-mobile/VERSION.md` | Historique versions mobile |
 | Présentation web | `ctr.net-fardc/PRESENTATION_CTR_NET_FARDC.md` | Présentation slides web |
-| Présentation mobile | `ctr-net-mobile/PRESENTATION_CTR_NET_MOBILE.md` | Présentation slides mobile |
+| Présentation mobile | `ctr-net-enrollement-mobile/PRESENTATION_ENROL_NET_MOBILE.md` | Présentation slides mobile |
 | Prompt web | `ctr.net-fardc/PROMPT_PRESENTATION.md` | Prompt IA présentation web |
-| Prompt mobile | `ctr-net-mobile/PROMPT_PRESENTATION.md` | Prompt IA présentation mobile |
+| Prompt mobile | `ctr-net-enrollement-mobile/PROMPT_PRESENTATION.md` | Prompt IA présentation mobile |
 | Guide admin | `ctr.net-fardc/ADMIN_GUIDE.md` | Guide administrateur |
 | Guide contrôleur | `ctr.net-fardc/CONTROLEUR_GUIDE.md` | Guide contrôleur terrain |
 | Fonctionnement web | `ctr.net-fardc/FONCTIONNEMENT_APPLICATION.md` | Fonctionnement détaillé web |
