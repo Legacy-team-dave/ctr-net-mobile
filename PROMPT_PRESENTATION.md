@@ -13,14 +13,14 @@ Objectif de la présentation :
 
 - Expliquer à quoi sert l'application mobile
 - Montrer comment elle fonctionne sur le terrain
-- Mettre en évidence le flux de contrôle, la capture GPS et la synchronisation avec le web
+- Mettre en évidence le flux d’enrôlement, la capture biométrique et la synchronisation avec le web
 - Donner les points de vigilance et les recommandations
 
 Contexte fonctionnel réel à respecter :
 
 - Profil unique : `ENROLEUR`
-- Flux réel : Splash → Configuration IP → Login → Scan QR → Infos → Photo → Empreintes → Revue → Synchronisation
-- Fonction principale : enrôler un militaire vivant avec collecte biométrique et photo
+- Flux réel : Splash → Configuration IP → Login → Photo → Empreintes → QR / informations personnelles → Validation → Synchronisation
+- Fonction principale : enrôler un militaire vivant avec photo, empreintes, lecture du QR et validation finale
 - Stockage local : mise en file hors ligne via IndexedDB en attendant la synchronisation
 - Communication : API REST via Wi-Fi intranet (token Bearer, timeout 15s)
 - URL de base serveur : `http://{IP}/ctr.net-fardc/api/`
@@ -50,8 +50,11 @@ Consignes de production :
    - Saisie manuelle de l'IP serveur, clic "Tester la connexion"
    - Message de succès vert → clic "Continuer"
    - Connexion avec identifiants `ENROLEUR`
-   - Recherche d'un militaire Actif → sélection → "Présent"
-   - Recherche d'un militaire DCD_AV_BIO → Lien de parenté → "Favorable" ou "Défavorable"
+   - Connexion avec identifiants `ENROLEUR`
+   - Capture de la photo du militaire
+   - Capture des empreintes
+   - Scan du QR affiché côté web ou import d’une image QR
+   - Vérification des informations personnelles puis validation finale
    - Consultation profil (onglet Profil)
    - Déconnexion (onglet Quitter avec confirmation)
 4. Ajoute une section "Questions/Réponses" avec 10 questions probables et réponses courtes.
@@ -62,7 +65,7 @@ Consignes de production :
 Contraintes importantes :
 
 - N'invente pas de fonctionnalités non présentes.
-- Respecte strictement le profil `ENROLEUR` et le parcours réel d’enrôlement (scan, photo, empreintes, revue, synchronisation).
+- Respecte strictement le profil `ENROLEUR` et le parcours réel d’enrôlement (photo, empreintes, QR / informations personnelles, validation, synchronisation).
 - Mentionne la dépendance au serveur web CTR.NET-FARDC pour l'API.
 - Sois concret et orienté usage terrain.
 - Le design de la page de configuration IP est identique à celui de la page de connexion (même fond, carte, boutons, tailles).
@@ -81,20 +84,20 @@ Format de sortie attendu :
 
 Fais-moi un pitch de 30 secondes de ENROL.NET pour un décideur, en mettant l'accent sur :
 
-- la mobilité terrain des contrôleurs,
-- la capture GPS automatique,
-- la synchronisation temps réel avec le web,
-- et la simplicité d'usage (recherche → validation en 2 clics).
+- la mobilité terrain des enrôleurs,
+- la capture photo et empreintes,
+- la synchronisation avec le web,
+- et la simplicité du parcours (photo → empreintes → QR → validation).
 
 ## Variante moyenne (2 minutes)
 
 Fais-moi un pitch de 2 minutes de ENROL.NET pour une réunion de pilotage, avec :
 
-- problème initial (contrôles papier, pas de traçabilité terrain),
+- problème initial (enrôlement terrain dispersé, collecte biométrique lente, dépendance au poste fixe),
 - solution apportée (app mobile dédiée à l’`ENROLEUR`),
-- fonctionnement réel (splash 5s → config IP → login → onglets Contrôle/Profil/Quitter),
-- synchronisation avec le web (API REST, polling 10s via `controles_poll.php`, notifications toast),
-- impacts métier (rapidité, GPS, fiabilité, preuve géographique),
+- fonctionnement réel (splash 5s → config IP → login → photo → empreintes → QR → validation),
+- synchronisation avec le web (API REST + file locale hors ligne),
+- impacts métier (rapidité, fiabilité biométrique, continuité terrain),
 - prochaines étapes.
 
 ## Variante technique (pour développeurs)

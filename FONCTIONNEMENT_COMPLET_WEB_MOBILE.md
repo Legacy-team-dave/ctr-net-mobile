@@ -152,31 +152,31 @@ Le backend refuse les autres profils et renvoie des messages explicites si le co
 #### 3.3.1. Écran splash
 
 - Au lancement, le splash Capacitor natif s'affiche brièvement (`launchShowDuration: 2000`).
-- Ensuite, le splash Angular s'affiche avec le logo IG-FARDC et une animation de fondu.
+- Ensuite, le splash Angular `ENROL.NET` s'affiche avec une animation de fondu.
 - Le splash Angular dure 5 secondes, puis redirige vers `/login`.
 - La redirection vers `/config` intervient plus tard via `authGuard` lorsqu'un accès protégé est tenté sans IP configurée.
 
 #### 3.3.2. Page de configuration IP (design identique au login)
 
 - **Design** : Même fond d'image (fardc2.jpg) avec overlay sombre à 60%, même carte blanche avec border-radius 16px et backdrop-filter blur.
-- **Logo** : IG-FARDC en haut (même présentation que le login).
+- **Logo** : `ENROL.NET` en haut (même présentation que le login).
 - **Saisie manuelle** : L'adresse IP du serveur est saisie manuellement par l'utilisateur sur le réseau Wi-Fi local.
 - **Champ IP** : `.input-group-modern` avec icône Wi-Fi intégrée, préfixe visuel fixe `http://` et champ éditable (ex. `10.71.62.9` ou `10.71.62.9:8080` si un port personnalisé est réellement utilisé).
 - **Bouton "Tester la connexion"** : Jaune (#ffc107), même taille que le bouton de connexion (padding 12px, width 100%).
 - **Test** : Envoie une requête GET à `http://{IP}/ctr.net-fardc/api/auth.php?action=check` avec timeout de 8 secondes. Si le serveur répond (même avec 401), la connexion est considérée comme réussie.
 - **Laragon** : en configuration standard, il n’est pas nécessaire de saisir `:port` car Apache écoute déjà sur `80`.
-- **Bouton "Continuer"** : Kaki foncé (#3F5A2E), même taille, activé uniquement après un test réussi.
-- **Stockage** : L'IP est sauvegardée via `Capacitor Preferences` sous la clé `server_ip`, sans conserver le préfixe `http://`. 
+- **Bouton "Continuer"** : Bleu profond (#003C8F), même taille, activé uniquement après un test réussi.
+- **Stockage** : L'IP est sauvegardée via `Capacitor Preferences` sous la clé `server_ip`, sans conserver le préfixe `http://`.
 
 #### 3.3.3. Page de connexion
 
-- **Design** : Fond d'image fardc2.jpg avec overlay sombre, logo IG-FARDC, carte `.card-modern`.
+- **Design** : Fond d'image fardc2.jpg avec overlay sombre, logo `ENROL.NET`, carte `.card-modern`.
 - **Champs** :
   - Identifiant : `.input-group-modern` avec icône "person", autocomplete "username".
   - Mot de passe : `.input-group-modern` avec icône "lock-closed", bouton eye/eye-off pour afficher/masquer.
 - **Bouton "Se connecter"** : Jaune (#ffc107), pleine largeur, padding 12px.
 - **Séparateur** : Ligne "ou" pour accéder à la config serveur.
-- **Bouton "Configurer le serveur"** : Kaki foncé (#3F5A2E), même taille.
+- **Bouton "Configurer le serveur"** : Bleu profond (#003C8F), même taille.
 - **Processus** :
   1. Envoi POST à `api/auth.php?action=login` avec `{login, password}`.
   2. Le serveur vérifie les identifiants et le profil (`ENROLEUR` uniquement).
@@ -187,30 +187,24 @@ Le backend refuse les autres profils et renvoie des messages explicites si le co
 
 Trois onglets sont disponibles après connexion :
 
-1. **Contrôle** (onglet par défaut) : Recherche et validation de contrôles.
-2. **Profil** : Affichage des informations du contrôleur connecté (lecture seule avec avatar).
-3. **Quitter** : Déconnexion avec confirmation → retour au login.
+1. **ENROL.NET** (onglet par défaut) : assistant d’enrôlement terrain.
+2. **Profil** : affichage des informations de l’utilisateur connecté (lecture seule avec avatar).
+3. **Quitter** : déconnexion avec confirmation → retour au login.
 
 Les onglets sont protégés par `authGuard` : si le token est invalide ou la session expirée, l'utilisateur est redirigé vers le login. Le guard `noAuthGuard` empêche un utilisateur déjà connecté d'accéder au login.
 
-#### 3.3.5. Assistant d’enrôlement — Étape 1 : Identification
+#### 3.3.5. Assistant d’enrôlement — Étape 1 : Photo
 
-- **Champ de recherche** : Input pleine largeur avec icône loupe, minimum 2 caractères.
-- **Debounce** : 300ms entre la saisie et la requête pour éviter les appels excessifs.
-- **Requête** : GET à `api/controles.php?action=search&q={terme}`.
-- **Résultats** : Liste scrollable avec pour chaque militaire :
-  - Nom complet en gras.
-  - Badge de catégorie coloré (Actif=vert, DCD_AV_BIO=gris, DCD_AP_BIO=violet, RETRAITES=bleu, INTEGRES=rouge).
-  - Grade, unité, garnison en sous-texte.
-- **Sélection** : Cliquer sur un résultat ouvre la fiche détaillée (étape 2), sauf si le militaire est déjà contrôlé.
+- **Objectif** : démarrer le dossier avec la photo du militaire.
+- **Action** : capture caméra ou import d’image selon l’équipement disponible.
+- **Contrôle** : une photo valide est exigée avant de poursuivre.
 
-#### 3.3.6. Assistant d’enrôlement — Étapes 2 à 6 : capture et synchronisation
+#### 3.3.6. Assistant d’enrôlement — Étapes 2 à 5 : biométrie, QR et synchronisation
 
-- **Étape 2 : Informations** — affichage des données QR/backend et validation utilisateur.
-- **Étape 3 : Photo** — capture ou import de la photo du militaire.
-- **Étape 4 : Empreintes** — saisie/association des empreintes selon l’équipement disponible.
-- **Étape 5 : Revue** — vérification du dossier complet avant envoi.
-- **Étape 6 : Sync** — envoi immédiat ou mise en file locale pour synchronisation en fin de journée.
+- **Étape 2 : Empreintes** — saisie/association des empreintes selon l’équipement disponible.
+- **Étape 3 : QR / informations** — scan du QR affiché côté web, ou import d’une image QR, sans saisie manuelle/externe.
+- **Étape 4 : Validation** — vérification des données personnelles récupérées puis validation finale du dossier.
+- **Étape 5 : Sync** — envoi immédiat ou mise en file locale pour synchronisation en fin de journée.
 
 ### Données locales
 
@@ -384,7 +378,7 @@ L'application web expose une API REST dans le dossier `api/` pour le mobile :
 ```text
 Smartphone Android          PC Serveur (Laragon)
 ┌─────────────┐             ┌─────────────────────┐
-│ CTR.NET     │   Wi-Fi     │ Apache              │
+│ ENROL.NET   │   Wi-Fi     │ Apache              │
 │ Mobile      │◄───────────►│ ├── api/auth.php     │
 │ (APK)       │   HTTP      │ ├── api/controles.php│
 │             │   REST      │ ├── api/profil.php   │
@@ -406,16 +400,15 @@ Les deux applications partagent le même thème visuel :
 
 | Élément | Web | Mobile |
 | --- | --- | --- |
-| Couleur primaire | #5C7A4D | #5C7A4D |
-| Couleur secondaire | #3F5A2E | #3F5A2E |
+| Couleur primaire | #5C7A4D | #0057B8 |
+| Couleur secondaire | #3F5A2E | #003C8F |
 | Police | Barlow | Barlow |
-| Logo | IG-FARDC | IG-FARDC |
+| Logo | CTR.NET-FARDC | ENROL.NET |
 | Cards | `.card-modern` (AdminLTE) | `.card-modern` (CSS natif) |
-| Badges catégorie | Identiques | Identiques |
 | Bouton principal | Jaune #ffc107 | Jaune #ffc107 |
-| Bouton secondaire | Kaki #3F5A2E | Kaki #3F5A2E |
+| Bouton secondaire | Kaki #3F5A2E | Bleu #003C8F |
 | Fond login | fardc2.jpg + overlay | fardc2.jpg + overlay |
-| Fond config | — | fardc2.jpg + overlay (v1.1.0) |
+| Fond config | — | fardc2.jpg + overlay |
 | Toast succès | Gradient kaki + slideIn | Ionic toast vert |
 
 ---

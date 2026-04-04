@@ -2,7 +2,7 @@
 
 ## Section 1 : Résumé exécutif
 
-`ENROL.NET` est l’application mobile de terrain dédiée au profil **`ENROLEUR`**. Elle permet l’enrôlement depuis une tablette ou un smartphone Android, avec récupération d’informations par QR code, capture photo, capture d’empreintes et synchronisation immédiate ou différée avec le backend `CTR.NET-FARDC`. Le titre affiché dans l’application est désormais **`Enrôlement`**.
+`ENROL.NET` est l’application mobile de terrain dédiée au profil **`ENROLEUR`**. Elle permet l’enrôlement depuis une tablette ou un smartphone Android avec **capture photo**, **capture d’empreintes**, **lecture du QR d’identité** et **validation finale** avant synchronisation avec le backend `CTR.NET-FARDC`. Le titre affiché dans l’application est désormais **`ENROL.NET`**.
 
 > Le QR scanné par `ENROL.NET` provient de `ctr.net-fardc/modules/controles/liste.php` et n’est généré **que** lorsqu’un militaire a été contrôlé avec le statut **vivant**. Si le statut coché est **décédé**, aucun QR d’enrôlement n’est affiché côté web.
 
@@ -50,19 +50,18 @@ Une application Android légère, sécurisée, synchronisée en temps réel.
 ### Slide 4 — Flux complet de l’application
 
 **Message clé**
-De l’installation à l’envoi d’un dossier d’enrôlement en 8 étapes.
+De l’installation à la validation d’un dossier d’enrôlement en 8 étapes.
 
 **Points à dire :**
 
 1. **Installation** : APK distribué depuis GitHub Actions ou transfert direct.
-2. **Splash screen** : splash natif Capacitor court, puis splash Angular avec logo IG-FARDC pendant environ 5 secondes.
+2. **Splash screen** : splash natif Capacitor court, puis splash Angular `ENROL.NET` pendant environ 5 secondes.
 3. **Configuration** : saisie manuelle de l'adresse IP du serveur avec test de connexion depuis la page dédiée.
-4. **Connexion** : Login/mot de passe (rôle `ENROLEUR` vérifié côté serveur).
-5. **Recherche** : Saisie du matricule ou nom (minimum 2 caractères, recherche AJAX).
-6. **Sélection** : Le militaire trouvé s'affiche avec sa fiche complète et son badge catégorie.
-7. **Validation** : Selon le statut (vivant → Présent, décédé → liens de parenté + mention).
-8. **GPS** : Coordonnées capturées automatiquement (timeout 5s, non bloquant).
-9. **Envoi** : Les données sont transmises au serveur et visibles immédiatement sur le web.
+4. **Connexion** : login/mot de passe (rôle `ENROLEUR` vérifié côté serveur).
+5. **Photo** : capture ou import de la photo du militaire.
+6. **Empreintes** : association ou saisie biométrique selon l’équipement disponible.
+7. **QR / informations** : scan du QR affiché côté web, sans saisie manuelle/externe, puis chargement des données personnelles.
+8. **Validation & sync** : revue finale du dossier puis envoi immédiat ou différé vers le serveur.
 
 ### Slide 5 — Catégories et mentions
 
@@ -110,7 +109,7 @@ L'APK de référence est généré automatiquement par GitHub Actions à chaque 
 
 **Points à dire :**
 
-- GitHub Actions compile l'APK à chaque push sur la branche `main`.
+- GitHub Actions compile l'APK à chaque push sur la branche `enrollement-mobile`.
 - L'APK de distribution à retenir est celui publié par le workflow GitHub.
 - Pipeline : npm ci → ng build → cap sync → gradlew assembleDebug.
 - L'APK est téléchargeable dans les artifacts du workflow GitHub.
@@ -120,16 +119,16 @@ L'APK de référence est généré automatiquement par GitHub Actions à chaque 
 ### Slide 9 — Thème visuel
 
 **Message clé**
-L'identité visuelle est cohérente entre web et mobile.
+L'identité visuelle `ENROL.NET` est claire, moderne et cohérente avec l’écosystème.
 
 **Points à dire :**
 
-- Couleur primaire : bleu BIC #0057B8.
-- Couleur secondaire : kaki foncé #3F5A2E.
+- Couleur primaire : bleu BIC `#0057B8`.
+- Couleur secondaire : bleu profond `#003C8F`.
 - Police : Barlow (Regular, Medium, SemiBold, Bold).
-- Logo : IG-FARDC (inspectorat général).
-- Cards modernes avec ombres douces et gradient kaki en en-tête.
-- Design unifié : la page de configuration a le même design que la page de connexion.
+- Marque affichée : `ENROL.NET`.
+- Cards modernes avec ombres douces et accents bleus.
+- Design unifié : la page de configuration a le même style que la page de connexion.
 
 ### Slide 10 — Bénéfices opérationnels
 
@@ -164,8 +163,8 @@ L'application est opérationnelle et prête pour un déploiement terrain.
 
 #### Étape 1 — Premier lancement
 
-- Ouvrir l'application sur un appareil Android ou en navigateur (npm start).
-- Le splash natif Capacitor s'affiche brièvement, puis le splash Angular avec le logo IG-FARDC pendant environ 5 secondes.
+- Ouvrir l'application sur un appareil Android ou en navigateur (`npm start`).
+- Le splash natif Capacitor s'affiche brièvement, puis le splash Angular `ENROL.NET` pendant environ 5 secondes.
 - La page login apparaît ; la page de configuration reste accessible via le bouton "Configurer le serveur".
 
 #### Étape 2 — Configuration serveur
@@ -179,31 +178,25 @@ L'application est opérationnelle et prête pour un déploiement terrain.
 
 - Saisir les identifiants d'un compte `ENROLEUR`.
 - Montrer le rejet si on tente avec un autre profil.
-- Connexion réussie → redirection vers l'onglet Contrôle.
+- Connexion réussie → redirection vers l’assistant d’enrôlement.
 
-#### Étape 4 — Contrôle d'un militaire vivant
+#### Étape 4 — Photo et empreintes
 
-- Taper le matricule ou nom (minimum 2 caractères).
-- Les résultats apparaissent avec badges de catégorie (Actif, DCD, etc.).
-- Sélectionner un militaire Actif.
-- La fiche s'affiche avec le statut "Vivant" coché automatiquement.
-- Cliquer sur "Présent" → GPS capturé → envoi au serveur → toast de succès.
+- Capturer la photo du militaire.
+- Enregistrer ensuite les empreintes disponibles.
+- Montrer les contrôles de validation entre chaque étape.
 
-#### Étape 5 — Contrôle d'un militaire décédé
+#### Étape 5 — Lecture du QR
 
-- Rechercher un militaire de catégorie DCD_AV_BIO.
-- Le statut "Décédé" est coché automatiquement.
-- Le bénéficiaire existant s'affiche.
-- Sélectionner un lien de parenté (ex: Epouse).
-- Ajouter une observation (optionnel).
-- Cliquer sur "Favorable" ou "Défavorable".
-- Montrer le toast de confirmation.
+- Scanner le QR affiché côté web, ou importer une image du QR.
+- Montrer le chargement automatique des informations personnelles.
+- Expliquer que la saisie manuelle/externe a été supprimée pour fiabiliser le flux.
 
-#### Étape 6 — Vérification côté web
+#### Étape 6 — Validation finale et synchronisation
 
-- Ouvrir l'application web sur le PC serveur.
-- Montrer que la notification toast apparaît automatiquement.
-- Ouvrir la liste des contrôles et montrer le contrôle mobile avec coordonnées GPS.
+- Vérifier le dossier complet sur l’écran de revue.
+- Valider l’enrôlement puis lancer la synchronisation.
+- Ouvrir l’application web sur le PC serveur pour montrer la disponibilité du dossier synchronisé.
 
 #### Étape 7 — Profil et déconnexion
 

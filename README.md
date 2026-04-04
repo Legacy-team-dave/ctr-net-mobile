@@ -2,7 +2,7 @@
 
 ## Description
 
-`ENROL.NET` est l’application Android dédiée à l’**enrôlement terrain** pour l’écosystème `CTR.NET-FARDC`. Elle est réservée au profil **`ENROLEUR`** et reprend le design général des autres applications mobiles tout en ajoutant un flux terrain complet : **scan QR → récupération d’informations → photo → empreintes → revue → synchronisation**. Dans l’interface, le titre affiché est désormais **`Enrôlement`**.
+`ENROL.NET` est l’application Android dédiée à l’**enrôlement terrain** pour l’écosystème `CTR.NET-FARDC`. Elle est réservée au profil **`ENROLEUR`** et reprend le design général des autres applications mobiles avec un flux métier désormais ordonné ainsi : **photo → empreintes → QR / informations personnelles → validation finale → synchronisation**. Dans l’interface, le titre affiché est désormais **`ENROL.NET`**.
 
 > Le QR utilisé par `ENROL.NET` doit provenir de `ctr.net-fardc/modules/controles/liste.php` et n’est généré **que pour les contrôles marqués vivants** (`type_controle = Militaire`). Aucun QR d’enrôlement n’est proposé pour un contrôle marqué **décédé / bénéficiaire**.
 
@@ -22,13 +22,13 @@
 
 ## Flux métier réel
 
-1. **Splash** et configuration du serveur
+1. **Splash** puis configuration du serveur
 2. **Connexion** avec un compte `ENROLEUR`
-3. **Scan du QR** généré côté web pour un contrôle vivant
-4. **Validation des informations** d’identité récupérées depuis le QR puis le backend `CTR.NET-FARDC`
-5. **Capture photo**
-6. **Capture des empreintes**
-7. **Revue du dossier**
+3. **Capture photo** du militaire
+4. **Capture des empreintes**
+5. **Scan du QR** généré côté web, ou import d’une image QR, **sans saisie manuelle/externe**
+6. **Chargement et contrôle** des informations personnelles récupérées depuis le backend `CTR.NET-FARDC`
+7. **Validation finale** du dossier d’enrôlement
 8. **Synchronisation immédiate** ou envoi en fin de journée
 
 ## Authentification et comptes
