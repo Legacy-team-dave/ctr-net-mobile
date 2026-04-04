@@ -31,7 +31,7 @@
         <div class="card-body-modern">
           <div class="sync-note info">
             <ion-icon name="wifi"></ion-icon>
-            <span>Scannez le QR affiché sur le PC pour récupérer automatiquement les informations du militaire.</span>
+            <span>Scannez le QR affiché sur le PC pour récupérer automatiquement les informations du militaire. Sur smartphone Android, utilisez la capture photo du QR pour un test plus stable.</span>
           </div>
 
           @if (isCoppernicDevice) {
@@ -44,12 +44,24 @@
           <div class="scan-actions">
             <ion-button expand="block" (click)="startScanner()">
               <ion-icon name="camera" slot="start"></ion-icon>
-              Ouvrir la caméra
+              {{ isNativeAndroid ? 'Scanner par photo (smartphone)' : 'Ouvrir la caméra' }}
             </ion-button>
-            <button class="secondary-action coppernic-action" (click)="activateCoppernicMode()">
-              <ion-icon name="qr-code"></ion-icon>
-              Mode scanner Coppernic
-            </button>
+
+            <input
+              #qrImageInput
+              type="file"
+              accept="image/*"
+              capture="environment"
+              hidden
+              (change)="onQrImageSelected($event)"
+            />
+
+            @if (isCoppernicDevice) {
+              <button class="secondary-action coppernic-action" (click)="activateCoppernicMode()">
+                <ion-icon name="qr-code"></ion-icon>
+                Mode scanner Coppernic
+              </button>
+            }
           </div>
 
           @if (scannerActive) {
@@ -60,23 +72,22 @@
             </div>
           }
 
-          <div class="manual-block">
-            <label class="section-label">Contenu QR / matricule</label>
-            <textarea
+          @if (isCoppernicDevice) {
+            <input
               #manualQrInput
-              class="form-control-modern"
-              rows="4"
-              placeholder="Collez ici le contenu JSON du QR, utilisez le scanner Coppernic ou saisissez le matricule…"
+              type="text"
               [(ngModel)]="manualQr"
               (keydown.enter)="onManualQrEnter($event)"
-            ></textarea>
-            <div class="manual-actions">
-              <button class="primary-action" (click)="applyManualQr()">
-                <ion-icon name="search"></ion-icon>
-                Récupérer les informations
-              </button>
+              autocomplete="off"
+              autocapitalize="off"
+              style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;"
+            />
+
+            <div class="sync-note info">
+              <ion-icon name="qr-code"></ion-icon>
+              <span>Le scanner intégré Coppernic peut envoyer automatiquement le contenu du QR après lecture.</span>
             </div>
-          </div>
+          }
 
           @if (searchInProgress) {
             <div class="loading-inline">
