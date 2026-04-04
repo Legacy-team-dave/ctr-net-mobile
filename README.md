@@ -13,7 +13,10 @@
 - application installée sous le nom **`CTR.NET`** ;
 - profil mobile autorisé : **`CONTROLEUR`** ;
 - les comptes `CONTROLEUR` sont créés côté web avec le mot de passe par défaut **`987654321`** puis restent **inactifs** jusqu’à activation par `ADMIN_IG` ;
-- les messages de connexion affichent désormais des erreurs plus claires (utilisateur absent, compte inactif, mot de passe erroné).
+- les messages de connexion affichent désormais des erreurs plus claires (utilisateur absent, compte inactif, mot de passe erroné) ;
+- les APK sont désormais versionnées et signées de façon stable pour faciliter les **mises à jour sans désinstallation** sur les prochaines publications.
+
+> Si un appareil possède encore une très ancienne APK signée différemment, une **désinstallation unique** peut être nécessaire. Les versions suivantes pourront ensuite se mettre à jour normalement.
 
 ## Architecture
 
