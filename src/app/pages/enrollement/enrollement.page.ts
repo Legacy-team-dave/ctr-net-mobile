@@ -72,7 +72,7 @@ export class EnrollementPage implements OnDestroy {
   scannerActive = false;
   nativeScannerBusy = false;
   readonly isCoppernicDevice = /coppernic|c-one|c-five|c-five\.0|tab/i.test((navigator.userAgent || '').toLowerCase());
-  scannerMessage = 'Scannez le QR généré sur le PC ou utilisez la saisie manuelle.';
+  scannerMessage = 'Scannez le QR standard généré sur le PC (PNG 1024 / correction M) ou utilisez la saisie manuelle.';
   scannedPayload: QrControlePayload | null = null;
   qrRawPayload = '';
   qrResolvedPayload = '';
@@ -453,7 +453,7 @@ export class EnrollementPage implements OnDestroy {
     this.observations = '';
     this.scannerMessage = this.isCoppernicDevice
       ? 'Mode Coppernic prêt : scannez le QR depuis la tablette.'
-      : 'Scannez le QR généré sur le PC ou utilisez la saisie manuelle.';
+      : 'Scannez le QR standard généré sur le PC (PNG 1024 / correction M) ou utilisez la saisie manuelle.';
 
     if (this.isCoppernicDevice) {
       this.focusManualQrInput();
@@ -689,22 +689,43 @@ export class EnrollementPage implements OnDestroy {
     }
 
     const image = await this.loadImageElement(file);
+    const detector = new BarcodeDetectorClass({ formats: ['qr_code'] });
+
+    const directResults = await detector.detect(image);
+    let qrValue = directResults.find(item => typeof item.rawValue === 'string' && item.rawValue.trim());
+    if (qrValue?.rawValue) {
+      return qrValue.rawValue.trim();
+    }
+
+    const normalizedCanvas = this.buildNormalizedQrCanvas(image);
+    const normalizedResults = await detector.detect(normalizedCanvas);
+    qrValue = normalizedResults.find(item => typeof item.rawValue === 'string' && item.rawValue.trim());
+
+    return qrValue?.rawValue?.trim() || null;
+  }
+
+  private buildNormalizedQrCanvas(image: HTMLImageElement): HTMLCanvasElement {
+    const targetMaxSide = 1024;
+    const sourceWidth = Math.max(1, image.naturalWidth || image.width);
+    const sourceHeight = Math.max(1, image.naturalHeight || image.height);
+    const scale = targetMaxSide / Math.max(sourceWidth, sourceHeight);
+    const targetWidth = Math.max(1, Math.round(sourceWidth * scale));
+    const targetHeight = Math.max(1, Math.round(sourceHeight * scale));
+
     const canvas = document.createElement('canvas');
-    canvas.width = Math.max(1, image.naturalWidth || image.width);
-    canvas.height = Math.max(1, image.naturalHeight || image.height);
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) {
-      throw new Error('Impossible d’analyser la photo du QR code.');
+      throw new Error('Impossible de normaliser l’image du QR code.');
     }
 
-    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, targetWidth, targetHeight);
+    ctx.drawImage(image, 0, 0, targetWidth, targetHeight);
 
-    const detector = new BarcodeDetectorClass({ formats: ['qr_code'] });
-    const results = await detector.detect(canvas);
-    const qrValue = results.find(item => typeof item.rawValue === 'string' && item.rawValue.trim());
-
-    return qrValue?.rawValue?.trim() || null;
+    return canvas;
   }
 
   private loadImageElement(file: File): Promise<HTMLImageElement> {
