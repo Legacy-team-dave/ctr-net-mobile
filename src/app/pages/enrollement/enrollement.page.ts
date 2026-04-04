@@ -433,15 +433,17 @@ export class EnrollementPage implements OnDestroy {
     this.searchInProgress = true;
 
     try {
-      const exact = await this.resolveMilitaireFromServer(payload.matricule);
+      const enrichedPayload = await this.resolveQrPayloadFromServer(payload);
+      const exact = await this.resolveMilitaireFromServer(enrichedPayload.matricule);
 
-      this.currentMilitaire = exact || this.createFallbackMilitaire(payload);
+      this.scannedPayload = enrichedPayload;
+      this.currentMilitaire = exact || this.createFallbackMilitaire(enrichedPayload);
       this.currentStep = 'scan';
 
       if (!exact) {
         await this.showToast('Infos serveur indisponibles : poursuite avec les données du QR code.', 'warning');
       } else {
-        await this.showToast('Informations récupérées depuis CTR.NET. Cliquez sur Suivant pour la photo.', 'success');
+        await this.showToast('Informations récupérées depuis CTR.NET-FARDC. Cliquez sur Suivant pour la photo.', 'success');
       }
     } catch {
       this.currentMilitaire = this.createFallbackMilitaire(payload);
@@ -449,6 +451,21 @@ export class EnrollementPage implements OnDestroy {
       await this.showToast('Mode hors ligne actif : les données du QR sont utilisées localement.', 'warning');
     } finally {
       this.searchInProgress = false;
+    }
+  }
+
+  private async resolveQrPayloadFromServer(payload: QrControlePayload): Promise<QrControlePayload> {
+    try {
+      const serverPayload = await firstValueFrom(this.api.lookupQrData({
+        controle_id: payload.controle_id,
+        matricule: payload.matricule,
+      }));
+
+      return serverPayload
+        ? { ...payload, ...serverPayload, raw_value: payload.raw_value }
+        : payload;
+    } catch {
+      return payload;
     }
   }
 
@@ -492,6 +509,9 @@ export class EnrollementPage implements OnDestroy {
       const parsed = JSON.parse(cleaned) as Partial<QrControlePayload>;
       if (parsed && typeof parsed === 'object') {
         return {
+          source: parsed.source ? String(parsed.source) : undefined,
+          payload_version: parsed.payload_version !== undefined ? Number(parsed.payload_version) : undefined,
+          controle_id: parsed.controle_id !== undefined ? Number(parsed.controle_id) : undefined,
           matricule: String(parsed.matricule || '').trim(),
           noms: parsed.noms ? String(parsed.noms) : undefined,
           grade: parsed.grade ? String(parsed.grade) : undefined,
@@ -501,6 +521,11 @@ export class EnrollementPage implements OnDestroy {
           garnison: parsed.garnison ? String(parsed.garnison) : undefined,
           province: parsed.province ? String(parsed.province) : undefined,
           categorie: parsed.categorie ? String(parsed.categorie) : undefined,
+          type_controle: parsed.type_controle ? String(parsed.type_controle) : undefined,
+          lien_parente: parsed.lien_parente ? String(parsed.lien_parente) : undefined,
+          nom_beneficiaire: parsed.nom_beneficiaire ? String(parsed.nom_beneficiaire) : undefined,
+          new_beneficiaire: parsed.new_beneficiaire ? String(parsed.new_beneficiaire) : undefined,
+          observations: parsed.observations ? String(parsed.observations) : undefined,
           raw_value: trimmed,
         };
       }

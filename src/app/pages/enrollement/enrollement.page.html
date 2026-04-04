@@ -108,6 +108,8 @@
                 <div class="info-item"><span class="info-label">Unité :</span><span class="info-value">{{ currentMilitaire.unite || 'N/A' }}</span></div>
                 <div class="info-item"><span class="info-label">Garnison :</span><span class="info-value">{{ currentMilitaire.garnison || 'N/A' }}</span></div>
                 <div class="info-item"><span class="info-label">Province :</span><span class="info-value">{{ currentMilitaire.province || 'N/A' }}</span></div>
+                <div class="info-item"><span class="info-label">Mention :</span><span class="info-value">{{ scannedPayload?.mention || 'N/A' }}</span></div>
+                <div class="info-item"><span class="info-label">Date contrôle :</span><span class="info-value">{{ formatDate(scannedPayload?.date_controle || '') }}</span></div>
               </div>
             </div>
 

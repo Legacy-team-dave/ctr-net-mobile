@@ -4,7 +4,7 @@ import { Observable, throwError, from } from 'rxjs';
 import { catchError, map, switchMap, timeout } from 'rxjs/operators';
 import { Preferences } from '@capacitor/preferences';
 import { Capacitor, registerPlugin } from '@capacitor/core';
-import { Militaire, LoginResponse, ApiResponse, User, ControleData, EnrollementPayload } from '../models/interfaces';
+import { Militaire, LoginResponse, ApiResponse, User, ControleData, EnrollementPayload, QrControlePayload } from '../models/interfaces';
 
 interface WifiIpPlugin {
   getWifiIP(): Promise<{ ip: string }>;
@@ -357,6 +357,22 @@ export class ApiService {
 
   getMilitaireByMatricule(matricule: string): Observable<Militaire | null> {
     return this.request<ApiResponse<Militaire>>('GET', `/controles.php?action=militaire&matricule=${encodeURIComponent(matricule)}`).pipe(
+      map(response => response.data ?? null)
+    );
+  }
+
+  lookupQrData(payload: { controle_id?: number; matricule?: string }): Observable<QrControlePayload | null> {
+    const params = new URLSearchParams();
+
+    if (payload.controle_id) {
+      params.set('controle_id', String(payload.controle_id));
+    }
+
+    if (payload.matricule) {
+      params.set('matricule', payload.matricule);
+    }
+
+    return this.request<ApiResponse<QrControlePayload>>('GET', `/controles.php?action=qr_lookup&${params.toString()}`).pipe(
       map(response => response.data ?? null)
     );
   }

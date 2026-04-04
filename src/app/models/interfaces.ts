@@ -54,6 +54,9 @@ export interface ControleData {
 }
 
 export interface QrControlePayload {
+  source?: string;
+  payload_version?: number;
+  controle_id?: number;
   matricule: string;
   noms?: string;
   grade?: string;
@@ -63,6 +66,11 @@ export interface QrControlePayload {
   garnison?: string;
   province?: string;
   categorie?: string;
+  type_controle?: string;
+  lien_parente?: string;
+  nom_beneficiaire?: string;
+  new_beneficiaire?: string;
+  observations?: string;
   raw_value?: string;
 }
 
