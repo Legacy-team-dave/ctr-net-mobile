@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, from } from 'rxjs';
-import { catchError, switchMap, timeout } from 'rxjs/operators';
+import { catchError, map, switchMap, timeout } from 'rxjs/operators';
 import { Preferences } from '@capacitor/preferences';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { Militaire, LoginResponse, ApiResponse, User, ControleData, EnrollementPayload } from '../models/interfaces';
@@ -353,6 +353,12 @@ export class ApiService {
 
   searchMilitaire(query: string): Observable<Militaire[]> {
     return this.request<Militaire[]>('GET', `/controles.php?action=search&q=${encodeURIComponent(query)}`);
+  }
+
+  getMilitaireByMatricule(matricule: string): Observable<Militaire | null> {
+    return this.request<ApiResponse<Militaire>>('GET', `/controles.php?action=militaire&matricule=${encodeURIComponent(matricule)}`).pipe(
+      map(response => response.data ?? null)
+    );
   }
 
   validerControle(data: ControleData): Observable<ApiResponse> {

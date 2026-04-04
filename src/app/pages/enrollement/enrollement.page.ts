@@ -90,7 +90,6 @@ export class EnrollementPage implements OnDestroy {
 
   async ionViewWillEnter() {
     await this.loadPendingEnrollements();
-
     if (this.isCoppernicDevice) {
       this.activateCoppernicMode();
     }
@@ -434,8 +433,7 @@ export class EnrollementPage implements OnDestroy {
     this.searchInProgress = true;
 
     try {
-      const results = await firstValueFrom(this.api.searchMilitaire(payload.matricule));
-      const exact = results.find((item: Militaire) => item.matricule === payload.matricule) || results[0] || null;
+      const exact = await this.resolveMilitaireFromServer(payload.matricule);
 
       this.currentMilitaire = exact || this.createFallbackMilitaire(payload);
       this.currentStep = 'scan';
@@ -443,7 +441,7 @@ export class EnrollementPage implements OnDestroy {
       if (!exact) {
         await this.showToast('Infos serveur indisponibles : poursuite avec les données du QR code.', 'warning');
       } else {
-        await this.showToast('Informations récupérées. Cliquez sur Suivant pour la photo.', 'success');
+        await this.showToast('Informations récupérées depuis CTR.NET. Cliquez sur Suivant pour la photo.', 'success');
       }
     } catch {
       this.currentMilitaire = this.createFallbackMilitaire(payload);
@@ -452,6 +450,20 @@ export class EnrollementPage implements OnDestroy {
     } finally {
       this.searchInProgress = false;
     }
+  }
+
+  private async resolveMilitaireFromServer(matricule: string): Promise<Militaire | null> {
+    try {
+      const exact = await firstValueFrom(this.api.getMilitaireByMatricule(matricule));
+      if (exact?.matricule) {
+        return exact;
+      }
+    } catch {
+      // Fallback vers la recherche tolérante ci-dessous
+    }
+
+    const results = await firstValueFrom(this.api.searchMilitaire(matricule));
+    return results.find((item: Militaire) => item.matricule === matricule) || results[0] || null;
   }
 
   private createFallbackMilitaire(payload: QrControlePayload): Militaire {
@@ -474,8 +486,10 @@ export class EnrollementPage implements OnDestroy {
       throw new Error('Le contenu du QR code est vide.');
     }
 
+    const cleaned = trimmed.replace(/^(CTR\.NET|ENROL\.NET)\s*[:|-]?\s*/i, '').trim();
+
     try {
-      const parsed = JSON.parse(trimmed) as Partial<QrControlePayload>;
+      const parsed = JSON.parse(cleaned) as Partial<QrControlePayload>;
       if (parsed && typeof parsed === 'object') {
         return {
           matricule: String(parsed.matricule || '').trim(),
@@ -491,15 +505,45 @@ export class EnrollementPage implements OnDestroy {
         };
       }
     } catch {
-      // Fallback plus bas
+      // Compatibilité avec les anciens QR textuels
     }
 
-    const cleaned = trimmed.replace(/^(CTR\.NET|ENROL\.NET)\s*[:|-]?\s*/i, '');
-    const firstToken = cleaned.split(/[\n|;,]/)[0]?.trim() || cleaned;
+    const legacyPayload = this.parseLegacyQrText(cleaned);
+    if (legacyPayload.matricule) {
+      return {
+        ...legacyPayload,
+        matricule: String(legacyPayload.matricule || '').trim(),
+        raw_value: trimmed,
+      };
+    }
+
+    const firstToken = cleaned
+      .split(/[\n|;,]/)[0]
+      ?.replace(/^matricule\s*[:=-]?\s*/i, '')
+      .trim() || cleaned;
 
     return {
       matricule: firstToken,
       raw_value: trimmed,
+    };
+  }
+
+  private parseLegacyQrText(raw: string): Partial<QrControlePayload> {
+    const extract = (label: string): string | undefined => {
+      const match = raw.match(new RegExp(`(?:^|\\n)\\s*${label}\\s*[:=-]\\s*(.+)`, 'i'));
+      return match?.[1]?.trim() || undefined;
+    };
+
+    return {
+      matricule: extract('matricule'),
+      noms: extract('noms'),
+      grade: extract('grade'),
+      unite: extract('unité|unite'),
+      garnison: extract('garnison'),
+      province: extract('province'),
+      categorie: extract('catégorie|categorie'),
+      date_controle: extract('date contrôle|date controle'),
+      mention: extract('mention'),
     };
   }
 
