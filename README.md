@@ -58,6 +58,8 @@ ctr-net-mobile/
 - L'application mobile communique avec l'application web `ctr.net-fardc` via IPv4 sur le réseau Wi-Fi.
 - Le téléphone et le PC serveur doivent être connectés au même réseau.
 - Avant connexion, l'utilisateur renseigne manuellement l'adresse IP du serveur web.
+- En environnement **Laragon standard**, il suffit généralement de saisir l’**IP seule** (ex. `10.71.62.9`) sans `:port`.
+- Ajouter `:port` uniquement si Apache/Laragon n’écoute pas sur le port HTTP par défaut (`80`) ou HTTPS (`443`).
 - Cette IP est stockée localement (`server_ip`) et peut être modifiée à tout moment depuis la page Configuration.
 
 L'app mobile utilise les endpoints API dans `ctr.net-fardc/api/` :

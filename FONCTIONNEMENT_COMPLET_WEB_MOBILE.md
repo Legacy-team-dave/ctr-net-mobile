@@ -163,11 +163,12 @@ est effectuée côté serveur dans `api/auth.php` qui refuse les profils non aut
 - **Design** : Même fond d'image (fardc2.jpg) avec overlay sombre à 60%, même carte blanche avec border-radius 16px et backdrop-filter blur.
 - **Logo** : IG-FARDC en haut (même présentation que le login).
 - **Saisie manuelle** : L'adresse IP du serveur est saisie manuellement par l'utilisateur sur le réseau Wi-Fi local.
-- **Champ IP** : `.input-group-modern` avec icône Wi-Fi intégrée, préfixe visuel fixe `http://` et champ éditable (ex. `10.71.62.9`).
+- **Champ IP** : `.input-group-modern` avec icône Wi-Fi intégrée, préfixe visuel fixe `http://` et champ éditable (ex. `10.71.62.9` ou `10.71.62.9:8080` si un port personnalisé est réellement utilisé).
 - **Bouton "Tester la connexion"** : Jaune (#ffc107), même taille que le bouton de connexion (padding 12px, width 100%).
 - **Test** : Envoie une requête GET à `http://{IP}/ctr.net-fardc/api/auth.php?action=check` avec timeout de 8 secondes. Si le serveur répond (même avec 401), la connexion est considérée comme réussie.
+- **Laragon** : en configuration standard, il n’est pas nécessaire de saisir `:port` car Apache écoute déjà sur `80`.
 - **Bouton "Continuer"** : Kaki foncé (#3F5A2E), même taille, activé uniquement après un test réussi.
-- **Stockage** : L'IP est sauvegardée via `Capacitor Preferences` sous la clé `server_ip`, sans conserver le préfixe `http://`.
+- **Stockage** : L'IP est sauvegardée via `Capacitor Preferences` sous la clé `server_ip`, sans conserver le préfixe `http://`. 
 
 #### 3.3.3. Page de connexion
 

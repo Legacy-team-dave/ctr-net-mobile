@@ -155,8 +155,9 @@ Plugin Capacitor local (`WifiIpPlugin.java`) enregistré dans `MainActivity.java
 ### Prérequis réseau
 
 - Le PC serveur (Laragon) et le mobile doivent être sur le **même réseau WiFi**
-- Apache doit écouter sur `0.0.0.0:80` (configuration par défaut de Laragon)
-- Le pare-feu Windows doit autoriser Apache en entrée (port 80)
+- Par défaut, Laragon expose Apache sur `0.0.0.0:80` : dans ce cas, aucun `:port` n’est à saisir côté mobile
+- Un port explicite n’est nécessaire que si vous avez changé la configuration par défaut de Laragon / Apache
+- Le pare-feu Windows doit autoriser Apache en entrée (au minimum sur le port réellement utilisé)
 
 ## Thème visuel
 
