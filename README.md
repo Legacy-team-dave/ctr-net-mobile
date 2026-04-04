@@ -239,7 +239,7 @@ Le workflow `.github/workflows/build-apk.yml` :
 - **Couleur primaire** : Kaki militaire `#5C7A4D`
 - **Couleur secondaire** : Kaki foncé `#3F5A2E`
 - **Police** : Barlow (Regular, Medium, SemiBold, Bold)
-- **Icône** : IG-FARDC (logo inspectorat)
+- **Marque affichée** : `CTR.NET`
 
 ## Documentation liée
 

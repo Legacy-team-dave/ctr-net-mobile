@@ -37,7 +37,7 @@ src/app/
 │   ├── auth.service.ts        ← Session utilisateur (Observable user$, checkSession, login, logout)
 │   └── cache.service.ts       ← Nettoyage automatique des caches (Preferences, orphans, 24h)
 └── pages/
-    ├── splash/                ← Splash Angular (5s, logo IG-FARDC, animation)
+    ├── splash/                ← Splash Angular (5s, branding CTR.NET, animation)
     ├── config/                ← Configuration IP serveur + test connexion
     ├── login/                 ← Formulaire connexion (CONTROLEUR uniquement)
     ├── controle/              ← Recherche militaire + validation contrôle (2 étapes)
@@ -171,7 +171,7 @@ Plugin Capacitor local (`WifiIpPlugin.java`) enregistré dans `MainActivity.java
 - **Primaire** : Kaki militaire `#5C7A4D`
 - **Secondaire** : Kaki foncé `#3F5A2E`
 - **Police** : Barlow (Regular, Medium, SemiBold, Bold)
-- **Icône** : Logo IG-FARDC
+- **Marque affichée** : `CTR.NET`
 - **Cards** : `.card-modern` avec ombre douce et gradient
 - **Badges** : Couleurs par catégorie (vert actif, rouge décédé, orange retraité, bleu intégré)
 
@@ -179,7 +179,7 @@ Plugin Capacitor local (`WifiIpPlugin.java`) enregistré dans `MainActivity.java
 
 Build APK automatisé via GitHub Actions (`.github/workflows/build-apk.yml`) :
 
-1. Déclenché par push sur `main` ou `workflow_dispatch`
+1. Déclenché par push sur la branche `controle-mobile` ou via `workflow_dispatch`
 2. Ubuntu-latest + Node 22 + Java 21 + Android SDK API 36 (minSdk 24)
 3. `npm ci` → `ng build --configuration production` → `cap sync android` → `gradlew assembleDebug`
 4. APK uploadé en artifact (`ctr.net-fardc-mobile.apk`)

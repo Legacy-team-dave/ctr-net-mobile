@@ -15,7 +15,7 @@
 - Cible Android effective : **SDK 36, minSdk 24**
 - Version applicative (`package.json`) : **1.3.0**
 - APK de référence : **artifact/release GitHub Actions** nommé `ctr.net-fardc-mobile.apk`
-- Footer UI harmonisé sur les pages **Configuration** et **Login** : `IG-FARDC © 2026`
+- Footer UI harmonisé sur les pages **Configuration** et **Login** : `CTR.NET @ 2026`
 
 ## v1.3.0 — Mars 2026
 
@@ -59,7 +59,7 @@
 
 ### Fonctionnalités
 
-- Écran splash animé (5 secondes, logo IG-FARDC)
+- Écran splash animé (5 secondes, branding `CTR.NET`)
 - Page de configuration IP serveur avec test de connexion
 - Authentification par login/mot de passe (rôle CONTROLEUR uniquement)
 - Recherche de militaires par matricule ou nom

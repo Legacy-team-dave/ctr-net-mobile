@@ -55,7 +55,7 @@ De l'installation à la saisie d'un contrôle en 9 étapes.
 **Points à dire :**
 
 1. **Installation** : APK distribué depuis GitHub Actions ou transfert direct.
-2. **Splash screen** : splash natif Capacitor court, puis splash Angular avec logo IG-FARDC pendant environ 5 secondes.
+2. **Splash screen** : splash natif Capacitor court, puis splash Angular `CTR.NET` pendant environ 5 secondes.
 3. **Configuration** : saisie manuelle de l'adresse IP du serveur avec test de connexion depuis la page dédiée.
 4. **Connexion** : Login/mot de passe (rôle CONTROLEUR vérifié côté serveur).
 5. **Recherche** : Saisie du matricule ou nom (minimum 2 caractères, recherche AJAX).
@@ -110,7 +110,7 @@ L'APK de référence est généré automatiquement par GitHub Actions à chaque 
 
 **Points à dire :**
 
-- GitHub Actions compile l'APK à chaque push sur la branche `main`.
+- GitHub Actions compile l'APK à chaque push sur la branche `controle-mobile`.
 - L'APK de distribution à retenir est celui publié par le workflow GitHub.
 - Pipeline : npm ci → ng build → cap sync → gradlew assembleDebug.
 - L'APK est téléchargeable dans les artifacts du workflow GitHub.
@@ -127,7 +127,7 @@ L'identité visuelle est cohérente entre web et mobile.
 - Couleur primaire : kaki militaire #5C7A4D.
 - Couleur secondaire : kaki foncé #3F5A2E.
 - Police : Barlow (Regular, Medium, SemiBold, Bold).
-- Logo : IG-FARDC (inspectorat général).
+- Marque affichée : `CTR.NET`.
 - Cards modernes avec ombres douces et gradient kaki en en-tête.
 - Design unifié : la page de configuration a le même design que la page de connexion.
 
@@ -165,7 +165,7 @@ L'application est opérationnelle et prête pour un déploiement terrain.
 #### Étape 1 — Premier lancement
 
 - Ouvrir l'application sur un appareil Android ou en navigateur (npm start).
-- Le splash natif Capacitor s'affiche brièvement, puis le splash Angular avec le logo IG-FARDC pendant environ 5 secondes.
+- Le splash natif Capacitor s'affiche brièvement, puis le splash Angular `CTR.NET` pendant environ 5 secondes.
 - La page login apparaît ; la page de configuration reste accessible via le bouton "Configurer le serveur".
 
 #### Étape 2 — Configuration serveur

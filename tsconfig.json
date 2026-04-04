@@ -15,7 +15,7 @@
     "declaration": false,
     "experimentalDecorators": true,
     "moduleResolution": "node",
-    "importHelpers": true,
+    "importHelpers": false,
     "target": "es2022",
     "module": "es2020",
     "lib": ["es2020", "dom"],

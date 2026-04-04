@@ -155,14 +155,14 @@ est effectuée côté serveur dans `api/auth.php` qui refuse les profils non aut
 #### 3.3.1. Écran splash
 
 - Au lancement, le splash Capacitor natif s'affiche brièvement (`launchShowDuration: 2000`).
-- Ensuite, le splash Angular s'affiche avec le logo IG-FARDC et une animation de fondu.
+- Ensuite, le splash Angular s'affiche avec le branding `CTR.NET` et une animation de fondu.
 - Le splash Angular dure 5 secondes, puis redirige vers `/login`.
 - La redirection vers `/config` intervient plus tard via `authGuard` lorsqu'un accès protégé est tenté sans IP configurée.
 
 #### 3.3.2. Page de configuration IP (design identique au login)
 
 - **Design** : Même fond d'image (fardc2.jpg) avec overlay sombre à 60%, même carte blanche avec border-radius 16px et backdrop-filter blur.
-- **Logo** : IG-FARDC en haut (même présentation que le login).
+- **Logo** : `CTR.NET` en haut (même présentation que le login).
 - **Saisie manuelle** : L'adresse IP du serveur est saisie manuellement par l'utilisateur sur le réseau Wi-Fi local.
 - **Champ IP** : `.input-group-modern` avec icône Wi-Fi intégrée, préfixe visuel fixe `http://` et champ éditable (ex. `10.71.62.9` ou `10.71.62.9:8080` si un port personnalisé est réellement utilisé).
 - **Bouton "Tester la connexion"** : Jaune (#ffc107), même taille que le bouton de connexion (padding 12px, width 100%).
@@ -173,7 +173,7 @@ est effectuée côté serveur dans `api/auth.php` qui refuse les profils non aut
 
 #### 3.3.3. Page de connexion
 
-- **Design** : Fond d'image fardc2.jpg avec overlay sombre, logo IG-FARDC, carte `.card-modern`.
+- **Design** : Fond d'image fardc2.jpg avec overlay sombre, branding `CTR.NET`, carte `.card-modern`.
 - **Champs** :
   - Identifiant : `.input-group-modern` avec icône "person", autocomplete "username".
   - Mot de passe : `.input-group-modern` avec icône "lock-closed", bouton eye/eye-off pour afficher/masquer.
@@ -398,7 +398,7 @@ Les deux applications partagent le même thème visuel :
 | Couleur primaire | #5C7A4D | #5C7A4D |
 | Couleur secondaire | #3F5A2E | #3F5A2E |
 | Police | Barlow | Barlow |
-| Logo | IG-FARDC | IG-FARDC |
+| Logo | CTR.NET-FARDC | CTR.NET |
 | Cards | `.card-modern` (AdminLTE) | `.card-modern` (CSS natif) |
 | Badges catégorie | Identiques | Identiques |
 | Bouton principal | Jaune #ffc107 | Jaune #ffc107 |
