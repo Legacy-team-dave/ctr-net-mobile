@@ -423,6 +423,10 @@ export class EnrollementPage implements OnDestroy {
         throw new Error('Le matricule est introuvable dans le QR code.');
       }
 
+      if (!this.isQrEligible(payload)) {
+        throw new Error('QR refusé : seuls les militaires contrôlés vivants peuvent être enrôlés.');
+      }
+
       this.manualQr = raw;
       this.qrRawPayload = raw;
       this.scannedPayload = payload;
@@ -440,6 +444,10 @@ export class EnrollementPage implements OnDestroy {
 
     try {
       const enrichedPayload = await this.resolveQrPayloadFromServer(payload);
+      if (!this.isQrEligible(enrichedPayload)) {
+        throw new Error('QR refusé : seuls les militaires contrôlés vivants peuvent être enrôlés.');
+      }
+
       const exact = await this.resolveMilitaireFromServer(enrichedPayload.matricule);
 
       this.scannedPayload = enrichedPayload;
@@ -452,13 +460,27 @@ export class EnrollementPage implements OnDestroy {
       } else {
         await this.showToast('Informations récupérées depuis CTR.NET-FARDC. Cliquez sur Suivant pour la photo.', 'success');
       }
-    } catch {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message.includes('QR refusé')) {
+        this.currentMilitaire = null;
+        this.currentStep = 'scan';
+        throw error;
+      }
+
       this.currentMilitaire = this.createFallbackMilitaire(payload);
       this.currentStep = 'scan';
       await this.showToast('Mode hors ligne actif : les données du QR sont utilisées localement.', 'warning');
     } finally {
       this.searchInProgress = false;
     }
+  }
+
+  private isQrEligible(payload: QrControlePayload | null): boolean {
+    if (!payload) {
+      return false;
+    }
+
+    return !payload.type_controle || payload.type_controle === 'Militaire';
   }
 
   private async resolveQrPayloadFromServer(payload: QrControlePayload): Promise<QrControlePayload> {
