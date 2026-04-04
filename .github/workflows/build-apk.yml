@@ -6,6 +6,8 @@ on:
     branches:
       - main
       - master
+      - controle-mobile
+      - feature/controle-mobile
     paths:
       - 'src/**'
       - 'android/**'
