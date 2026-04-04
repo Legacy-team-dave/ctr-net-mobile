@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Enrôlement</ion-title>
+    <ion-title>ENROL.NET</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -22,7 +22,7 @@
     @if (isCurrentStep('scan')) {
       <div class="card-modern">
         <div class="card-header-modern">
-          <h3><ion-icon name="qr-code"></ion-icon> 1. Scanner le QR code</h3>
+          <h3><ion-icon name="qr-code"></ion-icon> 3. Scanner le QR code et charger les informations</h3>
           <button class="btn-outline-header" (click)="synchroniserLocal()" [disabled]="syncing">
             <ion-icon name="sync"></ion-icon>
             Sync fin de journée
@@ -31,13 +31,13 @@
         <div class="card-body-modern">
           <div class="sync-note info">
             <ion-icon name="wifi"></ion-icon>
-            <span>Scannez le QR standard affiché sur le PC pour récupérer automatiquement les informations du militaire. Il est désormais généré en PNG 1024 avec correction M (15%), et le scanner natif Android reste prioritaire avec photo et saisie manuelle en secours.</span>
+            <span>Utilisez le scanner natif Android ou une photo nette du QR pour rattacher ce dossier biométrique aux informations personnelles du militaire.</span>
           </div>
 
           @if (isCoppernicDevice) {
             <div class="sync-note coppernic">
               <ion-icon name="qr-code"></ion-icon>
-              <span>Tablette Coppernic détectée : vous pouvez utiliser le scanner intégré ou la caméra arrière.</span>
+              <span>Tablette Coppernic détectée : privilégiez le scanner natif ou la caméra arrière.</span>
             </div>
           }
 
@@ -61,32 +61,6 @@
               (change)="onQrImageSelected($event)"
             />
 
-            @if (isCoppernicDevice) {
-              <button class="secondary-action coppernic-action" type="button" (click)="activateCoppernicMode()">
-                <ion-icon name="qr-code"></ion-icon>
-                Mode scanner Coppernic
-              </button>
-            }
-          </div>
-
-          <div class="manual-block qr-manual-block">
-            <label class="section-label">Saisie manuelle / scanner externe</label>
-            <input
-              #manualQrInput
-              type="text"
-              class="form-control-modern"
-              [(ngModel)]="manualQr"
-              (keydown.enter)="onManualQrEnter($event)"
-              autocomplete="off"
-              autocapitalize="off"
-              placeholder="Collez ici le contenu du QR ou utilisez le scanner externe..."
-            />
-            <div class="manual-actions">
-              <button class="secondary-action" type="button" (click)="applyManualQr()" [disabled]="searchInProgress">
-                <ion-icon name="search"></ion-icon>
-                Valider le QR saisi
-              </button>
-            </div>
           </div>
 
           @if (scannerActive) {
@@ -97,12 +71,6 @@
             </div>
           }
 
-          @if (isCoppernicDevice) {
-            <div class="sync-note info">
-              <ion-icon name="qr-code"></ion-icon>
-              <span>Le scanner intégré Coppernic peut envoyer automatiquement le contenu du QR dans le champ de saisie ci-dessus.</span>
-            </div>
-          }
           @if (searchInProgress) {
             <div class="loading-inline">
               <ion-spinner name="crescent"></ion-spinner>
@@ -136,35 +104,21 @@
             <div class="actions-row">
               <button class="primary-action" (click)="nextStep()">
                 <ion-icon name="arrow-forward"></ion-icon>
-                Suivant : capturer la photo
+                Suivant : validation
               </button>
             </div>
-
-            <details class="manual-block">
-              <summary class="section-label" style="cursor:pointer;">Diagnostic QR mobile</summary>
-              <div class="info-grid mt-2">
-                <div class="info-item" style="grid-column: 1 / -1;">
-                  <span class="info-label">Payload brut scanné :</span>
-                  <pre class="info-value" style="white-space: pre-wrap;">{{ qrRawPayload || '—' }}</pre>
-                </div>
-                <div class="info-item" style="grid-column: 1 / -1;">
-                  <span class="info-label">Payload résolu / enrichi :</span>
-                  <pre class="info-value" style="white-space: pre-wrap;">{{ qrResolvedPayload || '—' }}</pre>
-                </div>
-              </div>
-            </details>
           }
         </div>
       </div>
     }
 
-    @if (isCurrentStep('photo') && currentMilitaire) {
+    @if (isCurrentStep('photo')) {
       <div class="card-modern">
         <div class="card-header-modern">
-          <h3><ion-icon name="camera"></ion-icon> 2. Capture de la photo</h3>
+          <h3><ion-icon name="camera"></ion-icon> 1. Capture de la photo</h3>
           <button class="btn-outline-header" (click)="startNewEnrollement()">
             <ion-icon name="refresh"></ion-icon>
-            Nouveau scan
+            Nouveau dossier
           </button>
         </div>
         <div class="card-body-modern">
@@ -190,10 +144,10 @@
       </div>
     }
 
-    @if (isCurrentStep('fingerprints') && currentMilitaire) {
+    @if (isCurrentStep('fingerprints')) {
       <div class="card-modern">
         <div class="card-header-modern">
-          <h3><ion-icon name="finger-print"></ion-icon> 3. Capture des empreintes</h3>
+          <h3><ion-icon name="finger-print"></ion-icon> 2. Capture des empreintes</h3>
         </div>
         <div class="card-body-modern">
           <div class="capture-grid">
@@ -231,7 +185,7 @@
             </button>
             <button class="primary-action" (click)="nextStep()">
               <ion-icon name="arrow-forward"></ion-icon>
-              Suivant : revue finale
+              Suivant : infos QR
             </button>
           </div>
         </div>

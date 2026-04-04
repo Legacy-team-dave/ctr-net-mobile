@@ -9,7 +9,7 @@ import { Capacitor, registerPlugin } from '@capacitor/core';
 import { addIcons } from 'ionicons';
 import {
   qrCode, camera, fingerPrint, sync, shieldCheckmark,
-  checkmarkCircle, alertCircle, refresh, search, images,
+  checkmarkCircle, alertCircle, refresh, images,
   cloudUpload, wifi, arrowForward, arrowBack, save
 } from 'ionicons/icons';
 import { firstValueFrom } from 'rxjs';
@@ -22,7 +22,7 @@ import {
 } from '../../models/interfaces';
 import { EnrollementLocalService } from '../../services/enrollement-local.service';
 
-type EnrollementStep = 'scan' | 'photo' | 'fingerprints' | 'review';
+type EnrollementStep = 'photo' | 'fingerprints' | 'scan' | 'review';
 type ScanTarget = 'photo' | 'left' | 'right';
 
 type DetectedBarcode = { rawValue?: string };
@@ -45,6 +45,7 @@ const NativeBarcodeScanner = registerPlugin<NativeBarcodeScannerPlugin>('Barcode
 
 @Component({
   selector: 'app-enrollement',
+  standalone: true,
   templateUrl: './enrollement.page.html',
   styleUrls: ['./enrollement.page.scss'],
   imports: [
@@ -55,24 +56,22 @@ const NativeBarcodeScanner = registerPlugin<NativeBarcodeScannerPlugin>('Barcode
 })
 export class EnrollementPage implements OnDestroy {
   @ViewChild('scannerVideo') scannerVideo?: ElementRef<HTMLVideoElement>;
-  @ViewChild('manualQrInput') manualQrInput?: ElementRef<HTMLInputElement>;
   @ViewChild('qrImageInput') qrImageInput?: ElementRef<HTMLInputElement>;
 
-  readonly steps: EnrollementStep[] = ['scan', 'photo', 'fingerprints', 'review'];
+  readonly steps: EnrollementStep[] = ['photo', 'fingerprints', 'scan', 'review'];
   readonly stepLabels: Record<EnrollementStep, string> = {
-    scan: 'QR code',
     photo: 'Photo',
     fingerprints: 'Empreintes',
+    scan: 'Infos QR',
     review: 'Validation',
   };
 
-  currentStep: EnrollementStep = 'scan';
-  manualQr = '';
+  currentStep: EnrollementStep = 'photo';
   searchInProgress = false;
   scannerActive = false;
   nativeScannerBusy = false;
   readonly isCoppernicDevice = /coppernic|c-one|c-five|c-five\.0|tab/i.test((navigator.userAgent || '').toLowerCase());
-  scannerMessage = 'Scannez le QR standard généré sur le PC (PNG 1024 / correction M) ou utilisez la saisie manuelle.';
+  scannerMessage = 'Utilisez le scanner natif ou une photo nette du QR pour charger les informations personnelles.';
   scannedPayload: QrControlePayload | null = null;
   qrRawPayload = '';
   qrResolvedPayload = '';
@@ -97,7 +96,7 @@ export class EnrollementPage implements OnDestroy {
   ) {
     addIcons({
       qrCode, camera, fingerPrint, sync, shieldCheckmark,
-      checkmarkCircle, alertCircle, refresh, search, images,
+      checkmarkCircle, alertCircle, refresh, images,
       cloudUpload, wifi, arrowForward, arrowBack, save
     });
   }
@@ -142,11 +141,6 @@ export class EnrollementPage implements OnDestroy {
   }
 
   async nextStep() {
-    if (this.currentStep === 'scan' && !this.currentMilitaire) {
-      await this.showToast('Scannez d’abord le QR code et chargez les informations.', 'warning');
-      return;
-    }
-
     if (this.currentStep === 'photo' && !this.photoData) {
       await this.showToast('Capturez d’abord la photo du militaire.', 'warning');
       return;
@@ -154,6 +148,11 @@ export class EnrollementPage implements OnDestroy {
 
     if (this.currentStep === 'fingerprints' && !this.empreinteGaucheData && !this.empreinteDroiteData) {
       await this.showToast('Capturez au moins une empreinte avant de continuer.', 'warning');
+      return;
+    }
+
+    if (this.currentStep === 'scan' && !this.currentMilitaire) {
+      await this.showToast('Scannez d’abord le QR code et chargez les informations personnelles.', 'warning');
       return;
     }
 
@@ -224,7 +223,7 @@ export class EnrollementPage implements OnDestroy {
     try {
       const { supported } = await NativeBarcodeScanner.isSupported();
       if (!supported) {
-        throw new Error('Le scanner QR natif n’est pas disponible sur cet appareil. Utilisez la photo du QR ou la saisie manuelle.');
+        throw new Error('Le scanner QR natif n’est pas disponible sur cet appareil. Utilisez le scan par photo du QR.');
       }
 
       if (typeof NativeBarcodeScanner.isGoogleBarcodeScannerModuleAvailable === 'function') {
@@ -244,13 +243,13 @@ export class EnrollementPage implements OnDestroy {
 
       const qrValue = barcodes.find((item: NativeScanBarcode) => typeof item.rawValue === 'string' && item.rawValue.trim());
       if (!qrValue?.rawValue) {
-        await this.showToast('Aucun QR détecté. Réessayez ou utilisez la photo / saisie manuelle.', 'warning');
+        await this.showToast('Aucun QR détecté. Réessayez ou utilisez une photo plus nette du QR.', 'warning');
         return;
       }
 
       await this.handleQrResult(qrValue.rawValue);
     } catch (error: unknown) {
-      this.scannerMessage = 'Scan natif indisponible. Utilisez la photo du QR ou la saisie manuelle.';
+      this.scannerMessage = 'Scan natif indisponible. Utilisez une photo nette du QR.';
       const message = error instanceof Error ? error.message : 'Impossible d’ouvrir le scanner QR natif.';
       await this.showToast(message, 'danger');
     } finally {
@@ -309,23 +308,7 @@ export class EnrollementPage implements OnDestroy {
 
   activateCoppernicMode() {
     this.stopScanner();
-    this.scannerMessage = 'Mode Coppernic actif : scannez le QR avec le lecteur intégré.';
-    this.focusManualQrInput();
-  }
-
-  async onManualQrEnter(event: Event) {
-    event.preventDefault();
-    await this.applyManualQr();
-  }
-
-  async applyManualQr() {
-    if (!this.manualQr.trim()) {
-      await this.showToast('Scannez un QR code pour continuer.', 'warning');
-      this.focusManualQrInput();
-      return;
-    }
-
-    await this.handleQrResult(this.manualQr);
+    this.scannerMessage = 'Tablette Coppernic détectée : utilisez le scanner natif ou la caméra arrière pour lire le QR.';
   }
 
   async onCaptureSelected(event: Event, target: ScanTarget) {
@@ -441,8 +424,7 @@ export class EnrollementPage implements OnDestroy {
 
   startNewEnrollement() {
     this.stopScanner();
-    this.currentStep = 'scan';
-    this.manualQr = '';
+    this.currentStep = 'photo';
     this.scannedPayload = null;
     this.qrRawPayload = '';
     this.qrResolvedPayload = '';
@@ -452,12 +434,8 @@ export class EnrollementPage implements OnDestroy {
     this.empreinteDroiteData = '';
     this.observations = '';
     this.scannerMessage = this.isCoppernicDevice
-      ? 'Mode Coppernic prêt : scannez le QR depuis la tablette.'
-      : 'Scannez le QR standard généré sur le PC (PNG 1024 / correction M) ou utilisez la saisie manuelle.';
-
-    if (this.isCoppernicDevice) {
-      this.focusManualQrInput();
-    }
+      ? 'Tablette Coppernic prête : utilisez le scanner natif ou la caméra arrière pour lire le QR.'
+      : 'Utilisez le scanner natif ou une photo nette du QR pour charger les informations personnelles.';
   }
 
   formatDate(value: string): string {
@@ -480,7 +458,6 @@ export class EnrollementPage implements OnDestroy {
         throw new Error('QR refusé : seuls les militaires contrôlés vivants peuvent être enrôlés.');
       }
 
-      this.manualQr = raw;
       this.qrRawPayload = raw;
       this.scannedPayload = payload;
       this.qrResolvedPayload = JSON.stringify(payload, null, 2);
@@ -511,7 +488,7 @@ export class EnrollementPage implements OnDestroy {
       if (!exact) {
         await this.showToast('Infos serveur indisponibles : poursuite avec les données du QR code.', 'warning');
       } else {
-        await this.showToast('Informations récupérées depuis CTR.NET-FARDC. Cliquez sur Suivant pour la photo.', 'success');
+        await this.showToast('Informations personnelles chargées. Cliquez sur Suivant pour la validation finale.', 'success');
       }
     } catch (error: unknown) {
       if (error instanceof Error && error.message.includes('QR refusé')) {
@@ -783,12 +760,6 @@ export class EnrollementPage implements OnDestroy {
 
   private async loadPendingEnrollements() {
     this.pendingEnrollements = await this.enrollementStorage.listAll();
-  }
-
-  private focusManualQrInput() {
-    setTimeout(() => {
-      this.manualQrInput?.nativeElement.focus();
-    }, 180);
   }
 
   private async showToast(message: string, color: string) {
