@@ -46,7 +46,7 @@ export class LoginPage {
 
   async onSubmit() {
     if (!this.login.trim() || !this.password) {
-      this.errorMessage = 'Veuillez remplir tous les champs';
+      this.errorMessage = 'Veuillez saisir votre utilisateur et votre mot de passe.';
       return;
     }
 
