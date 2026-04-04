@@ -331,7 +331,7 @@ Le workflow GitHub Actions (`.github/workflows/build-apk.yml`) :
 3. Installation Android SDK : `platforms;android-36` + `build-tools;35.0.0`.
 4. `npm ci` → `npx ng build --configuration production` → `npx cap sync android`.
 5. `chmod +x gradlew && ./gradlew assembleDebug`.
-6. L'APK est uploadé en artifact sous le nom `ctr.net-fardc-mobile`.
+6. L'APK est uploadé en artifact sous le nom `ctr-net-controle-mobile-apk-v<version>`.
 7. En local, `BUILD_APK.bat` et `build_apk.ps1` copient aussi un APK distribuable vers `dist/apk/ctr-net-mobile-latest-debug.apk`.
 
 ---

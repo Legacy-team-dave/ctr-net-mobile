@@ -182,7 +182,7 @@ Build APK automatisé via GitHub Actions (`.github/workflows/build-apk.yml`) :
 1. Déclenché par push sur la branche `controle-mobile` ou via `workflow_dispatch`
 2. Ubuntu-latest + Node 22 + Java 21 + Android SDK API 36 (minSdk 24)
 3. `npm ci` → `ng build --configuration production` → `cap sync android` → `gradlew assembleDebug`
-4. APK uploadé en artifact (`ctr.net-fardc-mobile.apk`)
+4. APK uploadé en artifact (`ctr-net-controle-mobile-apk-v<version>`)
 5. Release GitHub créée ou mise à jour automatiquement pour le tag `v<version>` avec l'APK en téléchargement direct
 
 ## Gestion du cache (v1.3.0)

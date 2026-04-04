@@ -14,7 +14,7 @@
 - Mode de configuration serveur actif : **saisie manuelle de l'IP** + test de connexion
 - Cible Android effective : **SDK 36, minSdk 24**
 - Version applicative (`package.json`) : **1.3.0**
-- APK de référence : **artifact/release GitHub Actions** nommé `ctr.net-fardc-mobile.apk`
+- APK de référence : **artifact/release GitHub Actions** nommé `ctr-net-controle-mobile-apk-v<version>`
 - Footer UI harmonisé sur les pages **Configuration** et **Login** : `CTR.NET @ 2026`
 
 ## v1.3.0 — Mars 2026
