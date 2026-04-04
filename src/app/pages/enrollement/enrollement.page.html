@@ -34,11 +34,22 @@
             <span>Scannez le QR affiché sur le PC pour récupérer automatiquement les informations du militaire.</span>
           </div>
 
+          @if (isCoppernicDevice) {
+            <div class="sync-note coppernic">
+              <ion-icon name="qr-code"></ion-icon>
+              <span>Tablette Coppernic détectée : vous pouvez utiliser le scanner intégré ou la caméra arrière.</span>
+            </div>
+          }
+
           <div class="scan-actions">
             <ion-button expand="block" (click)="startScanner()">
               <ion-icon name="camera" slot="start"></ion-icon>
               Ouvrir la caméra
             </ion-button>
+            <button class="secondary-action coppernic-action" (click)="activateCoppernicMode()">
+              <ion-icon name="qr-code"></ion-icon>
+              Mode scanner Coppernic
+            </button>
           </div>
 
           @if (scannerActive) {
@@ -52,10 +63,12 @@
           <div class="manual-block">
             <label class="section-label">Contenu QR / matricule</label>
             <textarea
+              #manualQrInput
               class="form-control-modern"
               rows="4"
-              placeholder="Collez ici le contenu JSON du QR ou le matricule…"
+              placeholder="Collez ici le contenu JSON du QR, utilisez le scanner Coppernic ou saisissez le matricule…"
               [(ngModel)]="manualQr"
+              (keydown.enter)="onManualQrEnter($event)"
             ></textarea>
             <div class="manual-actions">
               <button class="primary-action" (click)="applyManualQr()">

@@ -112,6 +112,17 @@ ion-toolbar {
   gap: 12px;
   flex-wrap: wrap;
   margin-bottom: 12px;
+  align-items: center;
+}
+
+.coppernic-action {
+  min-height: 44px;
+}
+
+.sync-note.coppernic {
+  background: #eef7e8;
+  color: #2f4f20;
+  border: 1px solid #cddfc0;
 }
 
 .form-control-modern {
@@ -377,6 +388,25 @@ ion-toolbar {
   text-align: center;
   color: #6c757d;
   padding: 16px 0;
+}
+
+@media (min-width: 900px) {
+  .page-wrapper {
+    padding: 24px;
+  }
+
+  .card-modern {
+    max-width: 980px;
+  }
+
+  .scan-actions {
+    justify-content: flex-start;
+  }
+
+  .scan-actions ion-button,
+  .coppernic-action {
+    min-width: 250px;
+  }
 }
 
 @media (max-width: 640px) {

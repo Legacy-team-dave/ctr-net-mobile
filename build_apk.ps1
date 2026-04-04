@@ -72,6 +72,7 @@ if ($buildResult -ne 0) {
 }
 
 $apkCandidates = @(
+    (Join-Path $PSScriptRoot 'android\app\build\outputs\apk\debug\ctr-net-enrollement-mobile-debug.apk'),
     (Join-Path $PSScriptRoot 'android\app\build\outputs\apk\debug\ctr.net-fardc-mobile.apk'),
     (Join-Path $PSScriptRoot 'android\app\build\outputs\apk\debug\app-debug.apk')
 )
@@ -96,7 +97,7 @@ Write-Host ""
 Write-Host "=========================================================" -ForegroundColor Green
 Write-Host "  [OK] APK genere avec succes !" -ForegroundColor Green
 Write-Host "  Emplacement source : $apkSource" -ForegroundColor Green
-Write-Host "  APK distribuable   : dist\apk\ctr-net-mobile-latest-debug.apk" -ForegroundColor Green
+Write-Host "  APK distribuable   : dist\apk\ctr-net-enrollement-mobile-latest-debug.apk" -ForegroundColor Green
 Write-Host "=========================================================" -ForegroundColor Green
 
 if ($InstallOnDevice) {

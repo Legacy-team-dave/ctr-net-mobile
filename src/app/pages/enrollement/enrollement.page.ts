@@ -42,6 +42,7 @@ type BarcodeDetectorCtor = new (options?: { formats?: string[] }) => BarcodeDete
 })
 export class EnrollementPage implements OnDestroy {
   @ViewChild('scannerVideo') scannerVideo?: ElementRef<HTMLVideoElement>;
+  @ViewChild('manualQrInput') manualQrInput?: ElementRef<HTMLTextAreaElement>;
 
   readonly steps: EnrollementStep[] = ['scan', 'photo', 'fingerprints', 'review'];
   readonly stepLabels: Record<EnrollementStep, string> = {
@@ -55,6 +56,7 @@ export class EnrollementPage implements OnDestroy {
   manualQr = '';
   searchInProgress = false;
   scannerActive = false;
+  readonly isCoppernicDevice = /coppernic|c-one|c-five|c-five\.0|tab/i.test((navigator.userAgent || '').toLowerCase());
   scannerMessage = 'Visez le QR code généré depuis le PC.';
   scannedPayload: QrControlePayload | null = null;
   currentMilitaire: Militaire | null = null;
@@ -85,6 +87,11 @@ export class EnrollementPage implements OnDestroy {
 
   async ionViewWillEnter() {
     await this.loadPendingEnrollements();
+    this.focusManualQrInput();
+
+    if (this.isCoppernicDevice) {
+      this.activateCoppernicMode();
+    }
   }
 
   ionViewDidLeave() {
@@ -203,9 +210,21 @@ export class EnrollementPage implements OnDestroy {
     this.scannerActive = false;
   }
 
+  activateCoppernicMode() {
+    this.stopScanner();
+    this.scannerMessage = 'Mode Coppernic actif : utilisez le scanner intégré ou collez le QR, puis validez.';
+    this.focusManualQrInput();
+  }
+
+  async onManualQrEnter(event: Event) {
+    event.preventDefault();
+    await this.applyManualQr();
+  }
+
   async applyManualQr() {
     if (!this.manualQr.trim()) {
       await this.showToast('Collez le contenu du QR code ou saisissez le matricule.', 'warning');
+      this.focusManualQrInput();
       return;
     }
 
@@ -333,7 +352,10 @@ export class EnrollementPage implements OnDestroy {
     this.empreinteGaucheData = '';
     this.empreinteDroiteData = '';
     this.observations = '';
-    this.scannerMessage = 'Visez le QR code généré depuis le PC.';
+    this.scannerMessage = this.isCoppernicDevice
+      ? 'Mode Coppernic prêt : scannez le QR depuis la tablette.'
+      : 'Visez le QR code généré depuis le PC.';
+    this.focusManualQrInput();
   }
 
   formatDate(value: string): string {
@@ -499,6 +521,12 @@ export class EnrollementPage implements OnDestroy {
 
   private async loadPendingEnrollements() {
     this.pendingEnrollements = await this.enrollementStorage.listAll();
+  }
+
+  private focusManualQrInput() {
+    setTimeout(() => {
+      this.manualQrInput?.nativeElement.focus();
+    }, 180);
   }
 
   private async showToast(message: string, color: string) {
