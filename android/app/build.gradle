@@ -1,4 +1,6 @@
 import groovy.json.JsonSlurper
+import java.security.KeyStore
+import java.util.Collections
 
 apply plugin: 'com.android.application'
 
@@ -13,11 +15,29 @@ def appVersionCode = (versionTokens[0] * 10000) + (versionTokens[1] * 100) + ver
 def stableKeystoreFile = file("ctrnet-update.pfx")
 def stableStorePassword = "CtrNet2026!"
 def stableKeyPassword = "CtrNet2026!"
+def detectPkcs12Alias = { File keystoreFile, String password ->
+    if (!keystoreFile.exists() || password == null || password.trim().isEmpty()) {
+        return ""
+    }
+
+    try {
+        def keyStore = KeyStore.getInstance("PKCS12")
+        keystoreFile.withInputStream { inputStream ->
+            keyStore.load(inputStream, password.toCharArray())
+        }
+        def aliases = Collections.list(keyStore.aliases()).findAll { it != null && !it.toString().trim().isEmpty() }
+        return aliases ? aliases[0].toString().trim() : ""
+    } catch (Exception exception) {
+        logger.lifecycle("Stable signing alias auto-detect failed for ${project.name}: ${exception.message}")
+        return ""
+    }
+}
 def stableKeyAlias = (
     findProperty("CTRNET_KEY_ALIAS")
         ?: System.getenv("CTRNET_KEY_ALIAS")
         ?: System.getenv("KEY_ALIAS")
         ?: System.getenv("ANDROID_KEY_ALIAS")
+        ?: detectPkcs12Alias(stableKeystoreFile, stableStorePassword)
         ?: ""
 ).toString().trim()
 def hasStableSigning = stableKeystoreFile.exists() &&
@@ -25,7 +45,9 @@ def hasStableSigning = stableKeystoreFile.exists() &&
     !stableKeyPassword.trim().isEmpty() &&
     !stableKeyAlias.isEmpty()
 
-if (!hasStableSigning) {
+if (hasStableSigning) {
+    logger.lifecycle("Stable signing enabled for ${project.name} with alias '${stableKeyAlias}'.")
+} else {
     logger.lifecycle("Stable signing disabled for ${project.name}: missing key alias or keystore file. Falling back to default debug signing.")
 }
 
