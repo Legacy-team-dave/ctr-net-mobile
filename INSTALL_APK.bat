@@ -47,9 +47,14 @@ if %errorlevel% neq 0 (
 
 echo.
 echo [INFO] Installation en cours...
-adb install -r "%APK_PATH%"
+adb install -r -d "%APK_PATH%"
 if %errorlevel% neq 0 (
     echo [ERREUR] Echec d'installation ADB.
+    echo Causes probables :
+    echo   - signature differente entre l'ancienne et la nouvelle APK ;
+    echo   - version plus ancienne ou identique deja presente sur l'appareil ;
+    echo   - application provenant d'un ancien build non signe avec la cle stable.
+    echo Si une tres ancienne version est encore installee, desinstallez-la une fois puis reinstallez cette nouvelle APK.
     pause
     exit /b 1
 )

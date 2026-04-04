@@ -1,14 +1,38 @@
+import groovy.json.JsonSlurper
+
 apply plugin: 'com.android.application'
+
+def packageJson = new JsonSlurper().parse(file("../../package.json"))
+def appVersionName = (packageJson.version ?: "1.0.0").toString()
+def versionTokens = appVersionName.tokenize('.').collect { token -> token as int }
+while (versionTokens.size() < 3) {
+    versionTokens << 0
+}
+def appVersionCode = (versionTokens[0] * 10000) + (versionTokens[1] * 100) + versionTokens[2]
+
+def stableKeystoreFile = file("ctrnet-update.pfx")
+def stableStorePassword = "CtrNet2026!"
+def stableKeyPassword = "CtrNet2026!"
 
 android {
     namespace = "net.ctr.fardc.mobile"
     compileSdk = rootProject.ext.compileSdkVersion
+
+    signingConfigs {
+        stable {
+            storeFile stableKeystoreFile
+            storePassword stableStorePassword
+            keyPassword stableKeyPassword
+            storeType "pkcs12"
+        }
+    }
+
     defaultConfig {
         applicationId "net.ctr.fardc.mobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode appVersionCode
+        versionName appVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -17,7 +41,11 @@ android {
         }
     }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.stable
+        }
         release {
+            signingConfig signingConfigs.stable
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
