@@ -46,7 +46,7 @@ export class AuthService {
   async login(login: string, password: string): Promise<void> {
     const res = await firstValueFrom(this.api.login(login, password));
     if (!res.success) {
-      throw new Error(res.message || 'Identifiants incorrects');
+      throw new Error(res.message || 'Utilisateur ou mot de passe incorrects.');
     }
     if (res.token) {
       await this.api.setToken(res.token);

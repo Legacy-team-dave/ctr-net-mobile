@@ -292,15 +292,15 @@ export class ApiService {
       const serverMessage = this.extractServerMessage(error);
 
       if (error.status === 0) {
-        message = 'Impossible de joindre le serveur. Vérifiez la connexion Wi-Fi et l\'adresse IP.';
+        message = 'Impossible de joindre le serveur. Vérifiez la connexion Wi‑Fi et l\'adresse IP.';
       } else if (error.status === 200) {
         message = serverMessage || 'Réponse serveur invalide malgré un statut 200.';
       } else if (error.status === 401) {
-        message = serverMessage || 'Utilisateur ou mot de passe incorrect.';
+        message = serverMessage || 'Utilisateur ou mot de passe incorrects.';
       } else if (error.status === 403) {
-        message = serverMessage || 'Accès refusé';
+        message = serverMessage || 'Compte non autorisé ou en attente d\'activation pour cette application.';
       } else if (error.status === 404) {
-        message = serverMessage || 'Utilisateur non créé.';
+        message = serverMessage || 'Utilisateur non créé dans la base de données.';
       } else {
         message = serverMessage || `Erreur serveur (${error.status})`;
       }
