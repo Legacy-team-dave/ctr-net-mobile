@@ -8,9 +8,9 @@ import { IonContent, IonIcon, IonSpinner } from '@ionic/angular/standalone';
     <ion-content [scrollY]="false">
       <div class="splash-screen" [class.fade-out]="fadeOut">
         <div class="splash-content" [class.visible]="show">
-          <img src="assets/img/logo-fardc.png" alt="FARDC" class="splash-logo" />
-          <h1>IG-FARDC</h1>
-          <p>Inspectorat Général des Forces Armées de la RDC</p>
+          <img src="assets/img/logo-fardc.png" alt="CTR.NET" class="splash-logo" />
+          <h1>CTR.NET</h1>
+          <p>Application mobile de contrôle</p>
           <div class="splash-spinner"></div>
         </div>
       </div>
