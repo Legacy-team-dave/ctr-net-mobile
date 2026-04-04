@@ -46,28 +46,33 @@ L’écosystème comporte désormais **trois briques complémentaires** :
 
 ### 2.2. Profils utilisateurs
 
-L'application web gère trois profils avec des accès distincts :
+L'application web gère quatre profils avec des accès distincts :
 
 #### ADMIN_IG (Administrateur Inspectorat Général)
 
 - Accès complet à tous les modules.
 - Redirection après login vers `index.php` (dashboard).
-- Gestion des utilisateurs, des militaires, des contrôles, des litiges.
+- Gestion des utilisateurs, des militaires, des contrôles et des paramètres.
 - Consultation des logs d'audit et des rapports.
-- Accès à l'administration système (sauvegardes, paramètres).
 
 #### OPERATEUR
 
 - Accès opérationnel avec tableau de bord.
-- Redirection conditionnelle : si les préférences ne sont pas configurées, redirigé vers `preferences.php`. Après enregistrement des préférences, la page redirige vers `equipes.php`, puis vers `index.php` via le bouton de continuation.
-- Saisie de contrôles, consultation de listes, exports.
+- Redirection conditionnelle selon les préférences et équipes configurées.
+- Saisie de contrôles, consultation de listes et exports.
 - Accès limité aux modules d'administration.
 
 #### CONTROLEUR
 
-- Profil réservé exclusivement à l'application mobile ENROL.NET.
-- Connexion web bloquée (v1.4.0).
-- Accès uniquement via l'app mobile : saisie de contrôles, profil, historique.
+- Profil réservé exclusivement à l'application mobile `CTR.NET`.
+- Connexion web bloquée.
+- Accès uniquement via l'app de contrôle terrain.
+
+#### ENROLEUR
+
+- Profil réservé exclusivement à l'application mobile `ENROL.NET`.
+- Connexion web bloquée.
+- Accès uniquement via l'app d’enrôlement terrain.
 
 ### 2.3. Authentification web
 
@@ -76,7 +81,7 @@ L'application web gère trois profils avec des accès distincts :
 3. Le système vérifie les identifiants dans la base MySQL (mot de passe hashé bcrypt).
 4. Si valide, une session PHP est créée avec les informations utilisateur.
 5. Option "Se souvenir de moi" : un cookie de session persistant est défini.
-6. Redirection selon le profil (ADMIN_IG → dashboard, CONTROLEUR → **bloqué côté web**, OPERATEUR → `preferences.php` si nécessaire, sinon `modules/controles/ajouter.php`).
+6. Redirection selon le profil (ADMIN_IG → dashboard, OPERATEUR → flux web, CONTROLEUR/ENROLEUR → **bloqués côté web** et orientés vers leurs applications mobiles dédiées).
 7. En cas d'échec, un log d'échec de connexion est enregistré.
 
 ### 2.4. Flux de contrôle (web)
@@ -359,7 +364,7 @@ L'application web expose une API REST dans le dossier `api/` pour le mobile :
 ### 4.2. Authentification API
 
 1. Le mobile envoie POST `{login, password}` à `api/auth.php?action=login`.
-2. Le serveur vérifie les identifiants et le profil (CONTROLEUR requis).
+2. Le serveur vérifie les identifiants et le profil (`ENROLEUR` requis).
 3. Si valide : génère un token Bearer unique, le stocke en base, le retourne dans la réponse.
 4. Pour chaque requête suivante, le mobile envoie le header `Authorization: Bearer {token}`.
 5. Le serveur valide le token à chaque requête. Si invalide/expiré → réponse 401.
@@ -447,7 +452,7 @@ Les deux applications partagent le même thème visuel :
 2. Télécharger l'APK depuis les artifacts GitHub Actions ou générer localement via `BUILD_APK.bat` / `build_apk.ps1`.
 3. Utiliser `INSTALL_APK.bat` pour installation ADB rapide (USB) ou installer manuellement l'APK (`dist/apk/ctr-net-mobile-latest-debug.apk`).
 4. Au premier lancement : configurer l'IP du serveur et tester la connexion.
-5. Se connecter avec un compte CONTROLEUR.
+5. Se connecter avec un compte `ENROLEUR`.
 6. Commencer les contrôles terrain.
 
 ---

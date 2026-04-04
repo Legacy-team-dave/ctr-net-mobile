@@ -17,7 +17,7 @@ Présenter ENROL.NET comme l'outil terrain de l’enrôleur, complémentaire à 
 
 - ENROL.NET est une application Android dédiée à l’enrôlement terrain des militaires vivants.
 - Elle s'intègre à l'écosystème CTR.NET-FARDC existant via une API REST.
-- Seul le profil CONTROLEUR est autorisé à se connecter.
+- Seul le profil `ENROLEUR` est autorisé à se connecter.
 - L'objectif est d'accélérer la saisie et d'ajouter la géolocalisation automatique.
 
 ### Slide 2 — Problème adressé
@@ -55,7 +55,7 @@ De l’installation à l’envoi d’un dossier d’enrôlement en 8 étapes.
 1. **Installation** : APK distribué depuis GitHub Actions ou transfert direct.
 2. **Splash screen** : splash natif Capacitor court, puis splash Angular avec logo IG-FARDC pendant environ 5 secondes.
 3. **Configuration** : saisie manuelle de l'adresse IP du serveur avec test de connexion depuis la page dédiée.
-4. **Connexion** : Login/mot de passe (rôle CONTROLEUR vérifié côté serveur).
+4. **Connexion** : Login/mot de passe (rôle `ENROLEUR` vérifié côté serveur).
 5. **Recherche** : Saisie du matricule ou nom (minimum 2 caractères, recherche AJAX).
 6. **Sélection** : Le militaire trouvé s'affiche avec sa fiche complète et son badge catégorie.
 7. **Validation** : Selon le statut (vivant → Présent, décédé → liens de parenté + mention).
@@ -86,7 +86,7 @@ L'authentification et la session sont protégées à chaque niveau.
 - Token Bearer stocké localement via Capacitor Preferences (pas de cookies).
 - Vérification de session à chaque changement de page (authGuard).
 - Déconnexion automatique sur erreur 401 (session expirée).
-- Seul le profil CONTROLEUR est autorisé (vérifié côté serveur API).
+- Seul le profil `ENROLEUR` est autorisé (vérifié côté serveur API).
 - Timeout de 15 secondes sur chaque requête pour éviter les blocages.
 
 ### Slide 7 — Synchronisation avec le web
@@ -175,7 +175,7 @@ L'application est opérationnelle et prête pour un déploiement terrain.
 
 #### Étape 3 — Connexion
 
-- Saisir les identifiants d'un compte CONTROLEUR.
+- Saisir les identifiants d'un compte `ENROLEUR`.
 - Montrer le rejet si on tente avec un autre profil.
 - Connexion réussie → redirection vers l'onglet Contrôle.
 
@@ -217,7 +217,7 @@ L'application est opérationnelle et prête pour un déploiement terrain.
    Elle fonctionne sur réseau Wi-Fi intranet. Internet n'est pas nécessaire, mais le Wi-Fi avec accès au serveur est indispensable.
 
 2. **Qui peut se connecter depuis le mobile ?**
-   Uniquement les utilisateurs ayant le profil CONTROLEUR. Les autres profils sont refusés par l'API.
+   Uniquement les utilisateurs ayant le profil `ENROLEUR`. Les autres profils sont refusés par l'API.
 
 3. **Les coordonnées GPS sont-elles obligatoires ?**
    Non. Le GPS est capturé automatiquement mais n'est pas bloquant. Si le GPS n'est pas disponible, le contrôle est enregistré sans coordonnées.

@@ -49,7 +49,7 @@ Consignes de production :
    - Premier lancement (splash 5s → configuration IP)
    - Saisie manuelle de l'IP serveur, clic "Tester la connexion"
    - Message de succès vert → clic "Continuer"
-   - Connexion avec identifiants CONTROLEUR
+   - Connexion avec identifiants `ENROLEUR`
    - Recherche d'un militaire Actif → sélection → "Présent"
    - Recherche d'un militaire DCD_AV_BIO → Lien de parenté → "Favorable" ou "Défavorable"
    - Consultation profil (onglet Profil)
@@ -62,7 +62,7 @@ Consignes de production :
 Contraintes importantes :
 
 - N'invente pas de fonctionnalités non présentes.
-- Respecte strictement le profil CONTROLEUR et les mentions réelles (Présent, Favorable, Défavorable).
+- Respecte strictement le profil `ENROLEUR` et le parcours réel d’enrôlement (scan, photo, empreintes, revue, synchronisation).
 - Mentionne la dépendance au serveur web CTR.NET-FARDC pour l'API.
 - Sois concret et orienté usage terrain.
 - Le design de la page de configuration IP est identique à celui de la page de connexion (même fond, carte, boutons, tailles).
@@ -91,7 +91,7 @@ Fais-moi un pitch de 30 secondes de ENROL.NET pour un décideur, en mettant l'ac
 Fais-moi un pitch de 2 minutes de ENROL.NET pour une réunion de pilotage, avec :
 
 - problème initial (contrôles papier, pas de traçabilité terrain),
-- solution apportée (app mobile dédiée au CONTROLEUR),
+- solution apportée (app mobile dédiée à l’`ENROLEUR`),
 - fonctionnement réel (splash 5s → config IP → login → onglets Contrôle/Profil/Quitter),
 - synchronisation avec le web (API REST, polling 10s via `controles_poll.php`, notifications toast),
 - impacts métier (rapidité, GPS, fiabilité, preuve géographique),
