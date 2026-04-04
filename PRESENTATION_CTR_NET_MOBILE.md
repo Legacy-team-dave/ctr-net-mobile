@@ -2,7 +2,9 @@
 
 ## Section 1 : Résumé exécutif
 
-`ENROL.NET` est l’application mobile de terrain dédiée au profil **`ENROLEUR`**. Elle permet l’enrôlement des militaires vivants depuis une tablette ou un smartphone Android, avec récupération d’informations par QR code, capture photo, capture d’empreintes et synchronisation immédiate ou différée avec le backend `CTR.NET-FARDC`.
+`ENROL.NET` est l’application mobile de terrain dédiée au profil **`ENROLEUR`**. Elle permet l’enrôlement depuis une tablette ou un smartphone Android, avec récupération d’informations par QR code, capture photo, capture d’empreintes et synchronisation immédiate ou différée avec le backend `CTR.NET-FARDC`. Le titre affiché dans l’application est désormais **`Enrôlement`**.
+
+> Le QR scanné par `ENROL.NET` provient de `ctr.net-fardc/modules/controles/liste.php` et n’est généré **que** lorsqu’un militaire a été contrôlé avec le statut **vivant**. Si le statut coché est **décédé**, aucun QR d’enrôlement n’est affiché côté web.
 
 ---
 
@@ -15,7 +17,7 @@ Présenter ENROL.NET comme l'outil terrain de l’enrôleur, complémentaire à 
 
 **Points à dire :**
 
-- ENROL.NET est une application Android dédiée à l’enrôlement terrain des militaires vivants.
+- ENROL.NET est une application Android dédiée à l’enrôlement terrain des militaires vivants peut importe leurs catégories respectives.
 - Elle s'intègre à l'écosystème CTR.NET-FARDC existant via une API REST.
 - Seul le profil `ENROLEUR` est autorisé à se connecter.
 - L'objectif est d'accélérer la saisie et d'ajouter la géolocalisation automatique.

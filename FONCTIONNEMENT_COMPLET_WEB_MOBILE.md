@@ -93,8 +93,8 @@ L'application web gère quatre profils avec des accès distincts :
 1. **Sélection** : Cliquer sur un militaire ouvre sa fiche détaillée.
 1. **Vérification doublon** : Le système marque les militaires déjà contrôlés dans les résultats avec un badge `Déjà contrôlé` et les rend non sélectionnables.
 1. **Statut** : Cases à cocher "Vivant" ou "Décédé" (automatique selon la catégorie).
-1. **Militaire vivant** : mention automatique "Présent", lien de parenté automatique "Militaire lui-même" et un seul bouton "Présent" pour valider.
-1. **Militaire décédé** : bénéficiaire existant affiché si présent, champ nouveau bénéficiaire disponible, sélection obligatoire d'un lien parmi `Epouse`, `Epoux`, `Fils`, `Fille`, `Père`, `Mère`, `Frère`, `Sœur`, champ observations optionnel et deux boutons "Favorable" / "Défavorable".
+1. **Militaire vivant** : mention automatique "Présent", lien de parenté automatique "Militaire lui-même" et un seul bouton "Présent" pour valider. Une fois enregistré, un **QR d’enrôlement** devient disponible dans `modules/controles/liste.php`.
+1. **Militaire décédé** : bénéficiaire existant affiché si présent, champ nouveau bénéficiaire disponible, sélection obligatoire d'un lien parmi `Epouse`, `Epoux`, `Fils`, `Fille`, `Père`, `Mère`, `Frère`, `Sœur`, champ observations optionnel et deux boutons "Favorable" / "Défavorable". **Aucun QR d’enrôlement n’est généré dans ce cas.**
 1. **Enregistrement** : Insertion en base avec horodatage, ID contrôleur, coordonnées GPS (si mobile).
 1. **Toast de confirmation** : Notification visuelle de succès.
 
