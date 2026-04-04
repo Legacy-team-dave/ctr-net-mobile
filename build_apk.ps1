@@ -72,12 +72,12 @@ if ($buildResult -ne 0) {
 }
 
 $apkCandidates = @(
-    (Join-Path $PSScriptRoot 'android\app\build\outputs\apk\debug\ctr-net-enrollement-mobile-debug.apk'),
+    (Join-Path $PSScriptRoot 'android\app\build\outputs\apk\debug\enrol-net-enrollement-mobile-debug.apk'),
     (Join-Path $PSScriptRoot 'android\app\build\outputs\apk\debug\app-debug.apk')
 )
 $apkSource = $apkCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
 $apkDistDir = Join-Path $PSScriptRoot 'dist\apk'
-$apkDist = Join-Path $apkDistDir 'ctr-net-enrollement-mobile-latest-debug.apk'
+$apkDist = Join-Path $apkDistDir 'enrol-net-enrollement-mobile-latest-debug.apk'
 
 if (-not $apkSource) {
     Write-Host "[ERREUR] APK introuvable. Fichiers attendus :" -ForegroundColor Red

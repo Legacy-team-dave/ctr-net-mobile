@@ -3,8 +3,8 @@ chcp 65001 >nul
 title ENROL.NET - Installation APK
 
 set "APK_PATH=%~1"
-if "%APK_PATH%"=="" set "APK_PATH=dist\apk\ctr-net-enrollement-mobile-latest-debug.apk"
-if not exist "%APK_PATH%" set "APK_PATH=android\app\build\outputs\apk\debug\ctr-net-enrollement-mobile-debug.apk"
+if "%APK_PATH%"=="" set "APK_PATH=dist\apk\enrol-net-enrollement-mobile-latest-debug.apk"
+if not exist "%APK_PATH%" set "APK_PATH=android\app\build\outputs\apk\debug\enrol-net-enrollement-mobile-debug.apk"
 if not exist "%APK_PATH%" set "APK_PATH=android\app\build\outputs\apk\debug\app-debug.apk"
 echo =========================================================
 echo   ENROL.NET - Installation APK Android

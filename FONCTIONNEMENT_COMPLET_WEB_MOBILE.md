@@ -336,8 +336,8 @@ Le workflow GitHub Actions (`.github/workflows/build-apk.yml`) :
 3. Installation Android SDK : `platforms;android-36` + `build-tools;35.0.0`.
 4. `npm ci` → `npx ng build --configuration production` → `npx cap sync android`.
 5. `chmod +x gradlew && ./gradlew assembleDebug`.
-6. L'APK est uploadé en artifact sous le nom `ctr-net-enrollement-mobile-apk-v<version>`.
-7. En local, `BUILD_APK.bat` et `build_apk.ps1` copient aussi un APK distribuable vers `dist/apk/ctr-net-enrollement-mobile-latest-debug.apk`.
+6. L'APK est uploadé en artifact sous le nom `enrol-net-enrollement-mobile-apk-v<version>`.
+7. En local, `BUILD_APK.bat` et `build_apk.ps1` copient aussi un APK distribuable vers `dist/apk/enrol-net-enrollement-mobile-latest-debug.apk`.
 
 ---
 
@@ -443,7 +443,7 @@ Les deux applications partagent le même thème visuel :
 
 1. Le serveur web doit être opérationnel et accessible sur le réseau Wi-Fi.
 2. Télécharger l'APK depuis les artifacts GitHub Actions ou générer localement via `BUILD_APK.bat` / `build_apk.ps1`.
-3. Utiliser `INSTALL_APK.bat` pour installation ADB rapide (USB) ou installer manuellement l'APK (`dist/apk/ctr-net-enrollement-mobile-latest-debug.apk`).
+3. Utiliser `INSTALL_APK.bat` pour installation ADB rapide (USB) ou installer manuellement l'APK (`dist/apk/enrol-net-enrollement-mobile-latest-debug.apk`).
 4. Au premier lancement : configurer l'IP du serveur et tester la connexion.
 5. Se connecter avec un compte `ENROLEUR`.
 6. Commencer les contrôles terrain.

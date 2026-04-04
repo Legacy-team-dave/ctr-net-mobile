@@ -68,10 +68,10 @@ if %errorlevel% neq 0 (
 )
 cd ..
 
-set "APK_SOURCE=android\app\build\outputs\apk\debug\ctr-net-enrollement-mobile-debug.apk"
+set "APK_SOURCE=android\app\build\outputs\apk\debug\enrol-net-enrollement-mobile-debug.apk"
 if not exist "%APK_SOURCE%" set "APK_SOURCE=android\app\build\outputs\apk\debug\app-debug.apk"
 set "APK_DIST_DIR=dist\apk"
-set "APK_DIST=%APK_DIST_DIR%\ctr-net-enrollement-mobile-latest-debug.apk"
+set "APK_DIST=%APK_DIST_DIR%\enrol-net-enrollement-mobile-latest-debug.apk"
 
 if not exist "%APK_SOURCE%" (
     echo [ERREUR] APK introuvable: %APK_SOURCE%

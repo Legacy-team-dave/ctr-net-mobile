@@ -91,7 +91,7 @@ npm start
 
 L’APK de référence est généré par le workflow GitHub Actions du dépôt. L’artifact publié suit le format :
 
-- `ctr-net-enrollement-mobile-apk-v<version>`
+- `enrol-net-enrollement-mobile-apk-v<version>`
 
 ### Local
 
@@ -105,7 +105,7 @@ cd android
 Sorties usuelles :
 
 - source Gradle : `android/app/build/outputs/apk/debug/app-debug.apk`
-- copie distribuable locale : `dist/apk/ctr-net-enrollement-mobile-latest-debug.apk`
+- copie distribuable locale : `dist/apk/enrol-net-enrollement-mobile-latest-debug.apk`
 
 ## Technologies
 

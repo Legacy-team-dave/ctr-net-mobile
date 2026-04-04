@@ -97,7 +97,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "ctr-net-enrollement-mobile-${variant.buildType.name}.apk"
+            outputFileName = "enrol-net-enrollement-mobile-${variant.buildType.name}.apk"
         }
     }
 }

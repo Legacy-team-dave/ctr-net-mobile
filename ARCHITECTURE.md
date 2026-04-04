@@ -98,6 +98,6 @@ webDir: 'www'
 
 Le workflow `.github/workflows/build-apk.yml` produit l’APK distribuable du projet :
 
-- artifact/release : `ctr-net-enrollement-mobile-apk-v<version>`
+- artifact/release : `enrol-net-enrollement-mobile-apk-v<version>`
 - build local secondaire : `android/app/build/outputs/apk/debug/app-debug.apk`
 
