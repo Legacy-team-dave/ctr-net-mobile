@@ -43,7 +43,7 @@ export class ProfilPage {
         this.nomComplet = u.nom_complet || '';
         this.email = u.email || '';
         this.loginName = u.login || '';
-        this.profilRole = u.profil || '';
+        this.profilRole = this.formatProfilLabel(u.profil || '');
         this.dernierAcces = u.dernier_acces || '';
 
         if (u.avatar) {
@@ -64,6 +64,20 @@ export class ProfilPage {
 
   onAvatarError(event: Event) {
     (event.target as HTMLImageElement).src = 'assets/img/default-avatar.jpg';
+  }
+
+  private formatProfilLabel(profil: string): string {
+    const normalized = (profil || '').trim().toUpperCase();
+
+    if (normalized === 'ENROLEUR') {
+      return 'Enrôleur';
+    }
+
+    if (normalized === 'CONTROLEUR') {
+      return 'Contrôleur';
+    }
+
+    return profil;
   }
 
   private async showToast(message: string, color: string) {
