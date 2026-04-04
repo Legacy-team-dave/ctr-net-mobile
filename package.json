@@ -1,8 +1,8 @@
 {
   "name": "ctr-net-enrollement-mobile",
   "version": "1.4.0",
-  "description": "Application mobile CTR.NET-FARDC dédiée à l’enrôlement des militaires vivants (Ionic Angular)",
-  "author": "CTR.NET-FARDC",
+  "description": "Application mobile ENROL.NET dédiée à l’enrôlement des militaires vivants (Ionic Angular)",
+  "author": "ENROL.NET",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

@@ -1,7 +1,7 @@
 @echo off
-title CTR.NET FARDC Mobile - Serveur de developpement
+title ENROL.NET - Serveur de developpement
 echo =========================================================
-echo   CTR.NET FARDC Mobile - Demarrage serveur dev
+echo   ENROL.NET - Demarrage serveur dev
 echo =========================================================
 echo.
 

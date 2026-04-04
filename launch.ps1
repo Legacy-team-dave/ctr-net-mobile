@@ -1,9 +1,9 @@
 # =========================================================
-#   CTR.NET FARDC Mobile - Serveur de developpement
+#   ENROL.NET - Serveur de developpement
 # =========================================================
 
 Write-Host "=========================================================" -ForegroundColor Cyan
-Write-Host "  CTR.NET FARDC Mobile - Demarrage serveur dev" -ForegroundColor Cyan
+Write-Host "  ENROL.NET - Demarrage serveur dev" -ForegroundColor Cyan
 Write-Host "=========================================================" -ForegroundColor Cyan
 Write-Host ""
 

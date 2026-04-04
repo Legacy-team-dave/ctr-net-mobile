@@ -1,8 +1,8 @@
 @echo off
 chcp 65001 >nul
-title CTR.NET FARDC Enrollement - Build APK
+title ENROL.NET - Build APK
 echo =========================================================
-echo   CTR.NET FARDC Enrollement - Compilation APK Android
+echo   ENROL.NET - Compilation APK Android
 echo =========================================================
 echo.
 
@@ -71,7 +71,7 @@ cd ..
 set "APK_SOURCE=android\app\build\outputs\apk\debug\ctr-net-enrollement-mobile-debug.apk"
 if not exist "%APK_SOURCE%" set "APK_SOURCE=android\app\build\outputs\apk\debug\ctr.net-fardc-mobile.apk"
 if not exist "%APK_SOURCE%" set "APK_SOURCE=android\app\build\outputs\apk\debug\app-debug.apk"
-set "APK_DIST_DIR=dist\apk"
+set "APK_DIST_DIR=%~dp0..\mobile-apks"
 set "APK_DIST=%APK_DIST_DIR%\ctr-net-enrollement-mobile-latest-debug.apk"
 
 if not exist "%APK_SOURCE%" (

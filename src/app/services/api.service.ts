@@ -66,7 +66,7 @@ export class ApiService {
       return found;
     }
 
-    throw new Error('Serveur CTR.NET introuvable sur le réseau local');
+    throw new Error('Serveur ENROL.NET introuvable sur le réseau local');
   }
 
   private async pingServer(ip: string): Promise<void> {

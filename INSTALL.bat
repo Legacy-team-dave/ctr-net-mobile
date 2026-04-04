@@ -1,7 +1,7 @@
 @echo off
-title CTR.NET FARDC Mobile - Installation
+title ENROL.NET - Installation
 echo =========================================================
-echo   CTR.NET FARDC Mobile - Installation des dependances
+echo   ENROL.NET - Installation des dependances
 echo =========================================================
 echo.
 
