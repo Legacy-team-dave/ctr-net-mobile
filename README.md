@@ -122,7 +122,8 @@ npx cap sync android
 cd android
 ./gradlew assembleDebug
 
-# APK local source : android/app/build/outputs/apk/debug/app-debug.apk
+# APK local source : android/app/build/outputs/apk/debug/ctr.net-fardc-mobile.apk
+# Fallback possible selon l'environnement Gradle : android/app/build/outputs/apk/debug/app-debug.apk
 # APK distribuable : dist/apk/ctr-net-mobile-latest-debug.apk (via BUILD_APK.bat ou build_apk.ps1)
 ```
 

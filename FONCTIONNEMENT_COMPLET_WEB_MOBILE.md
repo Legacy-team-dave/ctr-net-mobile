@@ -101,12 +101,12 @@ L'application web gère trois profils avec des accès distincts :
 
 ### 2.5. Modules principaux
 
-- **Administration** : Gestion des utilisateurs, des rôles, des logs d'audit.
+- **Administration** : Gestion des utilisateurs, des rôles et des logs d'audit.
 - **Militaires** : Référentiel des militaires (import, consultation, export).
-- **Contrôles** : Saisie et consultation des contrôles. DataTable avec filtres, recherche, exports (CSV, Excel, PDF, impression).
-- **Litiges** : Enregistrement et suivi des cas litigieux par province/garnison.
+- **Contrôles** : Saisie et consultation des contrôles avec filtres, recherche et exports.
+- **Équipes / Synchronisation** : Préparation et envoi des `equipes` et `controles` en attente vers l'instance centrale.
 - **Rapports** : Tableaux de bord et statistiques consolidées.
-- **Paramètres** : Configuration système, préférences utilisateur.
+- **Paramètres** : Configuration système et préférences utilisateur.
 
 ### 2.6. Sécurité web
 
@@ -123,7 +123,7 @@ L'application web gère trois profils avec des accès distincts :
 - **Format** : CSV (Excel compatible) + XLSX.
 - **Mode** : Consolidé (ancienne + nouvelles données dans la même archive ZIP mise à jour).
 - **Archive principale** : `backups/backup_consolide_latest.zip`.
-- **Sources** : Tables controles, litiges, non_vus.
+- **Sources principales** : tables `controles` et `equipes` pour le périmètre actif de synchronisation (les flux liés aux litiges ne font plus partie du circuit actif).
 - **Purge** : Suppression automatique des archives de plus de 60 jours + conservation des 30 dernières archives non identiques + déduplication SHA256.
 - **Scripts** : `setup_backup_task.bat`, `setup_backup_task.ps1`, `run_backup_job.ps1`.
 
