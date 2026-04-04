@@ -1,5 +1,5 @@
 name: Build Android APK
-# Trigger rebuild: 2026-04-04 20:35
+# Trigger rebuild: 2026-04-04 21:05
 
 on:
   workflow_dispatch:
